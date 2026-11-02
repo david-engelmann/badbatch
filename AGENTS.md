@@ -59,3 +59,5 @@ This repo is badbatch. Its contract lives in CONTRACT.md and that file is the sp
 Boundary. Badbatch stamps what a run left behind. Flighttape, owned by another chat, records the run itself, and badbatch never records runs or reimplements the tape.
 
 First slice. Stamping for the files in one repo plus the recall walk that lists downstream artifacts sorted by reversibility class, and executing a recall comes only after the walk is trusted.
+
+Identity exception. The maintainer identity in the required Signed-off-by trailer is the repo owner's public sign-off identity. It is permitted in commit metadata and in that instruction, and the sanitization rule does not apply to it.

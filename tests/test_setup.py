@@ -12,7 +12,9 @@ EXPECTED_OBLIGATIONS = [
     'BB-S5. Every fixture and example in this repo is synthetic and built for this repo, and no real trace or session data appears anywhere in the tree.',
 ]
 EXPECTED_PREFIX = "BB"
-TEXT_SUFFIXES = {".md", ".yml", ".yaml", ".py", ".toml", ".txt"}
+TEXT_SUFFIXES = {".md", ".yml", ".yaml", ".py", ".toml", ".txt", ".json", ".jsonl"}
+ANY_DEPTH_SKIP = {".git", ".pytest_cache", "__pycache__"}
+ROOT_SKIP = {".venv", "venv", "node_modules", ".tox"}
 
 
 def test_contract_stub_obligations_exist():
@@ -44,7 +46,11 @@ def test_agents_canonical_block_present():
 
 def test_readme_status_reports_rounds():
     text = (ROOT / "README.md").read_text()
-    assert "0 of 100" in text
+    counts = re.findall(r"Closed rounds (\d+) of 100(?!\d)", text)
+    assert counts == ["0"], (
+        "README status must report exactly one closed round count "
+        "and it must be 0 of 100"
+    )
 
 
 def test_no_em_or_en_dash_in_text_files():
@@ -53,7 +59,9 @@ def test_no_em_or_en_dash_in_text_files():
         if not p.is_file() or p.suffix not in TEXT_SUFFIXES:
             continue
         rel_parts = p.relative_to(ROOT).parts
-        if ".git" in rel_parts or any(part in {".pytest_cache", "__pycache__"} for part in rel_parts) or (rel_parts and rel_parts[0] in {".venv", "venv", "node_modules", ".tox"}):
+        if any(part in ANY_DEPTH_SKIP for part in rel_parts):
+            continue
+        if rel_parts and rel_parts[0] in ROOT_SKIP:
             continue
         t = p.read_text()
         if "\u2014" in t or "\u2013" in t:
