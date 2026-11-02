@@ -4,9 +4,9 @@ Badbatch stamps what a run left behind and walks the stamp graph when a recall i
 
 ## Decision models in badbatch
 
-Judgment enters at one point only, and it is not the walk.
+Judgment enters at the walk's reporting edge, and nowhere else.
 
-The recall walk itself is deterministic and stays that way. It follows the stamp graph, lists every downstream artifact, and sorts each into reversible, reversible with compensation, or irreversible from the stamp data. No model runs inside the walk, and the walk changes nothing.
+The recall walk itself is deterministic and stays that way. It follows the stamp graph, lists every downstream artifact, and sorts each into reversible, reversible with compensation, or irreversible from the stamp data. No model runs inside the traversal, and the walk changes nothing. Round 2 adopted the first decision point below: when the walk would list an artifact the stamp leaves unclassed, it may consult a judgment source for a proposed classification, and that consultation is the whole of the model's place in the walk.
 
 Judgment enters later, when a recall moves from the walk to an execution plan and a compensation path is ambiguous. Some artifacts can be undone more than one way, and the compensations differ in what they restore and what they disturb. Ranking those candidate compensations for one artifact is a candidate for a decision model call shaped as a score for each candidate, rating how completely that compensation restores the prior state. Where the stamp data cannot bound the class at all, a choice call over the three reversibility classes is a candidate for a proposed classification.
 

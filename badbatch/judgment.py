@@ -18,6 +18,7 @@ reads files from one directory and nothing else.
 """
 
 import json
+import math
 import re
 from pathlib import Path
 
@@ -42,7 +43,12 @@ def _fail(source, defect):
 
 
 def _is_number(value):
-    return isinstance(value, (int, float)) and not isinstance(value, bool)
+    if not isinstance(value, (int, float)) or isinstance(value, bool):
+        return False
+    try:
+        return math.isfinite(float(value))
+    except OverflowError:
+        return False
 
 
 def _check_unit_interval(source, field, value):
@@ -88,7 +94,7 @@ def _validate_response(source, response):
     if not isinstance(response, dict):
         _fail(source, "response is not an object")
     kind = response.get("kind")
-    if kind in _FIELDS_FOR_KIND:
+    if isinstance(kind, str) and kind in _FIELDS_FOR_KIND:
         extra = set(response) - _FIELDS_FOR_KIND[kind]
         if extra:
             _fail(
@@ -142,6 +148,14 @@ def validate_fixture(data, source="fixture"):
     """
     if not isinstance(data, dict):
         _fail(source, "is not an object")
+    extra = set(data) - {"synthetic", "judgment_point", "request", "response"}
+    if extra:
+        _fail(
+            source,
+            "carries the field "
+            + repr(sorted(extra, key=repr)[0])
+            + ", which the fixture envelope does not carry",
+        )
     if data.get("synthetic") is not True:
         _fail(source, "is not marked synthetic")
     if data.get("judgment_point") != JUDGMENT_POINT:

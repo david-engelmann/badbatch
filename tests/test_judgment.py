@@ -494,3 +494,72 @@ def test_a_fully_classed_recall_is_byte_identical_with_and_without_the_flag(
     with_flag, _ = capsys.readouterr()
     assert plain == with_flag
     assert "proposed" not in plain
+
+
+# The Round 2 review pins, BB-22 and the BB-21 path order clause.
+
+
+def test_two_unproposed_artifacts_refuse_at_the_first_in_path_order():
+    art_zzz = (
+        "artifact out/zzz.html derived-from src/report.py "
+        "class unclassed\ncontent\nz\nend\n"
+    )
+    art_aaa = (
+        "artifact out/aaa.html derived-from out/zzz.html "
+        "class unclassed\ncontent\na\nend\n"
+    )
+    stamp = stamp_of(FILES + art_zzz + art_aaa)
+    with pytest.raises(StampError) as caught:
+        recall_walk(stamp, state_for(stamp), "src/report.py")
+    assert str(caught.value) == refusal_line("out/aaa.html")
+
+
+def test_a_non_string_kind_counts_as_no_judgment():
+    answer = {
+        "kind": [],
+        "choice": "reversible",
+        "confidence": 0.9,
+        "probabilities": dict(PROBABILITIES),
+    }
+    assert check_answer(answer) is None
+
+
+def test_an_unconvertible_number_counts_as_no_judgment():
+    answer = {
+        "kind": "choice",
+        "choice": "reversible",
+        "confidence": 10**400,
+        "probabilities": dict(PROBABILITIES),
+    }
+    assert check_answer(answer) is None
+
+
+def test_a_probability_sum_outside_the_band_counts_as_no_judgment():
+    answer = {
+        "kind": "choice",
+        "choice": "reversible",
+        "confidence": 0.9,
+        "probabilities": {
+            "reversible": 0.5,
+            "reversible-with-compensation": 0.3,
+            "irreversible": 0.198,
+        },
+    }
+    assert check_answer(answer) is None
+
+
+def test_a_fixture_with_an_extra_envelope_field_is_refused_at_load():
+    pair = {
+        "synthetic": True,
+        "judgment_point": "classification",
+        "comment": "recorded by hand",
+        "request": {
+            "artifact": "build/report.html",
+            "parents": ["src/report.py"],
+            "digest": "0" * 64,
+            "status": "current",
+        },
+        "response": {"kind": "abstention"},
+    }
+    with pytest.raises(JudgmentError):
+        validate_fixture(pair, "fixture")
