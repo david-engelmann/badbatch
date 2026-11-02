@@ -8,7 +8,7 @@ Version control can revert commits and nothing else, and nobody tracks which age
 
 ## Status
 
-Round 2 landed in PR 5 and is recorded closed here. Stamping and the recall walk over recorded inputs are in place under contract obligations BB-1 to BB-22, carrying the agent, the prompt hash, and the model on every stamp, digesting recorded content, and sorting downstream artifacts by reversibility class with drift flagged and never repaired, and a trusted recorded judgment may now propose a class for an artifact the stamp leaves unclassed, printed with a proposed marker and never recorded as the class. Closed rounds 2 of 100. Part of the impatient programming portfolio, in the Fleet Operations arc.
+Round 3 built and in review. Stamping and the recall walk over recorded inputs are in place under contract obligations BB-1 to BB-23, carrying the agent, the prompt hash, and the model on every stamp, digesting recorded content, and sorting downstream artifacts by reversibility class with drift flagged and never repaired, and a trusted recorded judgment may now propose a class for an artifact the stamp leaves unclassed, printed with a proposed marker and never recorded as the class, and the judgment validation now orders extra fields by their printed form everywhere it names one, with two readings of the stamp format and one of the fixture format recorded in the contract. Closed rounds 2 of 100. Part of the impatient programming portfolio, in the Fleet Operations arc.
 
 ## Licence
 

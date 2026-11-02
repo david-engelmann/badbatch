@@ -100,7 +100,7 @@ def _validate_response(source, response):
             _fail(
                 source,
                 "response carries the field "
-                + repr(sorted(extra)[0])
+                + repr(sorted(extra, key=repr)[0])
                 + ", which a "
                 + kind
                 + " response does not carry",
