@@ -1,0 +1,15 @@
+{
+  "judgment_point": "classification",
+  "request": {
+    "artifact": "build/chart.png",
+    "digest": "d6d05c6c0ef385a06afc1fb04d2b428a07deebe61e8cdcd0845963d7d93a6bf3",
+    "parents": [
+      "src/data.csv"
+    ],
+    "status": "current"
+  },
+  "response": {
+    "kind": "abstention"
+  },
+  "synthetic": true
+}

@@ -1,0 +1,22 @@
+{
+  "judgment_point": "classification",
+  "request": {
+    "artifact": "exports/report.pdf",
+    "digest": "c0d475902344dc07282e196c6a17d49906f2700de4281fbda2cd8b7e34b65569",
+    "parents": [
+      "docs/summary.md"
+    ],
+    "status": "current"
+  },
+  "response": {
+    "choice": "reversible",
+    "confidence": 0.45,
+    "kind": "choice",
+    "probabilities": {
+      "irreversible": 0.2,
+      "reversible": 0.45,
+      "reversible-with-compensation": 0.35
+    }
+  },
+  "synthetic": true
+}

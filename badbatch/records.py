@@ -7,6 +7,7 @@ from .errors import RecordError
 
 ACTIONS = ("created", "modified", "deleted")
 CLASSES = ("reversible", "reversible-with-compensation", "irreversible")
+UNCLASSED = "unclassed"
 HEADER_FIELDS = ("run", "agent", "prompt-hash", "model")
 
 
@@ -159,7 +160,7 @@ def parse_run_record(text, source):
                     f"{source} is malformed, {owner} names no class"
                 )
             rev_class = parts[-1]
-            if rev_class not in CLASSES:
+            if rev_class not in CLASSES and rev_class != UNCLASSED:
                 raise RecordError(
                     f"{source} is malformed, {owner} names the class "
                     f"{rev_class!r}, which is not one of the three "
