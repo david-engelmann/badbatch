@@ -2,6 +2,7 @@
 
 import pathlib
 
+from badbatch.plan import build_plan, format_plan
 from badbatch.records import parse_run_record
 from badbatch.stamps import build_stamp, format_stamp, parse_stamp
 from badbatch.walk import format_recall, parse_current_state, recall_walk
@@ -23,6 +24,13 @@ def test_the_example_recall_regenerates_byte_for_byte():
     state = parse_current_state(read("current-state.txt"), "examples/current-state.txt")
     entries = recall_walk(stamp, state, "src/report.py")
     assert format_recall("src/report.py", entries) == read("recall.txt")
+
+
+def test_the_example_plan_regenerates_byte_for_byte():
+    stamp = parse_stamp(read("stamp.txt"), "examples/stamp.txt")
+    state = parse_current_state(read("current-state.txt"), "examples/current-state.txt")
+    entries = build_plan(stamp, state, "src/report.py")
+    assert format_plan("src/report.py", entries) == read("plan.txt")
 
 
 def test_the_example_session_shows_drift_from_the_other_start_file():

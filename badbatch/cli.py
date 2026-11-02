@@ -6,6 +6,7 @@ from pathlib import Path
 
 from .errors import BadbatchError
 from .judgment import FixturePlayer
+from .plan import build_plan, format_plan
 from .records import parse_run_record
 from .stamps import build_stamp, format_stamp, parse_stamp
 from .walk import format_recall, parse_current_state, recall_walk
@@ -43,12 +44,27 @@ def main(argv=None):
         help="Directory of recorded judgment fixtures that may "
              "propose classes for unclassed artifacts.",
     )
+    plan_parser = sub.add_parser(
+        "plan",
+        help="Print the execution plan for one stamped file against "
+             "a recorded current state.",
+    )
+    plan_parser.add_argument("stamp")
+    plan_parser.add_argument("state")
+    plan_parser.add_argument("file")
+    plan_parser.add_argument(
+        "--fixtures",
+        default=None,
+        help="Directory of recorded judgment fixtures that may "
+             "propose classes for unclassed artifacts and rank "
+             "candidate compensations.",
+    )
     args = parser.parse_args(argv)
     try:
         if args.command == "stamp":
             record = parse_run_record(_read(args.record), args.record)
             sys.stdout.write(format_stamp(build_stamp(record)))
-        else:
+        elif args.command == "recall":
             stamp = parse_stamp(_read(args.stamp), args.stamp)
             state = parse_current_state(_read(args.state), args.state)
             player = None
@@ -56,6 +72,14 @@ def main(argv=None):
                 player = FixturePlayer(args.fixtures)
             entries = recall_walk(stamp, state, args.file, player)
             sys.stdout.write(format_recall(args.file, entries))
+        else:
+            stamp = parse_stamp(_read(args.stamp), args.stamp)
+            state = parse_current_state(_read(args.state), args.state)
+            player = None
+            if args.fixtures is not None:
+                player = FixturePlayer(args.fixtures)
+            planned = build_plan(stamp, state, args.file, player)
+            sys.stdout.write(format_plan(args.file, planned))
     except BadbatchError as exc:
         sys.stderr.write(f"error: {exc}\n")
         return 2
