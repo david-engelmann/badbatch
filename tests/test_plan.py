@@ -701,3 +701,86 @@ def test_the_plan_command_with_a_missing_fixtures_directory_exits_two(
     assert out == ""
     assert err.count("\n") == 1
     assert "Traceback" not in err
+
+
+def test_a_non_string_judgment_point_refuses_at_load(tmp_path):
+    import json as _json
+    from badbatch.judgment import FixturePlayer, JudgmentError
+    for bad in (["classification"], {"point": "classification"}):
+        fix = tmp_path / "bad.json"
+        fix.write_text(_json.dumps({
+            "synthetic": True, "judgment_point": bad,
+            "request": {"artifact": "a", "parents": [], "digest": "none",
+                        "status": "current"},
+            "response": {"kind": "abstain"},
+        }))
+        try:
+            FixturePlayer(tmp_path)
+        except JudgmentError:
+            pass
+        else:
+            raise AssertionError(f"point {bad!r} loaded")
+
+
+def _plan_entries_with_scores(scores_by_candidate):
+    """Plan the test session, scoring alpha's candidates as given."""
+    from badbatch.plan import build_plan
+    stamp = session_stamp()
+    answers = {
+        ("out/alpha.html", candidate): score_answer(value, 0.9)
+        for candidate, value in scores_by_candidate.items()
+    }
+    entries = build_plan(
+        stamp, session_state(stamp), "src/base.py",
+        StubRankingSource(answers))
+    return tuple(e for e in entries if e.path == "out/alpha.html")
+
+
+def test_three_candidates_mixed_scored_and_unscored_order():
+    from badbatch.plan import build_plan, format_plan
+    entries = _plan_entries_with_scores({
+        "rebuild-from-parents": 0.62, "quarantine-artifact": 0.95})
+    text = format_plan("src/a.py", entries)
+    comp = [l for l in text.splitlines() if l.startswith("compensation")]
+    assert comp == [
+        "compensation quarantine-artifact score 0.95",
+        "compensation rebuild-from-parents score 0.62",
+        "compensation remove-artifact",
+    ]
+
+
+def test_three_candidates_all_tied_keep_canonical_order():
+    from badbatch.plan import build_plan, format_plan
+    entries = _plan_entries_with_scores({
+        "rebuild-from-parents": 0.8, "remove-artifact": 0.8,
+        "quarantine-artifact": 0.8})
+    text = format_plan("src/a.py", entries)
+    comp = [l.split()[1] for l in text.splitlines()
+            if l.startswith("compensation")]
+    assert comp == ["rebuild-from-parents", "remove-artifact",
+                    "quarantine-artifact"]
+
+
+def test_a_negative_zero_score_prints_as_zero():
+    from badbatch.plan import build_plan, format_plan
+    entries = _plan_entries_with_scores({"rebuild-from-parents": -0.0})
+    text = format_plan("src/a.py", entries)
+    assert "score 0.0" in text and "-0.0" not in text
+
+
+def test_candidates_for_an_unknown_class_refuses():
+    from badbatch.plan import candidates_for
+    from badbatch.errors import WalkError
+    try:
+        candidates_for("unclassed", "current")
+    except WalkError:
+        pass
+    else:
+        raise AssertionError("unclassed produced candidates")
+
+
+def test_the_request_key_includes_the_point():
+    from badbatch.judgment import _request_key
+    body = {"artifact": "a", "status": "current"}
+    assert _request_key(body, "classification") != _request_key(
+        body, "compensation-ranking")

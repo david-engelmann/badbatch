@@ -219,7 +219,7 @@ def validate_fixture(data, source="fixture"):
     if data.get("synthetic") is not True:
         _fail(source, "is not marked synthetic")
     point = data.get("judgment_point")
-    if point not in _FIELDS_FOR_KIND:
+    if not isinstance(point, str) or point not in _FIELDS_FOR_KIND:
         _fail(
             source,
             "field 'judgment_point' names no judgment point this "

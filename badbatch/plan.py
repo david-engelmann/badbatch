@@ -18,6 +18,7 @@ from .judgment import (
     ranking_request,
     trusted_score,
 )
+from .errors import WalkError
 from .walk import recall_walk
 
 _REBUILD, _REMOVE, _QUARANTINE = CANDIDATES
@@ -40,13 +41,17 @@ def candidates_for(rev_class, status):
         return (_REBUILD, _REMOVE)
     if rev_class == "reversible-with-compensation":
         return CANDIDATES
-    return (_QUARANTINE,)
+    if rev_class == "irreversible":
+        return (_QUARANTINE,)
+    raise WalkError(
+        f"no compensation candidates are defined for the class {rev_class}"
+    )
 
 
 @dataclass(frozen=True)
 class PlannedCompensation:
     name: str
-    score: object = None
+    score: float | None = None
 
 
 @dataclass(frozen=True)
@@ -93,7 +98,8 @@ def build_plan(stamp, state, start, player=None):
                 request = ranking_request(entry, candidate)
                 answer = check_ranking_answer(player.judge_ranking(request))
                 if trusted_score(answer):
-                    scores[candidate] = float(answer["score"])
+                    value = float(answer["score"])
+                    scores[candidate] = value if value != 0 else 0.0
         ordered = _order_candidates(candidates, scores)
         planned.append(
             PlanEntry(
