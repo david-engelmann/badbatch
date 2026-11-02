@@ -1,0 +1,16 @@
+{
+  "judgment_point": "compensation-ranking",
+  "request": {
+    "artifact": "out/beta.html",
+    "candidate": "quarantine-artifact",
+    "chain": "src/base.py -> out/beta.html",
+    "class": "reversible",
+    "status": "drifted"
+  },
+  "response": {
+    "confidence": 0.9,
+    "kind": "score",
+    "score": 0.8
+  },
+  "synthetic": true
+}

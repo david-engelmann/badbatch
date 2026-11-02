@@ -1,0 +1,14 @@
+{
+  "judgment_point": "compensation-ranking",
+  "request": {
+    "artifact": "out/delta.html",
+    "candidate": "remove-artifact",
+    "chain": "src/base.py -> out/delta.html",
+    "class": "reversible-with-compensation",
+    "status": "drifted"
+  },
+  "response": {
+    "kind": "abstention"
+  },
+  "synthetic": true
+}

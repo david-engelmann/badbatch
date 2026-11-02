@@ -1,0 +1,16 @@
+{
+  "judgment_point": "compensation-ranking",
+  "request": {
+    "artifact": "out/alpha.html",
+    "candidate": "rebuild-from-parents",
+    "chain": "src/base.py -> out/alpha.html",
+    "class": "reversible-with-compensation",
+    "status": "current"
+  },
+  "response": {
+    "confidence": 0.9,
+    "kind": "score",
+    "score": 0.62
+  },
+  "synthetic": true
+}

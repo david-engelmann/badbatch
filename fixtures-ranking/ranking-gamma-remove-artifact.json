@@ -1,0 +1,16 @@
+{
+  "judgment_point": "compensation-ranking",
+  "request": {
+    "artifact": "out/gamma.html",
+    "candidate": "remove-artifact",
+    "chain": "src/base.py -> out/gamma.html",
+    "class": "reversible",
+    "status": "current"
+  },
+  "response": {
+    "confidence": 0.45,
+    "kind": "score",
+    "score": 0.98
+  },
+  "synthetic": true
+}

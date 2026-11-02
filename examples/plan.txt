@@ -1,0 +1,8 @@
+plan src/report.py
+artifact build/report.html reversible current chain src/report.py -> build/report.html
+compensation rebuild-from-parents
+compensation remove-artifact
+artifact docs/summary.md reversible-with-compensation missing chain src/report.py -> build/report.html -> docs/summary.md
+compensation none required, the artifact is already absent
+artifact exports/report.pdf irreversible current chain src/report.py -> build/report.html -> docs/summary.md -> exports/report.pdf
+compensation quarantine-artifact
