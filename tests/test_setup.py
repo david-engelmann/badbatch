@@ -22,7 +22,6 @@ def test_contract_stub_obligations_exist():
         m = re.match(r"^([A-Z]{2})-S\d\.", ln)
         if m:
             found.append((m.group(1), ln))
-    assert len(found) >= 5, f"expected at least 5 stub obligations, found {len(found)}"
     numbers = sorted(int(re.search(r"-S(\d)\.", ln).group(1)) for _, ln in found)
     texts = [ln for _, ln in found]
     assert texts == EXPECTED_OBLIGATIONS, "stub obligation text has changed without a contract amendment"
@@ -53,7 +52,8 @@ def test_no_em_or_en_dash_in_text_files():
     for p in ROOT.rglob("*"):
         if not p.is_file() or p.suffix not in TEXT_SUFFIXES:
             continue
-        if any(part in {".git", ".pytest_cache", "__pycache__", ".venv", "venv", "node_modules", ".tox", "dist", "build"} for part in p.relative_to(ROOT).parts):
+        rel_parts = p.relative_to(ROOT).parts
+        if ".git" in rel_parts or any(part in {".pytest_cache", "__pycache__"} for part in rel_parts) or (rel_parts and rel_parts[0] in {".venv", "venv", "node_modules", ".tox"}):
             continue
         t = p.read_text()
         if "\u2014" in t or "\u2013" in t:
