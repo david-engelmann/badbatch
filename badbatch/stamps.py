@@ -4,9 +4,22 @@ import re
 from dataclasses import dataclass
 
 from .errors import StampError
-from .records import ACTIONS, CLASSES, check_path, content_digest
+from .records import ACTIONS, CLASSES, UNCLASSED, check_path, content_digest
 
 DIGEST = re.compile(r"[0-9a-f]{64}")
+
+
+def class_word_refusal(source, owner, word):
+    """The refusal for a class word outside the three named classes.
+
+    The walk raises this same refusal for an unclassed artifact that
+    no trusted judgment proposes a class for, so the recall refuses
+    that artifact with the exact line the parser gives here.
+    """
+    return StampError(
+        f"{source} is malformed, {owner} names the class "
+        f"{word!r}, which is not one of the three named classes"
+    )
 
 
 @dataclass(frozen=True)
@@ -168,12 +181,8 @@ def parse_stamp(text, source):
             check_path(path, source, StampError)
             owner = f"the artifact line for {path}"
             rev_class = parts[2]
-            if rev_class not in CLASSES:
-                raise StampError(
-                    f"{source} is malformed, {owner} names the class "
-                    f"{rev_class!r}, which is not one of the three "
-                    "named classes"
-                )
+            if rev_class not in CLASSES and rev_class != UNCLASSED:
+                raise class_word_refusal(source, owner, rev_class)
             if path in seen:
                 raise StampError(
                     f"{source} is malformed, the path {path} is "

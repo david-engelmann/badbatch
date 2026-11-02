@@ -19,3 +19,7 @@ class StateError(BadbatchError):
 
 class WalkError(BadbatchError):
     """A recall walk cannot be started as asked."""
+
+
+class JudgmentError(BadbatchError):
+    """A recorded judgment fixture does not match the recorded shape."""

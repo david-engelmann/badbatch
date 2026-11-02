@@ -1,0 +1,22 @@
+{
+  "judgment_point": "classification",
+  "request": {
+    "artifact": "dist/bundle.zip",
+    "digest": "ef17b7d320f2acc023f2018dab381827ba22f9d01b6c4c97894e1bbfe4928313",
+    "parents": [
+      "src/data.csv"
+    ],
+    "status": "missing"
+  },
+  "response": {
+    "choice": "irreversible",
+    "confidence": 0.77,
+    "kind": "choice",
+    "probabilities": {
+      "irreversible": 0.77,
+      "reversible": 0.05,
+      "reversible-with-compensation": 0.18
+    }
+  },
+  "synthetic": true
+}

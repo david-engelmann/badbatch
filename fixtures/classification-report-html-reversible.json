@@ -1,0 +1,22 @@
+{
+  "judgment_point": "classification",
+  "request": {
+    "artifact": "build/report.html",
+    "digest": "224f1d44070761b167ab1d338a429921d0c63f4c0bd177c2fed6ff800e29d3b0",
+    "parents": [
+      "src/report.py"
+    ],
+    "status": "current"
+  },
+  "response": {
+    "choice": "reversible",
+    "confidence": 0.9,
+    "kind": "choice",
+    "probabilities": {
+      "irreversible": 0.03,
+      "reversible": 0.9,
+      "reversible-with-compensation": 0.07
+    }
+  },
+  "synthetic": true
+}

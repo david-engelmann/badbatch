@@ -4,8 +4,9 @@ import heapq
 from dataclasses import dataclass
 
 from .errors import StateError, WalkError
-from .records import CLASSES, check_path
-from .stamps import DIGEST
+from .judgment import check_answer, classification_request, trusted
+from .records import CLASSES, UNCLASSED, check_path
+from .stamps import DIGEST, class_word_refusal
 
 CLASS_ORDER = {name: index for index, name in enumerate(CLASSES)}
 
@@ -16,6 +17,7 @@ class WalkEntry:
     rev_class: str
     status: str
     chain: tuple
+    proposed: bool = False
 
 
 def parse_current_state(text, source):
@@ -47,12 +49,18 @@ def parse_current_state(text, source):
     return state
 
 
-def recall_walk(stamp, state, start):
+def recall_walk(stamp, state, start, player=None):
     """Every downstream artifact of one stamped file, sorted for report.
 
     The walk follows derivation links from the start file through
     artifacts, keeps the shortest chain to each artifact with ties
     broken by the lexicographically smallest chain, and reports only.
+
+    An artifact the stamp leaves unclassed is asked about once, when
+    a judgment source is given, and a trusted answer proposes its
+    class for this result alone. Without a trusted proposal the walk
+    refuses that artifact with the stamp parser's class refusal, so
+    the recall behaves exactly as it behaved before the seam existed.
     """
     if start not in stamp.file_paths():
         raise WalkError(
@@ -77,7 +85,7 @@ def recall_walk(stamp, state, start):
                 heapq.heappush(heap, (len(candidate), candidate, child))
     by_path = stamp.artifact_by_path()
     entries = []
-    for path, chain in best.items():
+    for path in sorted(best):
         if path == start:
             continue
         artifact = by_path[path]
@@ -88,7 +96,22 @@ def recall_walk(stamp, state, start):
             status = "current"
         else:
             status = "drifted"
-        entries.append(WalkEntry(path, artifact.rev_class, status, chain))
+        rev_class = artifact.rev_class
+        proposed = False
+        if rev_class == UNCLASSED:
+            answer = None
+            if player is not None:
+                request = classification_request(artifact, status)
+                answer = check_answer(player.judge(request))
+            if not trusted(answer):
+                raise class_word_refusal(
+                    stamp.source,
+                    f"the artifact line for {path}",
+                    UNCLASSED,
+                )
+            rev_class = answer["choice"]
+            proposed = True
+        entries.append(WalkEntry(path, rev_class, status, best[path], proposed))
     entries.sort(key=lambda entry: (CLASS_ORDER[entry.rev_class], entry.path))
     return tuple(entries)
 
@@ -98,8 +121,9 @@ def format_recall(start, entries):
     lines = [f"recall {start}"]
     for entry in entries:
         chain = " -> ".join(entry.chain)
+        marker = " proposed" if entry.proposed else ""
         lines.append(
-            f"artifact {entry.path} {entry.rev_class} {entry.status} "
-            f"chain {chain}"
+            f"artifact {entry.path} {entry.rev_class}{marker} "
+            f"{entry.status} chain {chain}"
         )
     return "\n".join(lines) + "\n"

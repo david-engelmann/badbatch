@@ -4,9 +4,9 @@ Badbatch stamps what a run left behind and walks the stamp graph when a recall i
 
 ## Decision models in badbatch
 
-Judgment enters at one point only, and it is not the walk.
+Judgment enters at the walk's reporting edge, and nowhere else.
 
-The recall walk itself is deterministic and stays that way. It follows the stamp graph, lists every downstream artifact, and sorts each into reversible, reversible with compensation, or irreversible from the stamp data. No model runs inside the walk, and the walk changes nothing.
+The recall walk itself is deterministic and stays that way. It follows the stamp graph, lists every downstream artifact, and sorts each into reversible, reversible with compensation, or irreversible from the stamp data. No model runs inside the traversal, and the walk changes nothing. Round 2 adopted the first decision point below: when the walk would list an artifact the stamp leaves unclassed, it may consult a judgment source for a proposed classification, and that consultation is the whole of the model's place in the walk.
 
 Judgment enters later, when a recall moves from the walk to an execution plan and a compensation path is ambiguous. Some artifacts can be undone more than one way, and the compensations differ in what they restore and what they disturb. Ranking those candidate compensations for one artifact is a candidate for a decision model call shaped as a score for each candidate, rating how completely that compensation restores the prior state. Where the stamp data cannot bound the class at all, a choice call over the three reversibility classes is a candidate for a proposed classification.
 
@@ -18,6 +18,6 @@ The candidate model is Typesafe's Jev, called through the program's Typesafe con
 
 Tests stay offline. Live answers are captured once, in a bounded recording session, as request and response fixture pairs built from synthetic stamp graphs, and the suite plays those fixtures back through a fixture player. No test calls the network. A schema test pins the fixture shape so a provider response that changes shape fails loudly in the recording session instead of silently in production.
 
-No model seam is implemented in Round 1. Stamping and the walk are deterministic, and the decision points above are adopted, if at all, in a later round.
+No model seam was implemented in Round 1. Round 2 implements the proposed classification point as an offline fixture seam, and a trusted recorded judgment may propose a class for an artifact the stamp leaves unclassed, marked as proposed wherever the walk output is shown and never recorded as the class. The compensation ranking point above remains unimplemented and waits on a round that builds an execution plan surface.
 
 The live-call budget for this repo is set as an envelope and owned by this arc. Trivial verification is capped at 5 calls. Fixture recording is capped at 150 calls in one designated session per round that needs new fixtures. A comparison evaluation is capped at 300 calls per model when a decision point is being adopted. Every call carries synthetic state only, every session is logged in the round record with its call count, and raising the envelope is a contract change recorded in this repo, never a silent overrun.

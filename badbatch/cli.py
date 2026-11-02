@@ -5,6 +5,7 @@ import sys
 from pathlib import Path
 
 from .errors import BadbatchError
+from .judgment import FixturePlayer
 from .records import parse_run_record
 from .stamps import build_stamp, format_stamp, parse_stamp
 from .walk import format_recall, parse_current_state, recall_walk
@@ -36,6 +37,12 @@ def main(argv=None):
     recall_parser.add_argument("stamp")
     recall_parser.add_argument("state")
     recall_parser.add_argument("file")
+    recall_parser.add_argument(
+        "--fixtures",
+        default=None,
+        help="Directory of recorded judgment fixtures that may "
+             "propose classes for unclassed artifacts.",
+    )
     args = parser.parse_args(argv)
     try:
         if args.command == "stamp":
@@ -44,7 +51,10 @@ def main(argv=None):
         else:
             stamp = parse_stamp(_read(args.stamp), args.stamp)
             state = parse_current_state(_read(args.state), args.state)
-            entries = recall_walk(stamp, state, args.file)
+            player = None
+            if args.fixtures is not None:
+                player = FixturePlayer(args.fixtures)
+            entries = recall_walk(stamp, state, args.file, player)
             sys.stdout.write(format_recall(args.file, entries))
     except BadbatchError as exc:
         sys.stderr.write(f"error: {exc}\n")
