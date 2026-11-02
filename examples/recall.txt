@@ -1,0 +1,4 @@
+recall src/report.py
+artifact build/report.html reversible current chain src/report.py -> build/report.html
+artifact docs/summary.md reversible-with-compensation missing chain src/report.py -> build/report.html -> docs/summary.md
+artifact exports/report.pdf irreversible current chain src/report.py -> build/report.html -> docs/summary.md -> exports/report.pdf

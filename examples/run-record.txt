@@ -1,0 +1,51 @@
+# A synthetic run record, written for this repo as the Round 1 example.
+run run-0013
+agent writer-3
+prompt-hash b41d90
+model synth-writer-2
+
+file src/report.py created
+content
+rows = load_rows()
+report = build_report(rows)
+print(report)
+end
+
+file src/data.csv modified
+content
+name,score
+alpha,10
+beta,20
+end
+
+file src/notes.txt created
+content
+draft notes for the report
+end
+
+file src/legacy.py deleted
+
+artifact build/report.html derived-from src/report.py class reversible
+content
+<html><body>report</body></html>
+end
+
+artifact build/chart.png derived-from src/data.csv class reversible
+content
+PNG-SYNTHETIC-CHART
+end
+
+artifact docs/summary.md derived-from build/report.html class reversible-with-compensation
+content
+summary of the report
+end
+
+artifact exports/report.pdf derived-from docs/summary.md class irreversible
+content
+PDF-SYNTHETIC-REPORT
+end
+
+artifact dist/bundle.zip derived-from src/data.csv class irreversible
+content
+ZIP-SYNTHETIC-BUNDLE
+end

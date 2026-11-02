@@ -8,7 +8,7 @@ Version control can revert commits and nothing else, and nobody tracks which age
 
 ## Status
 
-Setup slice in progress. The build has not started. Closed rounds 0 of 100. The contract is a stub and is not yet met. Part of the impatient programming portfolio, in the Fleet Operations arc.
+Round 1 built and in review. Stamping and the recall walk over recorded inputs are in place under contract obligations BB-1 to BB-13, carrying the agent, the prompt hash, and the model on every stamp, digesting recorded content, and sorting downstream artifacts by reversibility class with drift flagged and never repaired. Closed rounds 0 of 100. Part of the impatient programming portfolio, in the Fleet Operations arc.
 
 ## Licence
 
