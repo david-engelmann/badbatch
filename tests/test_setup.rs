@@ -8,6 +8,7 @@
 use std::collections::BTreeSet;
 use std::path::{Path, PathBuf};
 
+use badbatch::pytext::{decimal_value, is_decimal};
 use sha2::{Digest, Sha256};
 
 const CANONICAL_PREFIX_SHA256: &str =
@@ -29,34 +30,48 @@ fn read(rel: &str) -> String {
     std::fs::read_to_string(root().join(rel)).expect("read file")
 }
 
+/// One stub obligation line, read as the Python pin read it.
+/// The two leading letters are ASCII capitals, and the number
+/// after the -S is one digit in the oracle's digit class,
+/// which is the Unicode decimal class and not ASCII alone.
+fn stub_obligation(line: &str) -> Option<(String, u32, String)> {
+    if line.len() <= 6 {
+        return None;
+    }
+    let chars: Vec<char> = line.chars().take(6).collect();
+    if chars.len() < 6
+        || !chars[0].is_ascii_uppercase()
+        || !chars[1].is_ascii_uppercase()
+        || chars[2] != '-'
+        || chars[3] != 'S'
+        || chars[5] != '.'
+    {
+        return None;
+    }
+    let number = decimal_value(chars[4] as u32)?;
+    Some((chars[..2].iter().collect(), number, line.to_string()))
+}
+
 #[test]
 fn the_contract_stub_obligations_exist() {
     let text = read("CONTRACT.md");
     let mut found: Vec<(String, u32, String)> = Vec::new();
     for line in text.split('\n') {
-        let bytes = line.as_bytes();
-        if bytes.len() > 6
-            && bytes[0].is_ascii_uppercase()
-            && bytes[1].is_ascii_uppercase()
-            && &line[2..4] == "-S"
-            && bytes[4].is_ascii_digit()
-            && bytes[5] == b'.'
-        {
-            found.push((
-                line[0..2].to_string(),
-                (bytes[4] - b'0') as u32,
-                line.to_string(),
-            ));
+        if let Some(obligation) = stub_obligation(line) {
+            found.push(obligation);
         }
     }
     let texts: Vec<&str> = found.iter().map(|(_, _, line)| line.as_str()).collect();
     assert_eq!(
-        texts,
-        EXPECTED_OBLIGATIONS,
+        texts, EXPECTED_OBLIGATIONS,
         "stub obligation text has changed without a contract amendment"
     );
     let numbers: Vec<u32> = found.iter().map(|(_, n, _)| *n).collect();
-    assert_eq!(numbers, [1, 2, 3, 4, 5], "stub obligations must be exactly S1 to S5");
+    assert_eq!(
+        numbers,
+        [1, 2, 3, 4, 5],
+        "stub obligations must be exactly S1 to S5"
+    );
     for (prefix, _, line) in &found {
         assert_eq!(prefix, "BB", "obligation is not a BB obligation");
         let words = line.split_whitespace().count();
@@ -92,18 +107,22 @@ fn the_readme_status_reports_the_round_count() {
 /// Every digit run in a "Closed rounds N of 100" phrase whose
 /// closing count is not followed by another digit. This is the
 /// findall pin of the Python form, written without a regex
-/// engine.
+/// engine. Its digit class is the oracle's decimal class, the
+/// Unicode decimal digits, as the Python pattern's digit
+/// class was.
 fn round_counts(text: &str) -> Vec<String> {
     let mut found = Vec::new();
     let mut rest = text;
     while let Some(start) = rest.find("Closed rounds ") {
         let after = &rest[start + "Closed rounds ".len()..];
-        let digits: String = after.chars().take_while(|c| c.is_ascii_digit()).collect();
+        let digits: String = after
+            .chars()
+            .take_while(|c| is_decimal(*c as u32))
+            .collect();
         if !digits.is_empty() {
             let tail = &after[digits.len()..];
             if let Some(tail) = tail.strip_prefix(" of 100") {
-                let followed_by_digit =
-                    tail.chars().next().is_some_and(|c| c.is_ascii_digit());
+                let followed_by_digit = tail.chars().next().is_some_and(|c| is_decimal(c as u32));
                 if !followed_by_digit {
                     found.push(digits.clone());
                 }
@@ -112,6 +131,22 @@ fn round_counts(text: &str) -> Vec<String> {
         rest = &rest[start + 1..];
     }
     found
+}
+
+#[test]
+fn the_setup_digit_class_is_the_unicode_decimal_class() {
+    // The Python pins read digits in the decimal class of the
+    // oracle's text patterns, which reaches every Unicode
+    // decimal digit and nothing wider. An Arabic-Indic count
+    // is a count. A Roman numeral is numeric in the standard
+    // library's wider class but is not a decimal digit, and
+    // neither pin may read it as one.
+    assert_eq!(round_counts("Closed rounds \u{664} of 100"), ["\u{664}"]);
+    assert!(round_counts("Closed rounds 4 of 100\u{664}").is_empty());
+    let arabic = "BB-S\u{664}. Every stamped artifact carries the agent.";
+    assert_eq!(stub_obligation(arabic).map(|(_, n, _)| n), Some(4));
+    let roman = "BB-S\u{2163}. Every stamped artifact carries the agent.";
+    assert_eq!(stub_obligation(roman), None);
 }
 
 const TEXT_SUFFIXES: [&str; 9] = [
@@ -152,7 +187,13 @@ fn no_em_or_en_dash_in_text_files() {
     let root = root();
     let mut scanned = BTreeSet::new();
     collect_scanned(&root, 0, &mut scanned);
-    for anchor in ["CONTRACT.md", "Cargo.toml", "Cargo.lock", "src/lib.rs", "src/main.rs"] {
+    for anchor in [
+        "CONTRACT.md",
+        "Cargo.toml",
+        "Cargo.lock",
+        "src/lib.rs",
+        "src/main.rs",
+    ] {
         assert!(
             scanned.contains(&root.join(anchor)),
             "anchor file {anchor} was not scanned"

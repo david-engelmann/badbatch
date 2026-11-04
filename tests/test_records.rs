@@ -31,10 +31,7 @@ fn a_well_formed_record_parses() {
     let report = &parsed.files[0];
     assert_eq!(report.path, py("src/report.py"));
     assert_eq!(report.action, py("created"));
-    assert_eq!(
-        report.content,
-        Some(vec![py("print(\"report\")")])
-    );
+    assert_eq!(report.content, Some(vec![py("print(\"report\")")]));
     let legacy = &parsed.files[1];
     assert_eq!(legacy.path, py("src/legacy.py"));
     assert_eq!(legacy.action, py("deleted"));
@@ -69,10 +66,8 @@ fn comments_and_blank_lines_outside_content_are_ignored() {
 
 #[test]
 fn content_lines_are_literal_until_the_exact_end_line() {
-    let parsed = record(
-        "file src/a.txt created\ncontent\n\n# not a comment\n end \nend\n",
-    )
-    .expect("literal content");
+    let parsed = record("file src/a.txt created\ncontent\n\n# not a comment\n end \nend\n")
+        .expect("literal content");
     assert_eq!(
         parsed.files[0].content,
         Some(vec![py(""), py("# not a comment"), py(" end ")])
@@ -83,12 +78,20 @@ fn content_lines_are_literal_until_the_exact_end_line() {
 fn header_defects_are_refused() {
     let missing_model = "run run-0007\nagent writer-3\nprompt-hash b41d90\n";
     let out_of_order = "run run-0007\nprompt-hash b41d90\nagent writer-3\nmodel synth-writer-2\n";
-    let duplicated = "run run-0007\nagent writer-3\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\n";
+    let duplicated =
+        "run run-0007\nagent writer-3\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\n";
     let entry_first = "file src/report.py created\ncontent\nx\nend\n";
-    let two_values = "run run-0007 extra\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\n";
-    for text in [missing_model, out_of_order, duplicated, entry_first, two_values] {
-        let err = parse_run_record(&py(text), &py("record.txt"))
-            .expect_err("header defect refused");
+    let two_values =
+        "run run-0007 extra\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\n";
+    for text in [
+        missing_model,
+        out_of_order,
+        duplicated,
+        entry_first,
+        two_values,
+    ] {
+        let err =
+            parse_run_record(&py(text), &py("record.txt")).expect_err("header defect refused");
         assert!(matches!(err, Error::Record(_)), "{err:?}");
     }
 }
@@ -152,8 +155,8 @@ fn malformed_records_are_refused() {
         ),
     ];
     for text in &cases {
-        let err = parse_run_record(&py(text), &py("record.txt"))
-            .expect_err("malformed record refused");
+        let err =
+            parse_run_record(&py(text), &py("record.txt")).expect_err("malformed record refused");
         assert!(matches!(err, Error::Record(_)), "{err:?} for {text}");
     }
 }
@@ -207,8 +210,8 @@ fn a_deep_chain_closed_into_a_cycle_is_refused() {
 fn a_form_feed_inside_a_content_line_stays_in_the_line() {
     // The digest is sha256 of "al\x0cpha\n" as one line, computed
     // outside this crate.
-    let parsed = record("file src/a.txt created\ncontent\nal\u{c}pha\nend\n")
-        .expect("form feed content");
+    let parsed =
+        record("file src/a.txt created\ncontent\nal\u{c}pha\nend\n").expect("form feed content");
     assert_eq!(parsed.files[0].content, Some(vec![py("al\u{c}pha")]));
     assert_eq!(
         content_digest(&parsed.files[0].content.clone().expect("content")),
@@ -218,9 +221,8 @@ fn a_form_feed_inside_a_content_line_stays_in_the_line() {
 
 #[test]
 fn a_crlf_record_is_refused() {
-    let text = format!("{HEADER}").replace('\n', "\r\n")
+    let text = HEADER.to_string().replace('\n', "\r\n")
         + "file src/a.py created\r\ncontent\r\nx\r\nend\r\n";
-    let err = parse_run_record(&py(&text), &py("record.txt"))
-        .expect_err("CRLF record refused");
+    let err = parse_run_record(&py(&text), &py("record.txt")).expect_err("CRLF record refused");
     assert!(matches!(err, Error::Record(_)), "{err:?}");
 }

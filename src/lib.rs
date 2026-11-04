@@ -20,9 +20,9 @@ mod printable_table;
 
 pub use errors::{Error, Result};
 pub use judgment::{
-    CANDIDATES, CONFIDENCE_THRESHOLD, FixturePlayer, JUDGMENT_POINT, JudgmentSource,
-    RANKING_POINT, check_answer, check_ranking_answer, classification_request,
-    ranking_request, trusted, trusted_score, validate_fixture,
+    CANDIDATES, CONFIDENCE_THRESHOLD, FixturePlayer, JUDGMENT_POINT, JudgmentSource, RANKING_POINT,
+    check_answer, check_ranking_answer, classification_request, ranking_request, trusted,
+    trusted_score, validate_fixture,
 };
 pub use plan::{build_plan, candidates_for, format_plan};
 pub use records::{ACTIONS, CLASSES, UNCLASSED, content_digest, parse_run_record};

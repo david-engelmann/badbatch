@@ -17,11 +17,11 @@ use badbatch::judgment::{
     FixturePlayer, JudgmentSource, check_ranking_answer, ranking_request, trusted_score,
     validate_fixture,
 };
+use badbatch::plan::{build_plan, candidates_for, format_plan};
 use badbatch::pyjson::Value;
 use badbatch::pytext::PyStr;
 use badbatch::records::parse_run_record;
 use badbatch::stamps::{Stamp, build_stamp, format_stamp, parse_stamp};
-use badbatch::plan::{build_plan, candidates_for, format_plan};
 use badbatch::walk::recall_walk;
 
 fn py(text: &str) -> PyStr {
@@ -83,8 +83,7 @@ compensation remove-artifact\n";
 
 fn session_stamp() -> Stamp {
     let record = parse_run_record(&py(SESSION), &py("record.txt")).expect("record");
-    parse_stamp(&py(&format_stamp(&build_stamp(&record))), &py("stamp.txt"))
-        .expect("stamp")
+    parse_stamp(&py(&format_stamp(&build_stamp(&record))), &py("stamp.txt")).expect("stamp")
 }
 
 fn session_state(stamp: &Stamp) -> HashMap<PyStr, PyStr> {
@@ -92,8 +91,7 @@ fn session_state(stamp: &Stamp) -> HashMap<PyStr, PyStr> {
         .artifacts
         .iter()
         .map(|entry| {
-            let digest = if entry.path == py("out/beta.html")
-                || entry.path == py("out/delta.html")
+            let digest = if entry.path == py("out/beta.html") || entry.path == py("out/delta.html")
             {
                 py(&"0".repeat(64))
             } else {
@@ -214,8 +212,7 @@ fn the_candidate_table_by_class_and_status() {
 
 #[test]
 fn candidates_for_an_unknown_class_refuses() {
-    let err = candidates_for(&py("unclassed"), &py("current"))
-        .expect_err("unknown class refuses");
+    let err = candidates_for(&py("unclassed"), &py("current")).expect_err("unknown class refuses");
     assert!(matches!(err, Error::Walk(_)), "{err:?}");
 }
 
@@ -224,8 +221,8 @@ fn candidates_for_an_unknown_class_refuses() {
 #[test]
 fn the_plain_plan_over_the_session_is_exact() {
     let stamp = session_stamp();
-    let planned = build_plan(&stamp, &session_state(&stamp), &py("src/base.py"), None)
-        .expect("plan");
+    let planned =
+        build_plan(&stamp, &session_state(&stamp), &py("src/base.py"), None).expect("plan");
     assert_eq!(format_plan(&py("src/base.py"), &planned), PLAIN_PLAN);
 }
 
@@ -252,10 +249,9 @@ fn a_plan_with_no_downstream_artifacts_is_the_header_alone() {
         &py("record.txt"),
     )
     .expect("record");
-    let stamp = parse_stamp(&py(&format_stamp(&build_stamp(&record))), &py("stamp.txt"))
-        .expect("stamp");
-    let planned = build_plan(&stamp, &HashMap::new(), &py("src/lonely.py"), None)
-        .expect("plan");
+    let stamp =
+        parse_stamp(&py(&format_stamp(&build_stamp(&record))), &py("stamp.txt")).expect("stamp");
+    let planned = build_plan(&stamp, &HashMap::new(), &py("src/lonely.py"), None).expect("plan");
     assert!(planned.is_empty());
     assert_eq!(
         format_plan(&py("src/lonely.py"), &planned),
@@ -303,8 +299,13 @@ fn every_committed_ranking_fixture_matches_the_recorded_shape() {
 fn the_committed_ranking_requests_are_the_builders_requests() {
     let stamp = session_stamp();
     let source = CapturingSource::new(None);
-    build_plan(&stamp, &session_state(&stamp), &py("src/base.py"), Some(&source))
-        .expect("plan");
+    build_plan(
+        &stamp,
+        &session_state(&stamp),
+        &py("src/base.py"),
+        Some(&source),
+    )
+    .expect("plan");
     let canonical = |value: &Value| {
         let mut text = String::new();
         badbatch::pyjson::dumps_canonical(value, &mut text);
@@ -314,7 +315,7 @@ fn the_committed_ranking_requests_are_the_builders_requests() {
         .ranking_requests
         .borrow()
         .iter()
-        .map(|r| canonical(r))
+        .map(&canonical)
         .collect();
     let dir = root().join("fixtures-ranking");
     let mut recorded = HashSet::new();
@@ -333,8 +334,8 @@ fn the_committed_ranking_requests_are_the_builders_requests() {
 #[test]
 fn the_ranking_request_shape_is_exactly_five_fields() {
     let stamp = session_stamp();
-    let entries = recall_walk(&stamp, &session_state(&stamp), &py("src/base.py"), None)
-        .expect("walk");
+    let entries =
+        recall_walk(&stamp, &session_state(&stamp), &py("src/base.py"), None).expect("walk");
     let entry = entries
         .iter()
         .find(|e| e.path == py("out/alpha.html"))
@@ -354,8 +355,7 @@ fn the_ranking_request_shape_is_exactly_five_fields() {
 #[test]
 fn no_ranking_request_for_artifacts_with_fewer_than_two_candidates() {
     let examples = root().join("examples");
-    let stamp_text =
-        std::fs::read_to_string(examples.join("stamp.txt")).expect("read stamp");
+    let stamp_text = std::fs::read_to_string(examples.join("stamp.txt")).expect("read stamp");
     let stamp = parse_stamp(&py(&stamp_text), &py("examples/stamp.txt")).expect("stamp");
     let state_text =
         std::fs::read_to_string(examples.join("current-state.txt")).expect("read state");
@@ -367,8 +367,7 @@ fn no_ranking_request_for_artifacts_with_fewer_than_two_candidates() {
         }
     }
     let source = CapturingSource::new(None);
-    let planned = build_plan(&stamp, &state, &py("src/report.py"), Some(&source))
-        .expect("plan");
+    let planned = build_plan(&stamp, &state, &py("src/report.py"), Some(&source)).expect("plan");
     let asked: HashSet<(String, String)> = source
         .ranking_requests
         .borrow()
@@ -409,8 +408,7 @@ fn a_plan_whose_source_abstains_everywhere_is_byte_identical() {
     let abstaining = StubRankingSource::new(HashMap::new());
     let with_source = format_plan(
         &py("src/base.py"),
-        &build_plan(&stamp, &state, &py("src/base.py"), Some(&abstaining))
-            .expect("plan"),
+        &build_plan(&stamp, &state, &py("src/base.py"), Some(&abstaining)).expect("plan"),
     );
     assert_eq!(with_source, plain);
     assert_eq!(plain, PLAIN_PLAN);
@@ -423,8 +421,13 @@ fn plan_text_with(source: &StubRankingSource) -> String {
     let stamp = session_stamp();
     format_plan(
         &py("src/base.py"),
-        &build_plan(&stamp, &session_state(&stamp), &py("src/base.py"), Some(source))
-            .expect("plan"),
+        &build_plan(
+            &stamp,
+            &session_state(&stamp),
+            &py("src/base.py"),
+            Some(source),
+        )
+        .expect("plan"),
     )
 }
 
@@ -490,10 +493,7 @@ fn trusted_score_and_check_ranking_answer_units() {
     );
     assert!(!trusted_score(Some(&abstention)));
     assert!(!trusted_score(Some(&score_answer(0.7, 0.45))));
-    let no_confidence = obj(vec![
-        ("kind", s("score")),
-        ("score", Value::Float(0.7)),
-    ]);
+    let no_confidence = obj(vec![("kind", s("score")), ("score", Value::Float(0.7))]);
     assert!(!trusted_score(Some(&no_confidence)));
 }
 
@@ -536,7 +536,12 @@ fn a_malformed_ranking_answer_counts_as_no_judgment() {
     for answer in &answers {
         assert_eq!(check_ranking_answer(Some(answer.clone())), None);
         let mut table = HashMap::new();
-        for artifact in ["out/alpha.html", "out/beta.html", "out/gamma.html", "out/delta.html"] {
+        for artifact in [
+            "out/alpha.html",
+            "out/beta.html",
+            "out/gamma.html",
+            "out/delta.html",
+        ] {
             for candidate in [REBUILD, REMOVE, QUARANTINE] {
                 table.insert(
                     (artifact.to_string(), candidate.to_string()),
@@ -663,8 +668,7 @@ fn a_ranking_fixture_outside_the_shape_is_refused_at_load() {
     for (index, pair) in ranking_mutations().iter().enumerate() {
         let dir = common::test_dir("plan-mutation");
         write_fixture(&dir, "bad.json", pair);
-        let err = FixturePlayer::load(dir.as_os_str().as_bytes())
-            .expect_err("mutation refused");
+        let err = FixturePlayer::load(dir.as_os_str().as_bytes()).expect_err("mutation refused");
         assert!(matches!(err, Error::Judgment(_)), "case {index}: {err:?}");
     }
 }
@@ -674,8 +678,7 @@ fn two_ranking_fixtures_for_one_request_are_refused_at_load() {
     let dir = common::test_dir("plan-duplicate");
     write_fixture(&dir, "one.json", &good_ranking_pair());
     write_fixture(&dir, "two.json", &good_ranking_pair());
-    let err = FixturePlayer::load(dir.as_os_str().as_bytes())
-        .expect_err("duplicate refused");
+    let err = FixturePlayer::load(dir.as_os_str().as_bytes()).expect_err("duplicate refused");
     assert!(matches!(err, Error::Judgment(_)), "{err:?}");
 }
 
@@ -697,20 +700,17 @@ fn one_directory_answers_each_point_only_from_its_own_pairs() {
         }
     }
     let player = FixturePlayer::load(dir.as_os_str().as_bytes()).expect("player");
-    let classification_text = std::fs::read_to_string(
-        root().join("fixtures/classification-report-html-reversible.json"),
-    )
-    .expect("read");
-    let classification =
-        badbatch::pyjson::loads(&py(&classification_text)).expect("parses");
+    let classification_text =
+        std::fs::read_to_string(root().join("fixtures/classification-report-html-reversible.json"))
+            .expect("read");
+    let classification = badbatch::pyjson::loads(&py(&classification_text)).expect("parses");
     let c_request = classification.get("request").expect("request").clone();
     let c_response = classification.get("response").expect("response").clone();
     assert_eq!(player.judge(&c_request), Some(c_response));
     assert_eq!(player.judge_ranking(&c_request), None);
-    let ranking_text = std::fs::read_to_string(
-        root().join("fixtures-ranking/ranking-alpha-remove-artifact.json"),
-    )
-    .expect("read");
+    let ranking_text =
+        std::fs::read_to_string(root().join("fixtures-ranking/ranking-alpha-remove-artifact.json"))
+            .expect("read");
     let ranking = badbatch::pyjson::loads(&py(&ranking_text)).expect("parses");
     let r_request = ranking.get("request").expect("request").clone();
     let r_response = ranking.get("response").expect("response").clone();
@@ -733,8 +733,8 @@ artifact out/tool.html derived-from src/base.py class reversible\ncontent\ntool\
         &py("record.txt"),
     )
     .expect("record");
-    let stamp = parse_stamp(&py(&format_stamp(&build_stamp(&record))), &py("stamp.txt"))
-        .expect("stamp");
+    let stamp =
+        parse_stamp(&py(&format_stamp(&build_stamp(&record))), &py("stamp.txt")).expect("stamp");
     let state: HashMap<PyStr, PyStr> = stamp
         .artifacts
         .iter()
@@ -798,8 +798,7 @@ artifact out/tool.html derived-from src/base.py class reversible\ncontent\ntool\
         write_fixture(&dir, &format!("ranking-{stem}-{candidate}.json"), &pair);
     }
     let player = FixturePlayer::load(dir.as_os_str().as_bytes()).expect("player");
-    let planned = build_plan(&stamp, &state, &py("src/base.py"), Some(&player))
-        .expect("plan");
+    let planned = build_plan(&stamp, &state, &py("src/base.py"), Some(&player)).expect("plan");
     assert_eq!(
         format_plan(&py("src/base.py"), &planned),
         "plan src/base.py\n\
@@ -862,13 +861,27 @@ artifact docs/summary.md derived-from build/report.html class unclassed\ncontent
     let state_arg = state_path.to_str().expect("utf8").to_string();
     let fixtures = format!("{}/fixtures", env!("CARGO_MANIFEST_DIR"));
     let plain = common::run_cli(
-        &["recall", &stamp_arg, &state_arg, "src/report.py", "--fixtures", &fixtures],
+        &[
+            "recall",
+            &stamp_arg,
+            &state_arg,
+            "src/report.py",
+            "--fixtures",
+            &fixtures,
+        ],
         &dir,
     );
     assert_eq!(plain.code, 0);
     let mixed_arg = mixed.to_str().expect("utf8").to_string();
     let with_ranking = common::run_cli(
-        &["recall", &stamp_arg, &state_arg, "src/report.py", "--fixtures", &mixed_arg],
+        &[
+            "recall",
+            &stamp_arg,
+            &state_arg,
+            "src/report.py",
+            "--fixtures",
+            &mixed_arg,
+        ],
         &dir,
     );
     assert_eq!(with_ranking.code, 0);
@@ -975,7 +988,12 @@ artifact out/page.html derived-from src/base.py class unclassed\ncontent\npage\n
     let state = common::write(&dir, "state.txt", &lines);
     let stamp_arg = stamp.to_str().expect("utf8").to_string();
     let outcome = common::run_cli(
-        &["plan", &stamp_arg, state.to_str().expect("utf8"), "src/base.py"],
+        &[
+            "plan",
+            &stamp_arg,
+            state.to_str().expect("utf8"),
+            "src/base.py",
+        ],
         &dir,
     );
     assert_eq!(outcome.code, 2);
@@ -1025,16 +1043,31 @@ fn the_plan_command_with_a_missing_fixtures_directory_exits_two() {
 fn a_non_string_judgment_point_refuses_at_load() {
     for point in ["[\"classification\"]", "{\"point\": \"classification\"}"] {
         let dir = common::test_dir("plan-point");
+        // Every other part of the pair is valid in full, so no
+        // other refusal in the loader can fire first or
+        // instead. The refusal asserted is the point check's
+        // own message. A loader that let a non-string point
+        // fall through to the request and response checks
+        // would load this pair, and this test would fail.
         let text = format!(
             "{{\"synthetic\": true, \"judgment_point\": {point}, \
-             \"request\": {{\"artifact\": \"a\", \"parents\": [], \
-             \"digest\": \"none\", \"status\": \"current\"}}, \
-             \"response\": {{\"kind\": \"abstain\"}}}}"
+             \"request\": {{\"artifact\": \"build/report.html\", \
+             \"parents\": [\"src/report.py\"], \"digest\": \"{}\", \
+             \"status\": \"current\"}}, \
+             \"response\": {{\"kind\": \"choice\", \"choice\": \"reversible\", \
+             \"confidence\": 0.9, \"probabilities\": {{\"reversible\": 0.9, \
+             \"reversible-with-compensation\": 0.05, \"irreversible\": 0.05}}}}}}",
+            "a".repeat(64)
         );
         common::write(&dir, "bad.json", &text);
-        let err = FixturePlayer::load(dir.as_os_str().as_bytes())
-            .expect_err("non-string point refused");
+        let err =
+            FixturePlayer::load(dir.as_os_str().as_bytes()).expect_err("non-string point refused");
         assert!(matches!(err, Error::Judgment(_)), "{err:?}");
+        assert_eq!(
+            err.message(),
+            "fixture bad.json field 'judgment_point' names no judgment \
+             point this tool records"
+        );
     }
 }
 
@@ -1070,10 +1103,7 @@ fn alpha_compensation_lines(scores: &[(&str, f64)]) -> Vec<String> {
 
 #[test]
 fn three_candidates_mixed_scored_and_unscored_order() {
-    let lines = alpha_compensation_lines(&[
-        (REBUILD, 0.62),
-        (QUARANTINE, 0.95),
-    ]);
+    let lines = alpha_compensation_lines(&[(REBUILD, 0.62), (QUARANTINE, 0.95)]);
     assert_eq!(
         lines,
         [
@@ -1086,11 +1116,7 @@ fn three_candidates_mixed_scored_and_unscored_order() {
 
 #[test]
 fn three_candidates_all_tied_keep_canonical_order() {
-    let lines = alpha_compensation_lines(&[
-        (REBUILD, 0.8),
-        (REMOVE, 0.8),
-        (QUARANTINE, 0.8),
-    ]);
+    let lines = alpha_compensation_lines(&[(REBUILD, 0.8), (REMOVE, 0.8), (QUARANTINE, 0.8)]);
     let names: Vec<String> = lines
         .iter()
         .map(|l| l.split_whitespace().nth(1).expect("name").to_string())

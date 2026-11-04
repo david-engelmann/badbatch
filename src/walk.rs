@@ -136,9 +136,7 @@ pub fn recall_walk(
             candidate.push(child.clone());
             let improves = match best.get(&child) {
                 None => true,
-                Some(known) => {
-                    (candidate.len(), &candidate) < (known.len(), known)
-                }
+                Some(known) => (candidate.len(), &candidate) < (known.len(), known),
             };
             if improves {
                 best.insert(child.clone(), candidate.clone());

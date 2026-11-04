@@ -86,16 +86,10 @@ fn an_answer_with_extra_keys_counts_as_no_judgment() {
 
 #[test]
 fn a_walk_judged_by_an_extra_key_answer_refuses_as_with_no_source() {
-    let record = parse_run_record(
-        &py(&format!("{HEADER}{RECORD_BODY}")),
-        &py("record.txt"),
-    )
-    .expect("record");
-    let stamp = parse_stamp(
-        &py(&format_stamp(&build_stamp(&record))),
-        &py("stamp.txt"),
-    )
-    .expect("stamp");
+    let record = parse_run_record(&py(&format!("{HEADER}{RECORD_BODY}")), &py("record.txt"))
+        .expect("record");
+    let stamp =
+        parse_stamp(&py(&format_stamp(&build_stamp(&record))), &py("stamp.txt")).expect("stamp");
     let state: HashMap<PyStr, PyStr> = stamp
         .artifacts
         .iter()
@@ -103,8 +97,8 @@ fn a_walk_judged_by_an_extra_key_answer_refuses_as_with_no_source() {
         .collect();
     let expected = "stamp.txt is malformed, the artifact line for \
 build/report.html names the class 'unclassed', which is not one of the three named classes";
-    let err = recall_walk(&stamp, &state, &py("src/report.py"), None)
-        .expect_err("no source refuses");
+    let err =
+        recall_walk(&stamp, &state, &py("src/report.py"), None).expect_err("no source refuses");
     assert_eq!(err.message(), expected);
     let stub = StubSource {
         answer: Some(extra_key_answer()),
@@ -196,11 +190,12 @@ artifact out/a.html reversible {} derived-from src/old.txt\n",
     .expect("with none");
     assert_eq!(with_digest.files[0].digest, Some(py(&digest)));
     assert_eq!(with_none.files[0].digest, None);
-    assert!(format_stamp(&with_digest)
-        .lines()
-        .any(|line| line == format!("file src/old.txt deleted {digest}")));
-    let state: HashMap<PyStr, PyStr> =
-        HashMap::from([(py("out/a.html"), py(&"a".repeat(64)))]);
+    assert!(
+        format_stamp(&with_digest)
+            .lines()
+            .any(|line| line == format!("file src/old.txt deleted {digest}"))
+    );
+    let state: HashMap<PyStr, PyStr> = HashMap::from([(py("out/a.html"), py(&"a".repeat(64)))]);
     assert_eq!(
         recall_walk(&with_digest, &state, &py("src/old.txt"), None).expect("walk"),
         recall_walk(&with_none, &state, &py("src/old.txt"), None).expect("walk")
@@ -246,4 +241,54 @@ fn a_fixture_whose_last_duplicated_kind_is_invalid_is_refused() {
     let err = FixturePlayer::load(dir.as_os_str().as_bytes())
         .expect_err("last kind score at the classification point refuses");
     assert!(matches!(err, Error::Judgment(_)), "{err:?}");
+}
+
+// The lone surrogate reading, BB-34.
+
+fn surrogate_fixture(artifact_escape: &str, choice: &str) -> String {
+    format!(
+        "{{\"synthetic\": true, \"judgment_point\": \"classification\", \
+\"request\": {{\"artifact\": \"build/{artifact_escape}.html\", \
+\"parents\": [\"src/report.py\"], \"digest\": \"{}\", \
+\"status\": \"current\"}}, \
+\"response\": {{\"kind\": \"choice\", \"choice\": \"{choice}\", \
+\"confidence\": 0.9, \
+\"probabilities\": {{\"reversible\": 0.9, \
+\"reversible-with-compensation\": 0.05, \"irreversible\": 0.05}}}}}}",
+        "0".repeat(64)
+    )
+}
+
+#[test]
+fn fixtures_differing_only_in_a_surrogate_code_point_both_load() {
+    // A lone surrogate escape names that code point, not the
+    // replacement character, so these two requests are two
+    // different requests and each fixture answers only its
+    // own. A reader that collapsed the surrogate to the
+    // replacement character would key the two requests alike
+    // and refuse the second file as a duplicate recording.
+    let dir = common::test_dir("hardening-surrogate");
+    common::write(
+        &dir,
+        "one.json",
+        &surrogate_fixture("\\ud800", "reversible"),
+    );
+    common::write(
+        &dir,
+        "two.json",
+        &surrogate_fixture("\\ufffd", "irreversible"),
+    );
+    let player = FixturePlayer::load(dir.as_os_str().as_bytes()).expect("player");
+    let request_for = |escape: &str| {
+        badbatch::pyjson::loads(&py(&format!(
+            "{{\"artifact\": \"build/{escape}.html\", \
+\"parents\": [\"src/report.py\"], \"digest\": \"{}\", \"status\": \"current\"}}",
+            "0".repeat(64)
+        )))
+        .expect("request parses")
+    };
+    let first = player.judge(&request_for("\\ud800")).expect("an answer");
+    assert_eq!(first.get("choice"), Some(&s("reversible")));
+    let second = player.judge(&request_for("\\ufffd")).expect("an answer");
+    assert_eq!(second.get("choice"), Some(&s("irreversible")));
 }

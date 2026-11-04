@@ -70,11 +70,23 @@ struct Cli {
 
 #[derive(Subcommand)]
 enum Commands {
-    #[command(name = "stamp", about = "Print the stamp for one recorded run record.", infer_long_args = true)]
+    #[command(
+        name = "stamp",
+        about = "Print the stamp for one recorded run record.",
+        infer_long_args = true
+    )]
     Stamp(StampArgs),
-    #[command(name = "recall", about = "Print the recall walk for one stamped file against a recorded current state.", infer_long_args = true)]
+    #[command(
+        name = "recall",
+        about = "Print the recall walk for one stamped file against a recorded current state.",
+        infer_long_args = true
+    )]
     Recall(RecallArgs),
-    #[command(name = "plan", about = "Print the execution plan for one stamped file against a recorded current state.", infer_long_args = true)]
+    #[command(
+        name = "plan",
+        about = "Print the execution plan for one stamped file against a recorded current state.",
+        infer_long_args = true
+    )]
     Plan(PlanArgs),
 }
 
@@ -224,10 +236,7 @@ fn is_negative_number(points: &[u32]) -> bool {
 /// where the pattern's end anchor also matches just before
 /// one trailing newline, as a Python text pattern's does.
 fn negative_number_matches(points: &[u32]) -> bool {
-    is_negative_number(points)
-        || points
-            .strip_suffix(&[0x0A])
-            .is_some_and(is_negative_number)
+    is_negative_number(points) || points.strip_suffix(&[0x0A]).is_some_and(is_negative_number)
 }
 
 /// Whether a token reads as a positional string rather than
@@ -308,16 +317,12 @@ fn help_read(points: &[u32], token: &OsStr, longs: &[String]) -> HelpRead {
             None => HelpRead::Fire,
             Some(0x3D) => {
                 let mut replacement = OsString::from("--help=");
-                replacement.push(OsStr::from_bytes(
-                    token.as_bytes().get(3..).unwrap_or(&[]),
-                ));
+                replacement.push(OsStr::from_bytes(token.as_bytes().get(3..).unwrap_or(&[])));
                 HelpRead::Refuse(replacement)
             }
             Some(0x2D) => {
                 let mut replacement = OsString::from("--help=");
-                replacement.push(OsStr::from_bytes(
-                    token.as_bytes().get(2..).unwrap_or(&[]),
-                ));
+                replacement.push(OsStr::from_bytes(token.as_bytes().get(2..).unwrap_or(&[])));
                 HelpRead::Refuse(replacement)
             }
             Some(_) => HelpRead::Fire,
@@ -418,12 +423,12 @@ fn distribute(segments: &[Vec<SegTok>], action_count: usize) -> Option<Vec<Slot>
     // Probed against the real parser over the split shapes
     // (a flag pair before it with positionals after parses; the
     // same stream ending one segment earlier refuses).
-    if segments.len() > 1 {
-        if let Some(last) = segments.iter().rev().find(|segment| !segment.is_empty()) {
-            if last.len() == 1 && matches!(last[0], SegTok::Sep) {
-                return None;
-            }
-        }
+    if segments.len() > 1
+        && let Some(last) = segments.iter().rev().find(|segment| !segment.is_empty())
+        && last.len() == 1
+        && matches!(last[0], SegTok::Sep)
+    {
+        return None;
     }
     let mut slots: Vec<Slot> = Vec::new();
     for segment in segments {
@@ -452,10 +457,7 @@ fn distribute(segments: &[Vec<SegTok>], action_count: usize) -> Option<Vec<Slot>
             }
         }
         for share in &mut shares {
-            if let Some(at) = share
-                .iter()
-                .position(|token| matches!(token, SegTok::Sep))
-            {
+            if let Some(at) = share.iter().position(|token| matches!(token, SegTok::Sep)) {
                 share.remove(at);
             }
             match share.len() {
@@ -800,11 +802,7 @@ fn read_slot(slot: &Slot) -> Result<(PyStr, PyStr), ExitCode> {
     };
     // The oracle's path object reads an empty path as the
     // current directory, so the empty string opens there.
-    let open: &OsStr = if raw.is_empty() {
-        OsStr::new(".")
-    } else {
-        raw
-    };
+    let open: &OsStr = if raw.is_empty() { OsStr::new(".") } else { raw };
     let content = match std::fs::read(open) {
         Ok(content) => content,
         Err(error) => {

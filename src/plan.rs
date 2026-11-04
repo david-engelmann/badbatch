@@ -118,19 +118,19 @@ pub fn build_plan(
     for entry in &entries {
         let candidates = candidates_for(&entry.rev_class, &entry.status)?;
         let mut scores: HashMap<&'static str, f64> = HashMap::new();
-        if let Some(source) = player {
-            if candidates.len() >= 2 {
-                for candidate in &candidates {
-                    let request = ranking_request(entry, candidate);
-                    let answer = check_ranking_answer(source.judge_ranking(&request));
-                    if trusted_score(answer.as_ref()) {
-                        let value = answer
-                            .as_ref()
-                            .and_then(|held| held.get("score"))
-                            .and_then(|score| score.as_f64())
-                            .expect("a trusted score carries a number");
-                        scores.insert(candidate, if value != 0.0 { value } else { 0.0 });
-                    }
+        if let Some(source) = player
+            && candidates.len() >= 2
+        {
+            for candidate in &candidates {
+                let request = ranking_request(entry, candidate);
+                let answer = check_ranking_answer(source.judge_ranking(&request));
+                if trusted_score(answer.as_ref()) {
+                    let value = answer
+                        .as_ref()
+                        .and_then(|held| held.get("score"))
+                        .and_then(|score| score.as_f64())
+                        .expect("a trusted score carries a number");
+                    scores.insert(candidate, if value != 0.0 { value } else { 0.0 });
                 }
             }
         }
@@ -169,9 +169,7 @@ pub fn format_plan(start: &PyStr, entries: &[PlanEntry]) -> String {
             entry.path, entry.rev_class, marker, entry.status, chain
         ));
         if entry.status == "missing" {
-            lines.push(
-                "compensation none required, the artifact is already absent".to_string(),
-            );
+            lines.push("compensation none required, the artifact is already absent".to_string());
             continue;
         }
         for compensation in &entry.compensations {

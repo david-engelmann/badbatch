@@ -6,7 +6,7 @@ use std::collections::HashMap;
 use badbatch::errors::Error;
 use badbatch::pytext::PyStr;
 use badbatch::records::parse_run_record;
-use badbatch::stamps::{build_stamp, parse_stamp, Stamp};
+use badbatch::stamps::{Stamp, build_stamp, parse_stamp};
 use badbatch::walk::{format_recall, parse_current_state, recall_walk};
 
 fn py(text: &str) -> PyStr {
@@ -49,7 +49,11 @@ fn state_of(pairs: &[(&str, char)]) -> HashMap<PyStr, PyStr> {
 #[test]
 fn state_lines_parse() {
     let state = parse_current_state(
-        &py(&format!("file gen/left.txt {}\nfile x.txt {}\n", d('a'), d('b'))),
+        &py(&format!(
+            "file gen/left.txt {}\nfile x.txt {}\n",
+            d('a'),
+            d('b')
+        )),
         &py("state.txt"),
     )
     .expect("state parses");
@@ -76,8 +80,8 @@ fn malformed_state_is_refused() {
         "file a.txt none\n".to_string(),
     ];
     for text in &cases {
-        let err = parse_current_state(&py(text), &py("state.txt"))
-            .expect_err("malformed state refused");
+        let err =
+            parse_current_state(&py(text), &py("state.txt")).expect_err("malformed state refused");
         assert!(matches!(err, Error::State(_)), "{err:?} for {text}");
     }
 }
@@ -105,7 +109,11 @@ fn the_walk_lists_each_reachable_artifact_once() {
 #[test]
 fn chains_are_shortest_and_break_ties_on_the_smallest_sequence() {
     let stamp = diamond_stamp();
-    let state = state_of(&[("gen/left.txt", 'a'), ("gen/right.txt", 'b'), ("out/final.txt", 'e')]);
+    let state = state_of(&[
+        ("gen/left.txt", 'a'),
+        ("gen/right.txt", 'b'),
+        ("out/final.txt", 'e'),
+    ]);
     let entries = recall_walk(&stamp, &state, &py("gen/core.txt"), None).expect("walk");
     let final_entry = entries
         .iter()
@@ -130,7 +138,12 @@ artifact aaa.txt irreversible {x} derived-from src.txt\n",
         x = d('a'),
     );
     let stamp = parse_stamp(&py(&text), &py("stamp.txt")).expect("stamp");
-    let state = state_of(&[("bbb.txt", 'a'), ("zzz.txt", 'a'), ("mmm.txt", 'a'), ("aaa.txt", 'a')]);
+    let state = state_of(&[
+        ("bbb.txt", 'a'),
+        ("zzz.txt", 'a'),
+        ("mmm.txt", 'a'),
+        ("aaa.txt", 'a'),
+    ]);
     let entries = recall_walk(&stamp, &state, &py("src.txt"), None).expect("walk");
     let paths: Vec<String> = entries.iter().map(|e| e.path.to_string()).collect();
     assert_eq!(paths, ["bbb.txt", "zzz.txt", "mmm.txt", "aaa.txt"]);
@@ -154,11 +167,10 @@ fn statuses_read_current_drifted_and_missing() {
 fn the_walk_refuses_a_start_that_is_not_a_file_entry() {
     let stamp = diamond_stamp();
     let state = state_of(&[]);
-    let err = recall_walk(&stamp, &state, &py("gen/left.txt"), None)
-        .expect_err("artifact start refused");
+    let err =
+        recall_walk(&stamp, &state, &py("gen/left.txt"), None).expect_err("artifact start refused");
     assert!(matches!(err, Error::Walk(_)), "{err:?}");
-    let err = recall_walk(&stamp, &state, &py("ghost.txt"), None)
-        .expect_err("ghost start refused");
+    let err = recall_walk(&stamp, &state, &py("ghost.txt"), None).expect_err("ghost start refused");
     assert!(matches!(err, Error::Walk(_)), "{err:?}");
 }
 
@@ -169,8 +181,8 @@ fn a_lonely_file_walks_to_the_header_alone() {
         d('a')
     );
     let stamp = parse_stamp(&py(&text), &py("stamp.txt")).expect("stamp");
-    let entries = recall_walk(&stamp, &state_of(&[]), &py("src/lonely.py"), None)
-        .expect("lonely walk");
+    let entries =
+        recall_walk(&stamp, &state_of(&[]), &py("src/lonely.py"), None).expect("lonely walk");
     assert!(entries.is_empty());
     assert_eq!(
         format_recall(&py("src/lonely.py"), &entries),

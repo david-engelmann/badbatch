@@ -153,7 +153,10 @@ fn the_commands_modify_none_of_their_inputs() {
 fn a_recall_with_no_downstream_prints_the_header_alone() {
     let dir = common::test_dir("cli-unrelated");
     let altered = RECORD
-        .replace("artifact build/report.html", "artifact build/unrelated.html")
+        .replace(
+            "artifact build/report.html",
+            "artifact build/unrelated.html",
+        )
         .replace("derived-from src/report.py", "derived-from src/legacy.py");
     let record = common::write(&dir, "record.txt", &altered);
     let record_obj = parse_run_record(
@@ -161,11 +164,7 @@ fn a_recall_with_no_downstream_prints_the_header_alone() {
         &py("record.txt"),
     )
     .expect("record");
-    let stamp = common::write(
-        &dir,
-        "stamp.txt",
-        &format_stamp(&build_stamp(&record_obj)),
-    );
+    let stamp = common::write(&dir, "stamp.txt", &format_stamp(&build_stamp(&record_obj)));
     let state = common::write(&dir, "state.txt", "");
     let outcome = common::run_cli(
         &[

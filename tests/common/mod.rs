@@ -18,10 +18,7 @@ static COUNTER: AtomicUsize = AtomicUsize::new(0);
 
 pub fn test_dir(name: &str) -> PathBuf {
     let n = COUNTER.fetch_add(1, Ordering::SeqCst);
-    let dir = std::env::temp_dir().join(format!(
-        "badbatch-{name}-{}-{n}",
-        std::process::id()
-    ));
+    let dir = std::env::temp_dir().join(format!("badbatch-{name}-{}-{n}", std::process::id()));
     let _ = std::fs::remove_dir_all(&dir);
     std::fs::create_dir_all(&dir).expect("create test dir");
     dir
@@ -171,9 +168,7 @@ pub fn load_corpus() -> Vec<CorpusCase> {
                 .and_then(|s| s.as_object())
                 .map(|map| {
                     map.iter()
-                        .map(|(k, v)| {
-                            (k.clone(), v.as_str().expect("setup content").to_string())
-                        })
+                        .map(|(k, v)| (k.clone(), v.as_str().expect("setup content").to_string()))
                         .collect()
                 })
                 .unwrap_or_default();

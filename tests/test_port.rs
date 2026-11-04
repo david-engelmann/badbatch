@@ -10,7 +10,7 @@ use std::path::Path;
 
 use badbatch::pytext::py_float_repr;
 
-use common::{DeadStream, run_cli, run_cli_dead, test_dir, write};
+use common::{DeadStream, run_cli, run_cli_dead, test_dir, write, write_bytes};
 
 // The print and error discipline, BB-37.
 
@@ -154,11 +154,21 @@ fn a_fixture_at_the_nesting_ceiling_loads_and_is_refused_as_a_document() {
     let fixtures = fixture_dir_with(&dir, "deep.json", &deep_fixture(9991));
     let (stamp, state) = recall_args(&dir, &fixtures);
     let outcome = run_cli(
-        &["recall", &stamp, &state, "src/a.py", "--fixtures", &fixtures],
+        &[
+            "recall",
+            &stamp,
+            &state,
+            "src/a.py",
+            "--fixtures",
+            &fixtures,
+        ],
         &dir,
     );
     assert_eq!(outcome.code, 2);
-    assert_eq!(outcome.stderr_text(), "error: fixture deep.json is not an object\n");
+    assert_eq!(
+        outcome.stderr_text(),
+        "error: fixture deep.json is not an object\n"
+    );
 }
 
 #[test]
@@ -167,7 +177,14 @@ fn a_fixture_past_the_nesting_ceiling_is_the_uncaught_family() {
     let fixtures = fixture_dir_with(&dir, "deep.json", &deep_fixture(9992));
     let (stamp, state) = recall_args(&dir, &fixtures);
     let outcome = run_cli(
-        &["recall", &stamp, &state, "src/a.py", "--fixtures", &fixtures],
+        &[
+            "recall",
+            &stamp,
+            &state,
+            "src/a.py",
+            "--fixtures",
+            &fixtures,
+        ],
         &dir,
     );
     assert_eq!(outcome.code, 1);
@@ -196,11 +213,22 @@ fn an_integer_at_the_digit_limit_is_read_and_refused_as_a_value() {
     let fixtures = fixture_dir_with(&dir, "digits.json", &digit_fixture(4300));
     let (stamp, state) = recall_args(&dir, &fixtures);
     let outcome = run_cli(
-        &["recall", &stamp, &state, "src/a.py", "--fixtures", &fixtures],
+        &[
+            "recall",
+            &stamp,
+            &state,
+            "src/a.py",
+            "--fixtures",
+            &fixtures,
+        ],
         &dir,
     );
     assert_eq!(outcome.code, 2);
-    assert!(outcome.stderr_text().contains("is not a number between 0 and 1"));
+    assert!(
+        outcome
+            .stderr_text()
+            .contains("is not a number between 0 and 1")
+    );
 }
 
 #[test]
@@ -209,7 +237,14 @@ fn an_integer_past_the_digit_limit_is_the_uncaught_family() {
     let fixtures = fixture_dir_with(&dir, "digits.json", &digit_fixture(4301));
     let (stamp, state) = recall_args(&dir, &fixtures);
     let outcome = run_cli(
-        &["recall", &stamp, &state, "src/a.py", "--fixtures", &fixtures],
+        &[
+            "recall",
+            &stamp,
+            &state,
+            "src/a.py",
+            "--fixtures",
+            &fixtures,
+        ],
         &dir,
     );
     assert_eq!(outcome.code, 1);
@@ -236,15 +271,20 @@ fn the_trust_threshold_is_the_contract_value() {
     assert_eq!(badbatch::judgment::CONFIDENCE_THRESHOLD, 0.6);
 }
 
-// The manifest placement pins, BB-30. Sections are read with
-// their dotted table names, so a placement cannot hide inside
-// a dotted subtable.
+// The manifest placement pins, BB-30. The manifest is read
+// as dependency sets, and every header that names a
+// dependency set folds into it. A plain section contributes
+// the crate names its body keys carry, a dotted subtable
+// contributes the crate its last component names, and a
+// target table contributes to the set it names, so a
+// placement cannot hide inside a dotted subtable or behind
+// a target gate.
 
-fn manifest_sections() -> Vec<(String, String)> {
-    let text = std::fs::read_to_string(
-        Path::new(env!("CARGO_MANIFEST_DIR")).join("Cargo.toml"),
-    )
-    .expect("read manifest");
+use std::collections::BTreeSet;
+
+/// The manifest split into its sections, each header with
+/// the body lines that follow it.
+fn manifest_sections(text: &str) -> Vec<(String, String)> {
     let mut sections: Vec<(String, String)> = Vec::new();
     let mut current = String::new();
     let mut body = String::new();
@@ -262,47 +302,153 @@ fn manifest_sections() -> Vec<(String, String)> {
     sections
 }
 
+/// Which dependency set one manifest header names, and the
+/// crate a dotted header itself places, where it places one.
+fn dependency_header(header: &str) -> Option<(&'static str, Option<String>)> {
+    const KINDS: [&str; 3] = ["dev-dependencies", "build-dependencies", "dependencies"];
+    for kind in KINDS {
+        if header == kind {
+            return Some((kind, None));
+        }
+        if let Some(crate_name) = header.strip_prefix(&format!("{kind}.")) {
+            return Some((kind, Some(crate_name.trim_matches('"').to_string())));
+        }
+        if header.starts_with("target.") {
+            let marker = format!(".{kind}");
+            if let Some(at) = header.rfind(&marker) {
+                let after = &header[at + marker.len()..];
+                if after.is_empty() {
+                    return Some((kind, None));
+                }
+                if let Some(crate_name) = after.strip_prefix('.') {
+                    return Some((kind, Some(crate_name.trim_matches('"').to_string())));
+                }
+            }
+        }
+    }
+    None
+}
+
+/// The crate names one plain dependency section's body keys
+/// carry. A dotted key names its first component, so a key
+/// written as a dotted path still names its crate.
+fn body_crate_names(body: &str, out: &mut BTreeSet<String>) {
+    for line in body.lines() {
+        let line = line.trim();
+        if line.is_empty() || line.starts_with('#') {
+            continue;
+        }
+        if let Some((key, _)) = line.split_once('=') {
+            let first = key.trim().trim_matches('"').split('.').next().unwrap_or("");
+            if !first.is_empty() {
+                out.insert(first.to_string());
+            }
+        }
+    }
+}
+
+/// The manifest's three dependency sets, shipped, dev, and
+/// build, each holding the crate names placed in it by any
+/// header form the manifest language allows.
+fn dependency_sets(text: &str) -> (BTreeSet<String>, BTreeSet<String>, BTreeSet<String>) {
+    let mut shipped = BTreeSet::new();
+    let mut dev = BTreeSet::new();
+    let mut build = BTreeSet::new();
+    for (header, body) in manifest_sections(text) {
+        let Some((kind, implied)) = dependency_header(&header) else {
+            continue;
+        };
+        let set = match kind {
+            "dev-dependencies" => &mut dev,
+            "build-dependencies" => &mut build,
+            _ => &mut shipped,
+        };
+        if let Some(crate_name) = implied {
+            set.insert(crate_name);
+        } else {
+            body_crate_names(&body, set);
+        }
+    }
+    (shipped, dev, build)
+}
+
 #[test]
 fn the_manifest_places_its_dependencies_as_the_contract_states() {
-    let sections = manifest_sections();
-    let body_of = |name: &str| {
-        sections
-            .iter()
-            .find(|(section, _)| section == name)
-            .map(|(_, body)| body.clone())
-            .unwrap_or_default()
-    };
-    let dependencies = body_of("dependencies");
+    let text = std::fs::read_to_string(Path::new(env!("CARGO_MANIFEST_DIR")).join("Cargo.toml"))
+        .expect("read manifest");
+    // The section reader must account for the whole manifest,
+    // or its sets are read from a partial text and prove
+    // nothing. The package section stands as the witness. Its
+    // body must still carry the version line.
+    let sections = manifest_sections(&text);
+    let package = sections
+        .iter()
+        .find(|(section, _)| section == "package")
+        .map(|(_, body)| body.clone())
+        .unwrap_or_default();
+    assert!(
+        package.contains("version = \"0.1.0\""),
+        "the section reader dropped part of the manifest: {package}"
+    );
+    let (shipped, dev, build) = dependency_sets(&text);
     for crate_name in ["anyhow", "clap", "sha2", "thiserror"] {
         assert!(
-            dependencies.contains(&format!("{crate_name} =")),
+            shipped.contains(crate_name),
             "{crate_name} must be a shipped dependency"
         );
     }
     assert!(
-        dependencies.contains("sha2 ="),
+        shipped.contains("sha2"),
         "sha2 is shipped because stamp digests are product behavior"
     );
-    assert!(
-        !dependencies.contains("serde"),
-        "no serde family crate may be a shipped dependency: {dependencies}"
-    );
-    let dev = body_of("dev-dependencies");
-    assert!(dev.contains("serde_json ="), "serde_json is a dev dependency only");
-    for (section, body) in &sections {
-        if section != "dev-dependencies" {
+    for (set, name) in [(&shipped, "shipped"), (&build, "build")] {
+        for crate_name in ["serde", "serde_json"] {
             assert!(
-                !body.contains("serde_json"),
-                "serde_json appears outside dev-dependencies in [{section}]"
+                !set.contains(crate_name),
+                "no serde family crate may be a {name} dependency"
             );
         }
     }
+    assert!(
+        dev.contains("serde_json"),
+        "serde_json is a dev dependency only"
+    );
+    // Positive controls. The reader must place a crate named
+    // by a dotted subtable or a target table in the set the
+    // table names, or its clean result on the real manifest
+    // proves nothing.
+    let (shipped, _, _) = dependency_sets("[dependencies.serde]\nversion = \"1\"\n");
+    assert!(
+        shipped.contains("serde"),
+        "a dotted subtable must fold into its set"
+    );
+    let (shipped, _, _) = dependency_sets("[target.'cfg(unix)'.dependencies]\nserde = \"1\"\n");
+    assert!(
+        shipped.contains("serde"),
+        "a target table must fold into its set"
+    );
+    let (_, _, build) = dependency_sets("[build-dependencies]\nserde_json = \"1\"\n");
+    assert!(
+        build.contains("serde_json"),
+        "the build set must be read as its own set"
+    );
+    let (_, dev, _) = dependency_sets("[dev-dependencies.serde]\nversion = \"1\"\n");
+    assert!(
+        dev.contains("serde"),
+        "a dotted dev subtable must fold into its set"
+    );
 }
 
 // The Python removal and the import hygiene, BB-40 and BB-41.
 
 #[test]
-fn no_python_is_tracked_in_the_tree() {
+fn no_python_files_stand_in_the_tree() {
+    // The walk reads the working tree from disk, because the
+    // suite must also run in a fresh archive extraction that
+    // carries no git state to list tracked files from. The
+    // directories a contributor's own Python tooling keeps in
+    // a checkout are skipped by name, since their contents are
+    // not the tree this check guards.
     let root = Path::new(env!("CARGO_MANIFEST_DIR")).to_path_buf();
     let mut bad = Vec::new();
     fn walk(dir: &Path, root: &Path, bad: &mut Vec<String>) {
@@ -311,7 +457,20 @@ fn no_python_is_tracked_in_the_tree() {
             let path = entry.path();
             let name = entry.file_name().to_string_lossy().into_owned();
             if entry.file_type().expect("type").is_dir() {
-                if [".git", "target", "__pycache__"].contains(&name.as_str()) {
+                if [
+                    ".git",
+                    "target",
+                    "__pycache__",
+                    ".venv",
+                    "venv",
+                    ".tox",
+                    ".mypy_cache",
+                    ".pytest_cache",
+                    ".ruff_cache",
+                    ".nox",
+                ]
+                .contains(&name.as_str())
+                {
                     continue;
                 }
                 walk(&path, root, bad);
@@ -326,7 +485,7 @@ fn no_python_is_tracked_in_the_tree() {
         }
     }
     walk(&root, &root, &mut bad);
-    assert!(bad.is_empty(), "python remains tracked: {bad:?}");
+    assert!(bad.is_empty(), "python files stand in the tree: {bad:?}");
 }
 
 /// The crate roots one source text imports, resolving grouped,
@@ -458,9 +617,44 @@ fn a_separator_led_segment_assigns_the_separator_as_a_value() {
     let outcome = run_cli(&["recall", "--", "--", &state, "out/b.html"], &dir);
     assert_eq!(outcome.code, 2);
     assert!(
-        outcome
-            .stderr_text()
-            .starts_with("error: cannot read --, "),
+        outcome.stderr_text().starts_with("error: cannot read --, "),
+        "{}",
+        outcome.stderr_text()
+    );
+    let _ = stamp;
+}
+
+#[test]
+fn a_separator_after_a_consumed_flag_still_names_the_stamp_slot() {
+    let dir = test_dir("port-argv-flag-sep-stamp");
+    let (stamp, state) = session_files(&dir);
+    // With the fixtures option consumed first, the segment
+    // [--, --, state, file] assigns the separator word itself
+    // to the stamp slot, exactly as the segment at the head of
+    // the stream does in the pin above. The stamp slot is the
+    // one slot that never holds a list. Its share stands at
+    // the head of its segment, the first separator of a
+    // segment is discounted, and the next separator is the
+    // share's value. The oracle's namespace table, read over
+    // every token shape up to eight tokens drawn from values
+    // and separators and the option pair, holds no shape that
+    // puts a list in this slot, so the separator as its value
+    // is the edge this slot carries.
+    let outcome = run_cli(
+        &[
+            "recall",
+            "--fixtures",
+            dir.to_str().expect("utf8"),
+            "--",
+            "--",
+            &state,
+            "out/b.html",
+        ],
+        &dir,
+    );
+    assert_eq!(outcome.code, 2);
+    assert!(
+        outcome.stderr_text().starts_with("error: cannot read --, "),
         "{}",
         outcome.stderr_text()
     );
@@ -505,10 +699,7 @@ fn a_flag_after_the_first_separator_is_a_value() {
     // recall stamp -- --fixtures dir assigns the flag word to
     // the state slot and dir to the start slot. The state read
     // opens the path as written and refuses.
-    let outcome = run_cli(
-        &["recall", &stamp, "--", "--fixtures", "somedir"],
-        &dir,
-    );
+    let outcome = run_cli(&["recall", &stamp, "--", "--fixtures", "somedir"], &dir);
     assert_eq!(outcome.code, 2);
     assert!(
         outcome
@@ -528,7 +719,15 @@ fn a_trailing_separator_pair_can_still_name_the_separator() {
     // assigns the separator word to the start slot, which the
     // walk then refuses as not a file entry.
     let outcome = run_cli(
-        &["recall", &stamp, &state, "--fixtures", &dir.to_str().expect("utf8").to_string(), "--", "--"],
+        &[
+            "recall",
+            &stamp,
+            &state,
+            "--fixtures",
+            dir.to_str().expect("utf8"),
+            "--",
+            "--",
+        ],
         &dir,
     );
     assert_eq!(outcome.code, 2);
@@ -546,9 +745,11 @@ fn help_fires_and_is_blocked_exactly_where_the_oracle_put_it() {
     let dir = test_dir("port-argv-help");
     let outcome = run_cli(&["--help"], &dir);
     assert_eq!(outcome.code, 0);
-    assert!(outcome
-        .stdout_text()
-        .starts_with("Stamp what a run left behind"));
+    assert!(
+        outcome
+            .stdout_text()
+            .starts_with("Stamp what a run left behind")
+    );
     let outcome = run_cli(&["stamp", "record.txt", "extra", "--help"], &dir);
     assert_eq!(outcome.code, 0);
     let outcome = run_cli(&["--bogus", "--help"], &dir);
@@ -584,7 +785,13 @@ fn the_fixtures_option_abbreviates_and_repeats_take_the_last() {
     let ghost = dir.join("ghost").to_str().expect("utf8").to_string();
     let outcome = run_cli(
         &[
-            "recall", &stamp, &state, "src/a.py", "--fixtures", &ghost, "--fixtures",
+            "recall",
+            &stamp,
+            &state,
+            "src/a.py",
+            "--fixtures",
+            &ghost,
+            "--fixtures",
             &fixtures_arg,
         ],
         &dir,
@@ -651,13 +858,32 @@ fn the_cannot_read_line_names_the_folded_path() {
 }
 
 #[test]
+fn a_utf8_refusal_names_the_path_as_written_under_a_folded_spelling() {
+    let dir = test_dir("port-path-utf8-as-written");
+    // The read opens the folded form, record.txt, but the
+    // refusal that the document is not readable as UTF-8 text
+    // names the path as written, ./record.txt, as BB-38
+    // states. A port that named the folded form here would
+    // print the name without the leading component.
+    write_bytes(&dir, "record.txt", b"run run-0007\nagent \xffwriter\n");
+    let outcome = run_cli(&["stamp", "./record.txt"], &dir);
+    assert_eq!(outcome.code, 2);
+    assert_eq!(
+        outcome.stderr_text(),
+        "error: ./record.txt is not readable as utf-8 text\n"
+    );
+}
+
+#[test]
 fn a_parse_refusal_names_the_path_as_written() {
     let dir = test_dir("port-path-as-written");
     write(&dir, "record.txt", "run run-0007\nagent writer-3\n");
     let outcome = run_cli(&["stamp", "./record.txt"], &dir);
     assert_eq!(outcome.code, 2);
     assert!(
-        outcome.stderr_text().contains("./record.txt is malformed, "),
+        outcome
+            .stderr_text()
+            .contains("./record.txt is malformed, "),
         "{}",
         outcome.stderr_text()
     );
@@ -667,17 +893,13 @@ fn a_parse_refusal_names_the_path_as_written() {
 #[test]
 fn a_non_utf8_file_name_displays_with_surrogate_escapes() {
     let dir = test_dir("port-argv-bytes");
-    let outcome = common::run_cli_bytes(
-        &[b"stamp".as_slice(), b"gho\xffst.txt".as_slice()],
-        &dir,
-    );
+    let outcome = common::run_cli_bytes(&[b"stamp".as_slice(), b"gho\xffst.txt".as_slice()], &dir);
     assert_eq!(outcome.code, 2);
     assert_eq!(
         outcome.stderr_text(),
         "error: cannot read gho\\udcffst.txt, No such file or directory\n"
     );
 }
-
 
 #[test]
 fn a_trailing_separator_closing_an_empty_segment_refuses() {
@@ -698,17 +920,62 @@ fn a_trailing_separator_closing_an_empty_segment_refuses() {
     let fx = dir.join("fx");
     let fx = fx.to_str().expect("utf8 dir");
     for argv in [
-        vec!["recall", "s.txt", "--fixtures", fx, "t.txt", "src/a.py", "--fixtures", fx, "--"],
-        vec!["recall", "s.txt", "t.txt", "src/a.py", "--fixtures", fx, "--"],
-        vec!["recall", "--fixtures", fx, "s.txt", "t.txt", "src/a.py", "--fixtures", fx, "--"],
+        vec![
+            "recall",
+            "s.txt",
+            "--fixtures",
+            fx,
+            "t.txt",
+            "src/a.py",
+            "--fixtures",
+            fx,
+            "--",
+        ],
+        vec![
+            "recall",
+            "s.txt",
+            "t.txt",
+            "src/a.py",
+            "--fixtures",
+            fx,
+            "--",
+        ],
+        vec![
+            "recall",
+            "--fixtures",
+            fx,
+            "s.txt",
+            "t.txt",
+            "src/a.py",
+            "--fixtures",
+            fx,
+            "--",
+        ],
     ] {
         let outcome = run_cli(&argv, &dir);
         assert_eq!(outcome.code, 2, "refused: {argv:?}");
         assert_eq!(outcome.stdout, b"", "no document: {argv:?}");
     }
     for argv in [
-        vec!["recall", "s.txt", "--fixtures", fx, "t.txt", "src/a.py", "--"],
-        vec!["recall", "s.txt", "--fixtures", fx, "t.txt", "--fixtures", fx, "src/a.py"],
+        vec![
+            "recall",
+            "s.txt",
+            "--fixtures",
+            fx,
+            "t.txt",
+            "src/a.py",
+            "--",
+        ],
+        vec![
+            "recall",
+            "s.txt",
+            "--fixtures",
+            fx,
+            "t.txt",
+            "--fixtures",
+            fx,
+            "src/a.py",
+        ],
         vec!["recall", "s.txt", "t.txt", "src/a.py", "--"],
     ] {
         let outcome = run_cli(&argv, &dir);

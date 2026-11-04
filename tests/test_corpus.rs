@@ -21,5 +21,9 @@ fn the_corpus_runs_and_its_split_is_pinned() {
             failures.push(format!("{}: {detail}", case.name));
         }
     }
-    assert!(failures.is_empty(), "corpus failures:\n{}", failures.join("\n"));
+    assert!(
+        failures.is_empty(),
+        "corpus failures:\n{}",
+        failures.join("\n")
+    );
 }

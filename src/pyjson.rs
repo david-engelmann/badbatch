@@ -112,9 +112,7 @@ pub enum LoadsError {
 impl From<LoadsError> for Error {
     fn from(error: LoadsError) -> Error {
         match error {
-            LoadsError::Invalid => Error::Judgment(
-                "the document is not valid JSON".to_string(),
-            ),
+            LoadsError::Invalid => Error::Judgment("the document is not valid JSON".to_string()),
             LoadsError::Uncaught(line) => Error::Uncaught(line),
         }
     }
@@ -296,15 +294,13 @@ impl Parser {
                                     && self.points.get(self.index + 1) == Some(&0x75)
                                 {
                                     self.index += 2;
-                                    if let Ok(second) = self.parse_hex4() {
-                                        if (0xDC00..=0xDFFF).contains(&second) {
-                                            points.push(
-                                                0x10000
-                                                    + ((first - 0xD800) << 10)
-                                                    + (second - 0xDC00),
-                                            );
-                                            continue;
-                                        }
+                                    if let Ok(second) = self.parse_hex4()
+                                        && (0xDC00..=0xDFFF).contains(&second)
+                                    {
+                                        points.push(
+                                            0x10000 + ((first - 0xD800) << 10) + (second - 0xDC00),
+                                        );
+                                        continue;
                                     }
                                 }
                                 self.index = saved;

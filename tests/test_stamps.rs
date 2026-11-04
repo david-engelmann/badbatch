@@ -10,10 +10,8 @@ fn py(text: &str) -> PyStr {
     PyStr::from_str(text)
 }
 
-const ALPHA_BETA_DIGEST: &str =
-    "e49c81e2d2f84e259d40e2fb8192f3bcd198b355184845d76d8f58807d0d78ee";
-const EMPTY_DIGEST: &str =
-    "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
+const ALPHA_BETA_DIGEST: &str = "e49c81e2d2f84e259d40e2fb8192f3bcd198b355184845d76d8f58807d0d78ee";
+const EMPTY_DIGEST: &str = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
 
 const RECORD: &str = "run run-0013\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\n\
 file zeta.txt created\ncontent\nalpha\nbeta\nend\n\
@@ -64,13 +62,11 @@ fn every_printed_digest_is_sixty_four_lowercase_hex() {
 fn a_stamp_round_trips() {
     let record = parse_run_record(&py(RECORD), &py("record.txt")).expect("record");
     let stamp = build_stamp(&record);
-    let parsed = parse_stamp(&py(&format_stamp(&stamp)), &py("record.txt"))
-        .expect("round trip");
+    let parsed = parse_stamp(&py(&format_stamp(&stamp)), &py("record.txt")).expect("round trip");
     assert_eq!(parsed, stamp);
 }
 
-const HEADER: &str =
-    "stamp run-0013\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\n";
+const HEADER: &str = "stamp run-0013\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\n";
 
 #[test]
 fn malformed_stamps_are_refused() {
@@ -98,8 +94,7 @@ fn malformed_stamps_are_refused() {
         ),
     ];
     for text in &cases {
-        let err = parse_stamp(&py(text), &py("stamp.txt"))
-            .expect_err("malformed stamp refused");
+        let err = parse_stamp(&py(text), &py("stamp.txt")).expect_err("malformed stamp refused");
         assert!(matches!(err, Error::Stamp(_)), "{err:?} for {text}");
     }
 }

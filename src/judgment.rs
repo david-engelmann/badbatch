@@ -90,7 +90,7 @@ fn first_extra<'a>(pairs: &'a [(PyStr, Value)], allowed: &[&str]) -> Option<&'a 
         .map(|(key, _)| key)
         .filter(|key| !allowed.iter().any(|known| **key == *known))
         .collect();
-    extras.sort_by(|left, right| py_repr(left).cmp(&py_repr(right)));
+    extras.sort_by_key(|key| py_repr(key));
     extras.into_iter().next()
 }
 
@@ -219,20 +219,19 @@ fn validate_response(source: &str, response: &Value, point: &str) -> Result<()> 
         return Err(fail(source, "response is not an object"));
     };
     let kind = response.get("kind");
-    if let Some(kind_text) = kind.and_then(|held| held.as_str()) {
-        if let Some(fields) = fields_for_kind(point, &kind_text.to_display()) {
-            if let Some(extra) = first_extra(pairs, fields) {
-                return Err(fail(
-                    source,
-                    &format!(
-                        "response carries the field {}, which a {} \
-                         response does not carry",
-                        py_repr(extra),
-                        kind_text
-                    ),
-                ));
-            }
-        }
+    if let Some(kind_text) = kind.and_then(|held| held.as_str())
+        && let Some(fields) = fields_for_kind(point, &kind_text.to_display())
+        && let Some(extra) = first_extra(pairs, fields)
+    {
+        return Err(fail(
+            source,
+            &format!(
+                "response carries the field {}, which a {} \
+                 response does not carry",
+                py_repr(extra),
+                kind_text
+            ),
+        ));
     }
     if matches!(kind, Some(Value::Str(text)) if text == &"abstention") {
         return Ok(());
@@ -245,7 +244,8 @@ fn validate_response(source: &str, response: &Value, point: &str) -> Result<()> 
                     "response kind {} does not answer the \
                      compensation-ranking point, which takes a score \
                      or an abstention",
-                    kind.map(py_value_repr).unwrap_or_else(|| "None".to_string())
+                    kind.map(py_value_repr)
+                        .unwrap_or_else(|| "None".to_string())
                 ),
             ));
         }
@@ -259,7 +259,8 @@ fn validate_response(source: &str, response: &Value, point: &str) -> Result<()> 
             &format!(
                 "response kind {} does not answer the classification \
                  point, which takes a choice or an abstention",
-                kind.map(py_value_repr).unwrap_or_else(|| "None".to_string())
+                kind.map(py_value_repr)
+                    .unwrap_or_else(|| "None".to_string())
             ),
         ));
     }
@@ -347,7 +348,11 @@ pub fn validate_fixture(data: &Value, source: &str) -> Result<Value> {
     if !data.has("response") {
         return Err(fail(source, "carries no response"));
     }
-    validate_response(source, data.get("response").expect("a checked field"), &point)?;
+    validate_response(
+        source,
+        data.get("response").expect("a checked field"),
+        &point,
+    )?;
     Ok(data.clone())
 }
 
@@ -366,16 +371,14 @@ fn request_key(request: &Value, point: &str) -> String {
 /// file name the validation source names.
 pub fn load_fixture_file(path_bytes: &[u8], name: &PyStr) -> Result<Value> {
     let display = PyStr::from_surrogateescape(&py_path_folded(path_bytes));
-    let bytes = std::fs::read(OsStr::from_bytes(path_bytes)).map_err(|_| {
-        Error::Judgment(format!("fixture file cannot be read, {display}"))
-    })?;
-    let text = String::from_utf8(bytes).map_err(|_| {
-        Error::Judgment(format!("fixture file is not valid UTF-8, {display}"))
-    })?;
+    let bytes = std::fs::read(OsStr::from_bytes(path_bytes))
+        .map_err(|_| Error::Judgment(format!("fixture file cannot be read, {display}")))?;
+    let text = String::from_utf8(bytes)
+        .map_err(|_| Error::Judgment(format!("fixture file is not valid UTF-8, {display}")))?;
     let data = loads(&PyStr::from_str(&text)).map_err(|error| match error {
-        LoadsError::Invalid => Error::Judgment(format!(
-            "fixture file is not valid JSON, {display}"
-        )),
+        LoadsError::Invalid => {
+            Error::Judgment(format!("fixture file is not valid JSON, {display}"))
+        }
         LoadsError::Uncaught(line) => Error::Uncaught(line),
     })?;
     validate_fixture(&data, &format!("fixture {name}"))
@@ -601,10 +604,7 @@ pub fn ranking_request(entry: &WalkEntry, candidate: &str) -> Value {
             PyStr::from_str("class"),
             Value::Str(entry.rev_class.clone()),
         ),
-        (
-            PyStr::from_str("status"),
-            Value::Str(entry.status.clone()),
-        ),
+        (PyStr::from_str("status"), Value::Str(entry.status.clone())),
         (PyStr::from_str("chain"), Value::Str(chain)),
     ])
 }
@@ -633,5 +633,39 @@ mod tests {
             request_key(&body, JUDGMENT_POINT),
             request_key(&body, RANKING_POINT)
         );
+    }
+
+    /// BB-36. The canonical key escapes non ASCII characters,
+    /// and an astral character is written as a surrogate pair,
+    /// as the oracle's default separators write it.
+    #[test]
+    fn the_request_key_writes_an_astral_character_as_a_surrogate_pair() {
+        let body = Value::Object(vec![(
+            PyStr::from_str("artifact"),
+            Value::Str(PyStr(vec![0x61, 0x1F600])),
+        )]);
+        let key = request_key(&body, JUDGMENT_POINT);
+        assert!(key.contains("\\ud83d\\ude00"), "{key}");
+    }
+
+    /// BB-34. Two strings that differ only in a surrogate code
+    /// point are two different strings, so their keys differ,
+    /// and neither answers for the other. A reader that
+    /// collapsed a lone surrogate to the replacement character
+    /// would key the first and the third of these alike.
+    #[test]
+    fn request_keys_differ_for_strings_differing_only_in_a_surrogate() {
+        let keyed = |point: u32| {
+            request_key(
+                &Value::Object(vec![(
+                    PyStr::from_str("artifact"),
+                    Value::Str(PyStr(vec![0x61, point])),
+                )]),
+                JUDGMENT_POINT,
+            )
+        };
+        assert_ne!(keyed(0xD800), keyed(0xDC00));
+        assert_ne!(keyed(0xD800), keyed(0xFFFD));
+        assert_ne!(keyed(0xDC00), keyed(0xFFFD));
     }
 }

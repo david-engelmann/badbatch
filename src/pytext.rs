@@ -22,6 +22,10 @@ pub struct PyStr(pub Vec<u32>);
 
 impl PyStr {
     /// The string a Rust string holds, code point for code point.
+    /// The name mirrors the oracle's constructor on purpose. It
+    /// is an infallible code point copy, not a parse, so the
+    /// fallible FromStr trait is not the shape it should carry.
+    #[allow(clippy::should_implement_trait)]
     pub fn from_str(text: &str) -> PyStr {
         PyStr(text.chars().map(|ch| ch as u32).collect())
     }
@@ -260,6 +264,11 @@ pub fn is_printable(point: u32) -> bool {
 /// Whether a code point is a Unicode decimal digit, the digit
 /// class of the oracle's text patterns.
 pub fn is_decimal(point: u32) -> bool {
+    decimal_range(point).is_some()
+}
+
+/// The range of the decimal table holding one code point.
+fn decimal_range(point: u32) -> Option<(u32, u32)> {
     DECIMAL_RANGES
         .binary_search_by(|&(lo, hi)| {
             if point < lo {
@@ -270,7 +279,17 @@ pub fn is_decimal(point: u32) -> bool {
                 Ordering::Equal
             }
         })
-        .is_ok()
+        .ok()
+        .map(|index| DECIMAL_RANGES[index])
+}
+
+/// The value of a Unicode decimal digit, or None where the
+/// code point is not one. Every block in the decimal table
+/// holds its ten digits in order from its zero, and the one
+/// merged range in the table holds five such blocks in a row,
+/// so the value is the offset within the block of ten.
+pub fn decimal_value(point: u32) -> Option<u32> {
+    decimal_range(point).map(|(lo, _)| (point - lo) % 10)
 }
 
 /// The repr of one code point inside a quoted Python string,
@@ -303,7 +322,11 @@ fn repr_body(point: u32, quote: u32, out: &mut String) {
 pub fn py_repr(text: &PyStr) -> String {
     let has_single = text.0.contains(&0x27);
     let has_double = text.0.contains(&0x22);
-    let quote: u32 = if has_single && !has_double { 0x22 } else { 0x27 };
+    let quote: u32 = if has_single && !has_double {
+        0x22
+    } else {
+        0x27
+    };
     let mut out = String::new();
     out.push(char::from_u32(quote).unwrap_or('\''));
     for &point in &text.0 {
@@ -345,7 +368,7 @@ pub fn py_float_repr(value: f64) -> String {
     if negative {
         out.push('-');
     }
-    if exponent < -4 || exponent >= 16 {
+    if !(-4..16).contains(&exponent) {
         out.push_str(&digits[..1]);
         if digits.len() > 1 {
             out.push('.');

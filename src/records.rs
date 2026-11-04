@@ -7,11 +7,7 @@ use crate::errors::{Error, Result};
 use crate::pytext::{PyStr, py_repr};
 
 pub const ACTIONS: [&str; 3] = ["created", "modified", "deleted"];
-pub const CLASSES: [&str; 3] = [
-    "reversible",
-    "reversible-with-compensation",
-    "irreversible",
-];
+pub const CLASSES: [&str; 3] = ["reversible", "reversible-with-compensation", "irreversible"];
 pub const UNCLASSED: &str = "unclassed";
 pub const HEADER_FIELDS: [&str; 4] = ["run", "agent", "prompt-hash", "model"];
 
@@ -299,8 +295,7 @@ fn check_graph(files: &[FileEntry], artifacts: &[ArtifactEntry], source: &PyStr)
             }
         }
     }
-    let artifact_set: std::collections::HashSet<&PyStr> =
-        artifact_paths.iter().copied().collect();
+    let artifact_set: std::collections::HashSet<&PyStr> = artifact_paths.iter().copied().collect();
     let parents_of: std::collections::HashMap<&PyStr, Vec<&PyStr>> = artifacts
         .iter()
         .map(|entry| {

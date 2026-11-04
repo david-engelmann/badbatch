@@ -13,8 +13,7 @@ use std::path::{Path, PathBuf};
 
 use badbatch::errors::Error;
 use badbatch::judgment::{
-    FixturePlayer, JudgmentSource, check_answer, classification_request, trusted,
-    validate_fixture,
+    FixturePlayer, JudgmentSource, check_answer, classification_request, trusted, validate_fixture,
 };
 use badbatch::pyjson::Value;
 use badbatch::pytext::PyStr;
@@ -31,12 +30,7 @@ fn s(text: &str) -> Value {
 }
 
 fn obj(pairs: Vec<(&str, Value)>) -> Value {
-    Value::Object(
-        pairs
-            .into_iter()
-            .map(|(k, v)| (py(k), v))
-            .collect(),
-    )
+    Value::Object(pairs.into_iter().map(|(k, v)| (py(k), v)).collect())
 }
 
 fn fixtures_dir() -> String {
@@ -51,11 +45,16 @@ const HEADER: &str = "run run-0021\nagent writer-3\nprompt-hash c07ffee\nmodel s
 const FILES: &str = "file src/report.py created\ncontent\nprint(\"report\")\nend\nfile src/data.csv created\ncontent\na,b\nend\n";
 const ART_HTML: &str = "artifact build/report.html derived-from src/report.py class unclassed\ncontent\n<html>report</html>\nend\n";
 const ART_SUMMARY: &str = "artifact docs/summary.md derived-from build/report.html class unclassed\ncontent\nsummary\nend\n";
-const ART_BUNDLE: &str = "artifact dist/bundle.zip derived-from src/data.csv class unclassed\ncontent\nbundle\nend\n";
-const ART_CHART: &str = "artifact build/chart.png derived-from src/data.csv class unclassed\ncontent\nchart\nend\n";
-const ART_PDF: &str = "artifact exports/report.pdf derived-from docs/summary.md class unclassed\ncontent\npdf\nend\n";
-const ART_PAGE: &str = "artifact build/page.html derived-from src/report.py class irreversible\ncontent\npage\nend\n";
-const ART_ZPAGE: &str = "artifact z/page.txt derived-from src/data.csv class reversible\ncontent\nzpage\nend\n";
+const ART_BUNDLE: &str =
+    "artifact dist/bundle.zip derived-from src/data.csv class unclassed\ncontent\nbundle\nend\n";
+const ART_CHART: &str =
+    "artifact build/chart.png derived-from src/data.csv class unclassed\ncontent\nchart\nend\n";
+const ART_PDF: &str =
+    "artifact exports/report.pdf derived-from docs/summary.md class unclassed\ncontent\npdf\nend\n";
+const ART_PAGE: &str =
+    "artifact build/page.html derived-from src/report.py class irreversible\ncontent\npage\nend\n";
+const ART_ZPAGE: &str =
+    "artifact z/page.txt derived-from src/data.csv class reversible\ncontent\nzpage\nend\n";
 
 fn probabilities() -> Value {
     obj(vec![
@@ -77,18 +76,10 @@ fn choice_answer(confidence: f64) -> Value {
 fn stamp_of(body: &str) -> Stamp {
     let record = parse_run_record(&py(&format!("{HEADER}{body}")), &py("record.txt"))
         .expect("record parses");
-    parse_stamp(
-        &py(&format_stamp(&build_stamp(&record))),
-        &py("stamp.txt"),
-    )
-    .expect("stamp parses")
+    parse_stamp(&py(&format_stamp(&build_stamp(&record))), &py("stamp.txt")).expect("stamp parses")
 }
 
-fn state_for(
-    stamp: &Stamp,
-    drifted: &[&str],
-    missing: &[&str],
-) -> HashMap<PyStr, PyStr> {
+fn state_for(stamp: &Stamp, drifted: &[&str], missing: &[&str]) -> HashMap<PyStr, PyStr> {
     let mut state = HashMap::new();
     for entry in &stamp.artifacts {
         if missing.iter().any(|m| py(m) == entry.path) {
@@ -143,13 +134,18 @@ impl JudgmentSource for SpyPlayer {
 
 #[test]
 fn the_marker_round_trips_from_record_to_stamp() {
-    let record =
-        parse_run_record(&py(&format!("{HEADER}{FILES}{ART_HTML}")), &py("record.txt"))
-            .expect("record");
+    let record = parse_run_record(
+        &py(&format!("{HEADER}{FILES}{ART_HTML}")),
+        &py("record.txt"),
+    )
+    .expect("record");
     let stamp = build_stamp(&record);
     assert_eq!(stamp.artifacts[0].rev_class, py("unclassed"));
     let text = format_stamp(&stamp);
-    assert!(text.contains("artifact build/report.html unclassed "), "{text}");
+    assert!(
+        text.contains("artifact build/report.html unclassed "),
+        "{text}"
+    );
     let parsed = parse_stamp(&py(&text), &py("stamp.txt")).expect("stamp");
     assert_eq!(parsed.artifacts[0].rev_class, py("unclassed"));
 }
@@ -202,10 +198,9 @@ fn the_player_answers_an_exact_match_and_abstains_otherwise() {
     };
     let request = classification_request(&artifact, "current");
     assert_eq!(player.judge(&request), None);
-    let text = std::fs::read_to_string(
-        root().join("fixtures/classification-report-html-reversible.json"),
-    )
-    .expect("read committed fixture");
+    let text =
+        std::fs::read_to_string(root().join("fixtures/classification-report-html-reversible.json"))
+            .expect("read committed fixture");
     let committed = badbatch::pyjson::loads(&py(&text)).expect("parses");
     let committed_request = committed.get("request").expect("request").clone();
     let committed_response = committed.get("response").expect("response").clone();
@@ -219,10 +214,7 @@ fn good_pair() -> Value {
             "request",
             obj(vec![
                 ("artifact", s("build/report.html")),
-                (
-                    "parents",
-                    Value::Array(vec![s("src/report.py")]),
-                ),
+                ("parents", Value::Array(vec![s("src/report.py")])),
                 ("digest", s(&"2".repeat(64))),
                 ("status", s("current")),
             ]),
@@ -321,8 +313,7 @@ fn a_fixture_outside_the_shape_is_refused_at_load() {
     for (index, pair) in mutated_pairs().iter().enumerate() {
         let dir = common::test_dir("judgment-mutation");
         write_fixture(&dir, "bad.json", pair);
-        let err = FixturePlayer::load(dir.as_os_str().as_bytes())
-            .expect_err("mutation refused");
+        let err = FixturePlayer::load(dir.as_os_str().as_bytes()).expect_err("mutation refused");
         assert!(matches!(err, Error::Judgment(_)), "case {index}: {err:?}");
     }
 }
@@ -331,8 +322,7 @@ fn a_fixture_outside_the_shape_is_refused_at_load() {
 fn a_fixture_that_is_not_json_is_refused_at_load() {
     let dir = common::test_dir("judgment-notjson");
     common::write(&dir, "bad.json", "this is not json\n");
-    let err = FixturePlayer::load(dir.as_os_str().as_bytes())
-        .expect_err("not json refused");
+    let err = FixturePlayer::load(dir.as_os_str().as_bytes()).expect_err("not json refused");
     assert!(matches!(err, Error::Judgment(_)), "{err:?}");
 }
 
@@ -341,8 +331,7 @@ fn two_fixtures_for_one_request_are_refused_at_load() {
     let dir = common::test_dir("judgment-duplicate");
     write_fixture(&dir, "one.json", &good_pair());
     write_fixture(&dir, "two.json", &good_pair());
-    let err = FixturePlayer::load(dir.as_os_str().as_bytes())
-        .expect_err("duplicate refused");
+    let err = FixturePlayer::load(dir.as_os_str().as_bytes()).expect_err("duplicate refused");
     assert!(matches!(err, Error::Judgment(_)), "{err:?}");
 }
 
@@ -350,8 +339,7 @@ fn two_fixtures_for_one_request_are_refused_at_load() {
 fn a_missing_fixtures_directory_is_refused_at_load() {
     let dir = common::test_dir("judgment-missing");
     let ghost = dir.join("ghost");
-    let err = FixturePlayer::load(ghost.as_os_str().as_bytes())
-        .expect_err("missing dir refused");
+    let err = FixturePlayer::load(ghost.as_os_str().as_bytes()).expect_err("missing dir refused");
     assert!(matches!(err, Error::Judgment(_)), "{err:?}");
 }
 
@@ -410,9 +398,17 @@ fn the_trust_threshold_edge_is_exactly_point_six() {
 #[test]
 fn without_a_source_an_unclassed_artifact_refuses_as_round_1() {
     let stamp = stamp_of(&format!("{FILES}{ART_HTML}{ART_SUMMARY}"));
-    let err = recall_walk(&stamp, &state_for(&stamp, &[], &[]), &py("src/report.py"), None)
-        .expect_err("unclassed refuses");
-    assert_eq!(err.message(), refusal_line("build/report.html", "stamp.txt"));
+    let err = recall_walk(
+        &stamp,
+        &state_for(&stamp, &[], &[]),
+        &py("src/report.py"),
+        None,
+    )
+    .expect_err("unclassed refuses");
+    assert_eq!(
+        err.message(),
+        refusal_line("build/report.html", "stamp.txt")
+    );
 }
 
 #[test]
@@ -429,7 +425,11 @@ fn trusted_proposals_class_the_walk_with_the_marker() {
     assert_eq!(
         summary,
         [
-            ("build/report.html".to_string(), "reversible".to_string(), true),
+            (
+                "build/report.html".to_string(),
+                "reversible".to_string(),
+                true
+            ),
             (
                 "docs/summary.md".to_string(),
                 "reversible-with-compensation".to_string(),
@@ -444,8 +444,8 @@ artifact build/report.html reversible proposed current chain src/report.py -> bu
 artifact docs/summary.md reversible-with-compensation proposed drifted chain src/report.py -> build/report.html -> docs/summary.md\n"
     );
     let state = state_for(&stamp, &[], &["dist/bundle.zip"]);
-    let entries = recall_walk(&stamp, &state, &py("src/data.csv"), Some(&player))
-        .expect("walk from data");
+    let entries =
+        recall_walk(&stamp, &state, &py("src/data.csv"), Some(&player)).expect("walk from data");
     let summary: Vec<(String, String, String, bool)> = entries
         .iter()
         .map(|e| {
@@ -473,8 +473,7 @@ fn a_proposed_class_sorts_into_its_proposed_group() {
     let stamp = stamp_of(&format!("{FILES}{ART_BUNDLE}{ART_ZPAGE}"));
     let player = FixturePlayer::load(fixtures_dir().as_bytes()).expect("player");
     let state = state_for(&stamp, &[], &["dist/bundle.zip"]);
-    let entries = recall_walk(&stamp, &state, &py("src/data.csv"), Some(&player))
-        .expect("walk");
+    let entries = recall_walk(&stamp, &state, &py("src/data.csv"), Some(&player)).expect("walk");
     let paths: Vec<String> = entries.iter().map(|e| e.path.to_string()).collect();
     assert_eq!(paths, ["z/page.txt", "dist/bundle.zip"]);
     let proposed: Vec<bool> = entries.iter().map(|e| e.proposed).collect();
@@ -502,7 +501,10 @@ fn a_below_threshold_answer_refuses_the_walk() {
     let state = state_for(&stamp, &["docs/summary.md"], &[]);
     let err = recall_walk(&stamp, &state, &py("src/report.py"), Some(&player))
         .expect_err("below threshold refuses");
-    assert_eq!(err.message(), refusal_line("exports/report.pdf", "stamp.txt"));
+    assert_eq!(
+        err.message(),
+        refusal_line("exports/report.pdf", "stamp.txt")
+    );
 }
 
 #[test]
@@ -512,8 +514,8 @@ fn the_walk_trusts_an_answer_at_exactly_point_six() {
     let stub = StubSource {
         answer: Some(choice_answer(0.6)),
     };
-    let entries = recall_walk(&stamp, &state, &py("src/report.py"), Some(&stub))
-        .expect("point six walks");
+    let entries =
+        recall_walk(&stamp, &state, &py("src/report.py"), Some(&stub)).expect("point six walks");
     assert_eq!(entries[0].rev_class, py("reversible"));
     assert!(entries[0].proposed);
     let stub = StubSource {
@@ -536,7 +538,10 @@ fn a_malformed_foreign_source_counts_as_no_judgment() {
     let stub = StubSource { answer: Some(bad) };
     let err = recall_walk(&stamp, &state, &py("src/report.py"), Some(&stub))
         .expect_err("malformed source refuses");
-    assert_eq!(err.message(), refusal_line("build/report.html", "stamp.txt"));
+    assert_eq!(
+        err.message(),
+        refusal_line("build/report.html", "stamp.txt")
+    );
 }
 
 #[test]
@@ -556,10 +561,9 @@ fn a_classed_artifact_is_never_asked_about() {
         ("synthetic", Value::Bool(true)),
     ]);
     write_fixture(&dir, "rigged.json", &rigged);
-    let committed_text = std::fs::read_to_string(
-        root().join("fixtures/classification-report-html-reversible.json"),
-    )
-    .expect("read committed");
+    let committed_text =
+        std::fs::read_to_string(root().join("fixtures/classification-report-html-reversible.json"))
+            .expect("read committed");
     common::write(&dir, "html.json", &committed_text);
     let player = FixturePlayer::load(dir.as_os_str().as_bytes()).expect("player");
     let spy = SpyPlayer {
@@ -603,8 +607,7 @@ fn an_unreachable_unclassed_artifact_is_never_asked_about() {
         requests: RefCell::new(Vec::new()),
     };
     let state = state_for(&stamp, &[], &[]);
-    let entries = recall_walk(&stamp, &state, &py("src/report.py"), Some(&spy))
-        .expect("walk");
+    let entries = recall_walk(&stamp, &state, &py("src/report.py"), Some(&spy)).expect("walk");
     assert!(entries.is_empty());
     assert!(spy.requests.borrow().is_empty());
     let plain = recall_walk(&stamp, &state, &py("src/report.py"), None).expect("walk");
@@ -621,8 +624,7 @@ fn a_fully_classed_walk_is_byte_identical_with_and_without_a_source() {
         requests: RefCell::new(Vec::new()),
     };
     let plain = recall_walk(&stamp, &state, &py("src/report.py"), None).expect("walk");
-    let with_source =
-        recall_walk(&stamp, &state, &py("src/report.py"), Some(&spy)).expect("walk");
+    let with_source = recall_walk(&stamp, &state, &py("src/report.py"), Some(&spy)).expect("walk");
     assert_eq!(
         format_recall(&py("src/report.py"), &plain),
         format_recall(&py("src/report.py"), &with_source)
@@ -634,8 +636,8 @@ fn a_fully_classed_walk_is_byte_identical_with_and_without_a_source() {
 // the binary; the stamp and state files stand in a temp dir.
 
 fn cli_stamp(dir: &Path, body: &str) -> String {
-    let record = parse_run_record(&py(&format!("{HEADER}{body}")), &py("record.txt"))
-        .expect("record");
+    let record =
+        parse_run_record(&py(&format!("{HEADER}{body}")), &py("record.txt")).expect("record");
     let path = common::write(dir, "stamp.txt", &format_stamp(&build_stamp(&record)));
     path.to_str().expect("utf8 path").to_string()
 }
@@ -665,7 +667,14 @@ fn recall_with_fixtures_prints_the_proposals() {
         common::read(Path::new(&state)),
     );
     let outcome = common::run_cli(
-        &["recall", &stamp, &state, "src/report.py", "--fixtures", &fixtures],
+        &[
+            "recall",
+            &stamp,
+            &state,
+            "src/report.py",
+            "--fixtures",
+            &fixtures,
+        ],
         &dir,
     );
     assert_eq!(outcome.code, 0);
@@ -704,7 +713,14 @@ fn recall_with_a_missing_fixtures_directory_exits_two() {
     let state = cli_state(&dir, &stamp, &[], &[]);
     let ghost = dir.join("ghost").to_str().expect("utf8").to_string();
     let outcome = common::run_cli(
-        &["recall", &stamp, &state, "src/report.py", "--fixtures", &ghost],
+        &[
+            "recall",
+            &stamp,
+            &state,
+            "src/report.py",
+            "--fixtures",
+            &ghost,
+        ],
         &dir,
     );
     assert_eq!(outcome.code, 2);
@@ -722,7 +738,14 @@ fn recall_with_a_malformed_fixture_exits_two() {
     common::write(&bad_dir, "bad.json", "this is not json\n");
     let bad = bad_dir.to_str().expect("utf8").to_string();
     let outcome = common::run_cli(
-        &["recall", &stamp, &state, "src/report.py", "--fixtures", &bad],
+        &[
+            "recall",
+            &stamp,
+            &state,
+            "src/report.py",
+            "--fixtures",
+            &bad,
+        ],
         &dir,
     );
     assert_eq!(outcome.code, 2);
@@ -740,7 +763,14 @@ fn a_fully_classed_recall_is_byte_identical_with_and_without_the_flag() {
     let plain = common::run_cli(&["recall", &stamp, &state, "src/report.py"], &dir);
     assert_eq!(plain.code, 0);
     let with_flag = common::run_cli(
-        &["recall", &stamp, &state, "src/report.py", "--fixtures", &fixtures],
+        &[
+            "recall",
+            &stamp,
+            &state,
+            "src/report.py",
+            "--fixtures",
+            &fixtures,
+        ],
         &dir,
     );
     assert_eq!(with_flag.code, 0);
@@ -752,11 +782,18 @@ fn a_fully_classed_recall_is_byte_identical_with_and_without_the_flag() {
 
 #[test]
 fn two_unproposed_artifacts_refuse_at_the_first_in_path_order() {
-    let art_zzz = "artifact out/zzz.html derived-from src/report.py class unclassed\ncontent\nz\nend\n";
-    let art_aaa = "artifact out/aaa.html derived-from out/zzz.html class unclassed\ncontent\na\nend\n";
+    let art_zzz =
+        "artifact out/zzz.html derived-from src/report.py class unclassed\ncontent\nz\nend\n";
+    let art_aaa =
+        "artifact out/aaa.html derived-from out/zzz.html class unclassed\ncontent\na\nend\n";
     let stamp = stamp_of(&format!("{FILES}{art_zzz}{art_aaa}"));
-    let err = recall_walk(&stamp, &state_for(&stamp, &[], &[]), &py("src/report.py"), None)
-        .expect_err("refuses");
+    let err = recall_walk(
+        &stamp,
+        &state_for(&stamp, &[], &[]),
+        &py("src/report.py"),
+        None,
+    )
+    .expect_err("refuses");
     assert_eq!(err.message(), refusal_line("out/aaa.html", "stamp.txt"));
 }
 
