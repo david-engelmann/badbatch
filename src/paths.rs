@@ -4,10 +4,10 @@
 //! Folding drops empty components and single dot components,
 //! keeps parent references, keeps a doubled leading slash as
 //! the anchor where longer runs of slashes collapse to one,
-//! and reads an empty path as the single dot. The cannot read
-//! line and the fixture file messages name paths in this
-//! folded form, while refusals of a document name the path as
-//! written.
+//! and reads an empty path as the single dot. Every read
+//! opens the folded form, and the cannot read line and the
+//! fixture file messages name paths in this folded form,
+//! while refusals of a document name the path as written.
 
 /// The folded form of a path, as bytes.
 pub fn py_path_folded(path: &[u8]) -> Vec<u8> {

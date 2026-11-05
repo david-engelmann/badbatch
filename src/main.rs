@@ -788,11 +788,13 @@ fn answer_clap_error(error: clap::Error) -> ExitCode {
 }
 
 /// Read one slot's document as text, answering a failure on
-/// the spot. The read opens the path as written. The cannot
-/// read line names the folded form of the path, as the Python
-/// handler names it off its exception, and the refusal that a
-/// document is not readable as UTF-8 text names the path as
-/// written, as does the source every later refusal carries.
+/// the spot. The read opens the folded form of the path as
+/// written, as the oracle's path object folds before it
+/// opens. The cannot read line names that folded form, as
+/// the Python handler names it off its exception, and the
+/// refusal that a document is not readable as UTF-8 text
+/// names the path as written, as does the source every
+/// later refusal carries.
 fn read_slot(slot: &Slot) -> Result<(PyStr, PyStr), ExitCode> {
     let raw = match slot {
         Slot::Listed => {
@@ -800,13 +802,16 @@ fn read_slot(slot: &Slot) -> Result<(PyStr, PyStr), ExitCode> {
         }
         Slot::One(raw) => raw,
     };
-    // The oracle's path object reads an empty path as the
-    // current directory, so the empty string opens there.
-    let open: &OsStr = if raw.is_empty() { OsStr::new(".") } else { raw };
-    let content = match std::fs::read(open) {
+    // The fold drops empty and single dot components and
+    // reads an empty path as the single dot, so a file
+    // spelled with a trailing slash or a trailing dot
+    // component opens as the file itself, where a raw open
+    // fails with not a directory.
+    let folded_bytes = py_path_folded(raw.as_bytes());
+    let content = match std::fs::read(OsStr::from_bytes(&folded_bytes)) {
         Ok(content) => content,
         Err(error) => {
-            let folded = PyStr::from_surrogateescape(&py_path_folded(raw.as_bytes()));
+            let folded = PyStr::from_surrogateescape(&folded_bytes);
             return Err(answer_error_line(
                 &format!("error: cannot read {folded}, {}\n", strerror(&error)),
                 2,

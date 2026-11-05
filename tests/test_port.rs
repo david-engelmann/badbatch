@@ -849,12 +849,65 @@ fn the_cannot_read_line_names_the_folded_path() {
         outcome.stderr_text(),
         "error: cannot read ., Is a directory\n"
     );
-    write(&dir, "ghost.txt", "run run-0007\n");
-    let outcome = run_cli(&["stamp", "ghost.txt/"], &dir);
+    let outcome = run_cli(&["stamp", "missing.txt/"], &dir);
     assert_eq!(
         outcome.stderr_text(),
-        "error: cannot read ghost.txt, Not a directory\n"
+        "error: cannot read missing.txt, No such file or directory\n"
     );
+}
+
+#[test]
+fn a_file_spelled_with_a_trailing_slash_or_dot_reads_as_the_file() {
+    // BB-38 states the read opens the folded form, so these
+    // spellings reach the file itself. A raw open fails each
+    // with not a directory, which is how this pin failed
+    // before the fold opened the read. The oracle answers
+    // all three spellings with the one stamp document.
+    let dir = test_dir("port-path-folded-read");
+    write(&dir, "record.txt", SMALL_RECORD);
+    let plain = run_cli(&["stamp", "record.txt"], &dir);
+    assert_eq!(plain.code, 0);
+    for spelling in ["record.txt/", "record.txt/.", "./record.txt"] {
+        let outcome = run_cli(&["stamp", spelling], &dir);
+        assert_eq!(outcome.code, 0, "{spelling}");
+        assert_eq!(outcome.stdout_text(), plain.stdout_text(), "{spelling}");
+        assert_eq!(outcome.stderr_text(), "", "{spelling}");
+    }
+}
+
+#[test]
+fn a_fixtures_directory_spelled_with_a_trailing_dot_loads() {
+    // The fixture reads open the folded joined path, so a
+    // directory spelled with a trailing dot component loads
+    // its fixtures exactly as the plain spelling does.
+    let dir = test_dir("port-path-folded-fixtures");
+    let fixtures = fixture_dir_with(&dir, "deep.json", &deep_fixture(9991));
+    let (stamp, state) = recall_args(&dir, &fixtures);
+    let plain = run_cli(
+        &[
+            "recall",
+            &stamp,
+            &state,
+            "src/a.py",
+            "--fixtures",
+            &fixtures,
+        ],
+        &dir,
+    );
+    let dotted = run_cli(
+        &[
+            "recall",
+            &stamp,
+            &state,
+            "src/a.py",
+            "--fixtures",
+            &format!("{fixtures}/."),
+        ],
+        &dir,
+    );
+    assert_eq!(dotted.code, plain.code);
+    assert_eq!(dotted.stdout_text(), plain.stdout_text());
+    assert_eq!(dotted.stderr_text(), plain.stderr_text());
 }
 
 #[test]

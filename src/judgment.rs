@@ -366,12 +366,14 @@ fn request_key(request: &Value, point: &str) -> String {
     out
 }
 
-/// Read and validate one fixture file. The path is the folded
-/// joined path the load messages name, and the name is the
-/// file name the validation source names.
+/// Read and validate one fixture file. The read opens the
+/// folded joined path, which the load messages also name,
+/// and the name is the file name the validation source
+/// names.
 pub fn load_fixture_file(path_bytes: &[u8], name: &PyStr) -> Result<Value> {
-    let display = PyStr::from_surrogateescape(&py_path_folded(path_bytes));
-    let bytes = std::fs::read(OsStr::from_bytes(path_bytes))
+    let folded = py_path_folded(path_bytes);
+    let display = PyStr::from_surrogateescape(&folded);
+    let bytes = std::fs::read(OsStr::from_bytes(&folded))
         .map_err(|_| Error::Judgment(format!("fixture file cannot be read, {display}")))?;
     let text = String::from_utf8(bytes)
         .map_err(|_| Error::Judgment(format!("fixture file is not valid UTF-8, {display}")))?;
@@ -400,14 +402,12 @@ impl FixturePlayer {
     /// Load every fixture in one directory, named as written.
     pub fn load(directory_bytes: &[u8]) -> Result<FixturePlayer> {
         let directory_display = PyStr::from_surrogateescape(directory_bytes);
-        // The oracle's path object reads an empty path as the
-        // current directory, so the empty string opens there
-        // while a refusal still names the path as written.
-        let directory = if directory_bytes.is_empty() {
-            Path::new(".")
-        } else {
-            Path::new(OsStr::from_bytes(directory_bytes))
-        };
+        // The oracle's path object folds the directory as
+        // written before it opens it, and the fold reads an
+        // empty path as the single dot, while a refusal still
+        // names the path as written.
+        let directory_folded = py_path_folded(directory_bytes);
+        let directory = Path::new(OsStr::from_bytes(&directory_folded));
         if !directory.is_dir() {
             return Err(Error::Judgment(format!(
                 "fixtures directory cannot be read, {directory_display}"
