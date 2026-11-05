@@ -8,7 +8,8 @@ mod common;
 
 use std::path::Path;
 
-use badbatch::pytext::py_float_repr;
+use badbatch::judgment::load_fixture_file;
+use badbatch::pytext::{PyStr, py_float_repr};
 
 use common::{DeadStream, run_cli, run_cli_dead, test_dir, write, write_bytes};
 
@@ -908,6 +909,29 @@ fn a_fixtures_directory_spelled_with_a_trailing_dot_loads() {
     assert_eq!(dotted.code, plain.code);
     assert_eq!(dotted.stdout_text(), plain.stdout_text());
     assert_eq!(dotted.stderr_text(), plain.stderr_text());
+}
+
+#[test]
+fn a_fixture_file_spelled_with_a_trailing_dot_reads_through_the_fold() {
+    // The joined paths the CLI builds always end in the file
+    // name, so the fold at the fixture read itself is pinned
+    // here at the library surface. A path ending in a dot
+    // component reaches the file only through the folded
+    // open; a raw open fails with not a directory and the
+    // load answers that the fixture file cannot be read
+    // instead of judging its content.
+    let dir = test_dir("port-fixture-folded-read");
+    write(&dir, "bad.json", "not json\n");
+    let plain = dir.join("bad.json");
+    let dotted = format!("{}/.", plain.to_str().expect("utf8"));
+    let name = PyStr::from_str("bad.json");
+    let error = load_fixture_file(dotted.as_bytes(), &name)
+        .expect_err("an invalid fixture file refuses at validation");
+    assert!(
+        format!("{error}").contains("fixture file is not valid JSON, "),
+        "{error}"
+    );
+    assert!(format!("{error}").ends_with("bad.json"), "{error}");
 }
 
 #[test]
