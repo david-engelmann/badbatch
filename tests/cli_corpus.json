@@ -1,0 +1,946 @@
+{
+ "cases": [
+  {
+   "name": "examples-stamp",
+   "source": "oracle",
+   "setup": {
+    "run-record.txt": "# A synthetic run record, written for this repo as the Round 1 example.\nrun run-0013\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\n\nfile src/report.py created\ncontent\nrows = load_rows()\nreport = build_report(rows)\nprint(report)\nend\n\nfile src/data.csv modified\ncontent\nname,score\nalpha,10\nbeta,20\nend\n\nfile src/notes.txt created\ncontent\ndraft notes for the report\nend\n\nfile src/legacy.py deleted\n\nartifact build/report.html derived-from src/report.py class reversible\ncontent\n<html><body>report</body></html>\nend\n\nartifact build/chart.png derived-from src/data.csv class reversible\ncontent\nPNG-SYNTHETIC-CHART\nend\n\nartifact docs/summary.md derived-from build/report.html class reversible-with-compensation\ncontent\nsummary of the report\nend\n\nartifact exports/report.pdf derived-from docs/summary.md class irreversible\ncontent\nPDF-SYNTHETIC-REPORT\nend\n\nartifact dist/bundle.zip derived-from src/data.csv class irreversible\ncontent\nZIP-SYNTHETIC-BUNDLE\nend\n",
+    "current-state.txt": "file src/data.csv 2e0787a747c1ee8ffb27bb394ec06403d5ec0cb82bce31d88c163d7413c34fee\nfile src/notes.txt 246ab779f0af03540f7be8281a4c88ae9a3160724a92c55ca366b72af10032db\nfile src/report.py 132d06a4ef6d4c6d3be527e6c8cfeae8805cfe375b53c795bd4583371c2d6f08\nfile build/chart.png 10044d663a55194f831d6ec322b99bfe0ab6db053af58d3bc5db366bd76eff4f\nfile build/report.html 12c4808c74ebc0c7ea8139991a7e6b7deef13f0f058bc729212264057c5740f4\nfile dist/bundle.zip 41d4b860f08961637c13f18670cb5585d1be4f597f300c7274b39ee7d6eddc18\nfile exports/report.pdf 492731e3de3cdce6740a08859ff78756a4f4cc00ce16d5e829823bc4dcf5ee4f\n",
+    "stamp.txt": "stamp run-0013\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/data.csv modified 2e0787a747c1ee8ffb27bb394ec06403d5ec0cb82bce31d88c163d7413c34fee\nfile src/legacy.py deleted none\nfile src/notes.txt created 246ab779f0af03540f7be8281a4c88ae9a3160724a92c55ca366b72af10032db\nfile src/report.py created 132d06a4ef6d4c6d3be527e6c8cfeae8805cfe375b53c795bd4583371c2d6f08\nartifact build/chart.png reversible dc777fb3f8889615e748da9cafdbe16fe0fa1d7c0997fb3eb4c4047d9eafaf59 derived-from src/data.csv\nartifact build/report.html reversible 12c4808c74ebc0c7ea8139991a7e6b7deef13f0f058bc729212264057c5740f4 derived-from src/report.py\nartifact dist/bundle.zip irreversible 41d4b860f08961637c13f18670cb5585d1be4f597f300c7274b39ee7d6eddc18 derived-from src/data.csv\nartifact docs/summary.md reversible-with-compensation 684303e5b6aaf5323aabb483b393463bc530a990b1e1d0d706b082d7acb70594 derived-from build/report.html\nartifact exports/report.pdf irreversible 492731e3de3cdce6740a08859ff78756a4f4cc00ce16d5e829823bc4dcf5ee4f derived-from docs/summary.md\n"
+   },
+   "argv": [
+    "stamp",
+    "run-record.txt"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "stamp run-0013\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/data.csv modified 2e0787a747c1ee8ffb27bb394ec06403d5ec0cb82bce31d88c163d7413c34fee\nfile src/legacy.py deleted none\nfile src/notes.txt created 246ab779f0af03540f7be8281a4c88ae9a3160724a92c55ca366b72af10032db\nfile src/report.py created 132d06a4ef6d4c6d3be527e6c8cfeae8805cfe375b53c795bd4583371c2d6f08\nartifact build/chart.png reversible dc777fb3f8889615e748da9cafdbe16fe0fa1d7c0997fb3eb4c4047d9eafaf59 derived-from src/data.csv\nartifact build/report.html reversible 12c4808c74ebc0c7ea8139991a7e6b7deef13f0f058bc729212264057c5740f4 derived-from src/report.py\nartifact dist/bundle.zip irreversible 41d4b860f08961637c13f18670cb5585d1be4f597f300c7274b39ee7d6eddc18 derived-from src/data.csv\nartifact docs/summary.md reversible-with-compensation 684303e5b6aaf5323aabb483b393463bc530a990b1e1d0d706b082d7acb70594 derived-from build/report.html\nartifact exports/report.pdf irreversible 492731e3de3cdce6740a08859ff78756a4f4cc00ce16d5e829823bc4dcf5ee4f derived-from docs/summary.md\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "examples-recall",
+   "source": "oracle",
+   "setup": {
+    "run-record.txt": "# A synthetic run record, written for this repo as the Round 1 example.\nrun run-0013\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\n\nfile src/report.py created\ncontent\nrows = load_rows()\nreport = build_report(rows)\nprint(report)\nend\n\nfile src/data.csv modified\ncontent\nname,score\nalpha,10\nbeta,20\nend\n\nfile src/notes.txt created\ncontent\ndraft notes for the report\nend\n\nfile src/legacy.py deleted\n\nartifact build/report.html derived-from src/report.py class reversible\ncontent\n<html><body>report</body></html>\nend\n\nartifact build/chart.png derived-from src/data.csv class reversible\ncontent\nPNG-SYNTHETIC-CHART\nend\n\nartifact docs/summary.md derived-from build/report.html class reversible-with-compensation\ncontent\nsummary of the report\nend\n\nartifact exports/report.pdf derived-from docs/summary.md class irreversible\ncontent\nPDF-SYNTHETIC-REPORT\nend\n\nartifact dist/bundle.zip derived-from src/data.csv class irreversible\ncontent\nZIP-SYNTHETIC-BUNDLE\nend\n",
+    "current-state.txt": "file src/data.csv 2e0787a747c1ee8ffb27bb394ec06403d5ec0cb82bce31d88c163d7413c34fee\nfile src/notes.txt 246ab779f0af03540f7be8281a4c88ae9a3160724a92c55ca366b72af10032db\nfile src/report.py 132d06a4ef6d4c6d3be527e6c8cfeae8805cfe375b53c795bd4583371c2d6f08\nfile build/chart.png 10044d663a55194f831d6ec322b99bfe0ab6db053af58d3bc5db366bd76eff4f\nfile build/report.html 12c4808c74ebc0c7ea8139991a7e6b7deef13f0f058bc729212264057c5740f4\nfile dist/bundle.zip 41d4b860f08961637c13f18670cb5585d1be4f597f300c7274b39ee7d6eddc18\nfile exports/report.pdf 492731e3de3cdce6740a08859ff78756a4f4cc00ce16d5e829823bc4dcf5ee4f\n",
+    "stamp.txt": "stamp run-0013\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/data.csv modified 2e0787a747c1ee8ffb27bb394ec06403d5ec0cb82bce31d88c163d7413c34fee\nfile src/legacy.py deleted none\nfile src/notes.txt created 246ab779f0af03540f7be8281a4c88ae9a3160724a92c55ca366b72af10032db\nfile src/report.py created 132d06a4ef6d4c6d3be527e6c8cfeae8805cfe375b53c795bd4583371c2d6f08\nartifact build/chart.png reversible dc777fb3f8889615e748da9cafdbe16fe0fa1d7c0997fb3eb4c4047d9eafaf59 derived-from src/data.csv\nartifact build/report.html reversible 12c4808c74ebc0c7ea8139991a7e6b7deef13f0f058bc729212264057c5740f4 derived-from src/report.py\nartifact dist/bundle.zip irreversible 41d4b860f08961637c13f18670cb5585d1be4f597f300c7274b39ee7d6eddc18 derived-from src/data.csv\nartifact docs/summary.md reversible-with-compensation 684303e5b6aaf5323aabb483b393463bc530a990b1e1d0d706b082d7acb70594 derived-from build/report.html\nartifact exports/report.pdf irreversible 492731e3de3cdce6740a08859ff78756a4f4cc00ce16d5e829823bc4dcf5ee4f derived-from docs/summary.md\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "current-state.txt",
+    "src/report.py"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "recall src/report.py\nartifact build/report.html reversible current chain src/report.py -> build/report.html\nartifact docs/summary.md reversible-with-compensation missing chain src/report.py -> build/report.html -> docs/summary.md\nartifact exports/report.pdf irreversible current chain src/report.py -> build/report.html -> docs/summary.md -> exports/report.pdf\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "examples-recall-other-start",
+   "source": "oracle",
+   "setup": {
+    "run-record.txt": "# A synthetic run record, written for this repo as the Round 1 example.\nrun run-0013\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\n\nfile src/report.py created\ncontent\nrows = load_rows()\nreport = build_report(rows)\nprint(report)\nend\n\nfile src/data.csv modified\ncontent\nname,score\nalpha,10\nbeta,20\nend\n\nfile src/notes.txt created\ncontent\ndraft notes for the report\nend\n\nfile src/legacy.py deleted\n\nartifact build/report.html derived-from src/report.py class reversible\ncontent\n<html><body>report</body></html>\nend\n\nartifact build/chart.png derived-from src/data.csv class reversible\ncontent\nPNG-SYNTHETIC-CHART\nend\n\nartifact docs/summary.md derived-from build/report.html class reversible-with-compensation\ncontent\nsummary of the report\nend\n\nartifact exports/report.pdf derived-from docs/summary.md class irreversible\ncontent\nPDF-SYNTHETIC-REPORT\nend\n\nartifact dist/bundle.zip derived-from src/data.csv class irreversible\ncontent\nZIP-SYNTHETIC-BUNDLE\nend\n",
+    "current-state.txt": "file src/data.csv 2e0787a747c1ee8ffb27bb394ec06403d5ec0cb82bce31d88c163d7413c34fee\nfile src/notes.txt 246ab779f0af03540f7be8281a4c88ae9a3160724a92c55ca366b72af10032db\nfile src/report.py 132d06a4ef6d4c6d3be527e6c8cfeae8805cfe375b53c795bd4583371c2d6f08\nfile build/chart.png 10044d663a55194f831d6ec322b99bfe0ab6db053af58d3bc5db366bd76eff4f\nfile build/report.html 12c4808c74ebc0c7ea8139991a7e6b7deef13f0f058bc729212264057c5740f4\nfile dist/bundle.zip 41d4b860f08961637c13f18670cb5585d1be4f597f300c7274b39ee7d6eddc18\nfile exports/report.pdf 492731e3de3cdce6740a08859ff78756a4f4cc00ce16d5e829823bc4dcf5ee4f\n",
+    "stamp.txt": "stamp run-0013\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/data.csv modified 2e0787a747c1ee8ffb27bb394ec06403d5ec0cb82bce31d88c163d7413c34fee\nfile src/legacy.py deleted none\nfile src/notes.txt created 246ab779f0af03540f7be8281a4c88ae9a3160724a92c55ca366b72af10032db\nfile src/report.py created 132d06a4ef6d4c6d3be527e6c8cfeae8805cfe375b53c795bd4583371c2d6f08\nartifact build/chart.png reversible dc777fb3f8889615e748da9cafdbe16fe0fa1d7c0997fb3eb4c4047d9eafaf59 derived-from src/data.csv\nartifact build/report.html reversible 12c4808c74ebc0c7ea8139991a7e6b7deef13f0f058bc729212264057c5740f4 derived-from src/report.py\nartifact dist/bundle.zip irreversible 41d4b860f08961637c13f18670cb5585d1be4f597f300c7274b39ee7d6eddc18 derived-from src/data.csv\nartifact docs/summary.md reversible-with-compensation 684303e5b6aaf5323aabb483b393463bc530a990b1e1d0d706b082d7acb70594 derived-from build/report.html\nartifact exports/report.pdf irreversible 492731e3de3cdce6740a08859ff78756a4f4cc00ce16d5e829823bc4dcf5ee4f derived-from docs/summary.md\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "current-state.txt",
+    "src/data.csv"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "recall src/data.csv\nartifact build/chart.png reversible drifted chain src/data.csv -> build/chart.png\nartifact dist/bundle.zip irreversible current chain src/data.csv -> dist/bundle.zip\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "examples-plan",
+   "source": "oracle",
+   "setup": {
+    "run-record.txt": "# A synthetic run record, written for this repo as the Round 1 example.\nrun run-0013\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\n\nfile src/report.py created\ncontent\nrows = load_rows()\nreport = build_report(rows)\nprint(report)\nend\n\nfile src/data.csv modified\ncontent\nname,score\nalpha,10\nbeta,20\nend\n\nfile src/notes.txt created\ncontent\ndraft notes for the report\nend\n\nfile src/legacy.py deleted\n\nartifact build/report.html derived-from src/report.py class reversible\ncontent\n<html><body>report</body></html>\nend\n\nartifact build/chart.png derived-from src/data.csv class reversible\ncontent\nPNG-SYNTHETIC-CHART\nend\n\nartifact docs/summary.md derived-from build/report.html class reversible-with-compensation\ncontent\nsummary of the report\nend\n\nartifact exports/report.pdf derived-from docs/summary.md class irreversible\ncontent\nPDF-SYNTHETIC-REPORT\nend\n\nartifact dist/bundle.zip derived-from src/data.csv class irreversible\ncontent\nZIP-SYNTHETIC-BUNDLE\nend\n",
+    "current-state.txt": "file src/data.csv 2e0787a747c1ee8ffb27bb394ec06403d5ec0cb82bce31d88c163d7413c34fee\nfile src/notes.txt 246ab779f0af03540f7be8281a4c88ae9a3160724a92c55ca366b72af10032db\nfile src/report.py 132d06a4ef6d4c6d3be527e6c8cfeae8805cfe375b53c795bd4583371c2d6f08\nfile build/chart.png 10044d663a55194f831d6ec322b99bfe0ab6db053af58d3bc5db366bd76eff4f\nfile build/report.html 12c4808c74ebc0c7ea8139991a7e6b7deef13f0f058bc729212264057c5740f4\nfile dist/bundle.zip 41d4b860f08961637c13f18670cb5585d1be4f597f300c7274b39ee7d6eddc18\nfile exports/report.pdf 492731e3de3cdce6740a08859ff78756a4f4cc00ce16d5e829823bc4dcf5ee4f\n",
+    "stamp.txt": "stamp run-0013\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/data.csv modified 2e0787a747c1ee8ffb27bb394ec06403d5ec0cb82bce31d88c163d7413c34fee\nfile src/legacy.py deleted none\nfile src/notes.txt created 246ab779f0af03540f7be8281a4c88ae9a3160724a92c55ca366b72af10032db\nfile src/report.py created 132d06a4ef6d4c6d3be527e6c8cfeae8805cfe375b53c795bd4583371c2d6f08\nartifact build/chart.png reversible dc777fb3f8889615e748da9cafdbe16fe0fa1d7c0997fb3eb4c4047d9eafaf59 derived-from src/data.csv\nartifact build/report.html reversible 12c4808c74ebc0c7ea8139991a7e6b7deef13f0f058bc729212264057c5740f4 derived-from src/report.py\nartifact dist/bundle.zip irreversible 41d4b860f08961637c13f18670cb5585d1be4f597f300c7274b39ee7d6eddc18 derived-from src/data.csv\nartifact docs/summary.md reversible-with-compensation 684303e5b6aaf5323aabb483b393463bc530a990b1e1d0d706b082d7acb70594 derived-from build/report.html\nartifact exports/report.pdf irreversible 492731e3de3cdce6740a08859ff78756a4f4cc00ce16d5e829823bc4dcf5ee4f derived-from docs/summary.md\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "current-state.txt",
+    "src/report.py"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "plan src/report.py\nartifact build/report.html reversible current chain src/report.py -> build/report.html\ncompensation rebuild-from-parents\ncompensation remove-artifact\nartifact docs/summary.md reversible-with-compensation missing chain src/report.py -> build/report.html -> docs/summary.md\ncompensation none required, the artifact is already absent\nartifact exports/report.pdf irreversible current chain src/report.py -> build/report.html -> docs/summary.md -> exports/report.pdf\ncompensation quarantine-artifact\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "examples-plan-ranked",
+   "source": "oracle",
+   "setup": {
+    "run-record.txt": "# A synthetic run record, written for this repo as the Round 1 example.\nrun run-0013\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\n\nfile src/report.py created\ncontent\nrows = load_rows()\nreport = build_report(rows)\nprint(report)\nend\n\nfile src/data.csv modified\ncontent\nname,score\nalpha,10\nbeta,20\nend\n\nfile src/notes.txt created\ncontent\ndraft notes for the report\nend\n\nfile src/legacy.py deleted\n\nartifact build/report.html derived-from src/report.py class reversible\ncontent\n<html><body>report</body></html>\nend\n\nartifact build/chart.png derived-from src/data.csv class reversible\ncontent\nPNG-SYNTHETIC-CHART\nend\n\nartifact docs/summary.md derived-from build/report.html class reversible-with-compensation\ncontent\nsummary of the report\nend\n\nartifact exports/report.pdf derived-from docs/summary.md class irreversible\ncontent\nPDF-SYNTHETIC-REPORT\nend\n\nartifact dist/bundle.zip derived-from src/data.csv class irreversible\ncontent\nZIP-SYNTHETIC-BUNDLE\nend\n",
+    "current-state.txt": "file src/data.csv 2e0787a747c1ee8ffb27bb394ec06403d5ec0cb82bce31d88c163d7413c34fee\nfile src/notes.txt 246ab779f0af03540f7be8281a4c88ae9a3160724a92c55ca366b72af10032db\nfile src/report.py 132d06a4ef6d4c6d3be527e6c8cfeae8805cfe375b53c795bd4583371c2d6f08\nfile build/chart.png 10044d663a55194f831d6ec322b99bfe0ab6db053af58d3bc5db366bd76eff4f\nfile build/report.html 12c4808c74ebc0c7ea8139991a7e6b7deef13f0f058bc729212264057c5740f4\nfile dist/bundle.zip 41d4b860f08961637c13f18670cb5585d1be4f597f300c7274b39ee7d6eddc18\nfile exports/report.pdf 492731e3de3cdce6740a08859ff78756a4f4cc00ce16d5e829823bc4dcf5ee4f\n",
+    "stamp.txt": "stamp run-0013\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/data.csv modified 2e0787a747c1ee8ffb27bb394ec06403d5ec0cb82bce31d88c163d7413c34fee\nfile src/legacy.py deleted none\nfile src/notes.txt created 246ab779f0af03540f7be8281a4c88ae9a3160724a92c55ca366b72af10032db\nfile src/report.py created 132d06a4ef6d4c6d3be527e6c8cfeae8805cfe375b53c795bd4583371c2d6f08\nartifact build/chart.png reversible dc777fb3f8889615e748da9cafdbe16fe0fa1d7c0997fb3eb4c4047d9eafaf59 derived-from src/data.csv\nartifact build/report.html reversible 12c4808c74ebc0c7ea8139991a7e6b7deef13f0f058bc729212264057c5740f4 derived-from src/report.py\nartifact dist/bundle.zip irreversible 41d4b860f08961637c13f18670cb5585d1be4f597f300c7274b39ee7d6eddc18 derived-from src/data.csv\nartifact docs/summary.md reversible-with-compensation 684303e5b6aaf5323aabb483b393463bc530a990b1e1d0d706b082d7acb70594 derived-from build/report.html\nartifact exports/report.pdf irreversible 492731e3de3cdce6740a08859ff78756a4f4cc00ce16d5e829823bc4dcf5ee4f derived-from docs/summary.md\n",
+    "fx/ranking-alpha-quarantine-artifact.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/alpha.html\",\n    \"candidate\": \"quarantine-artifact\",\n    \"chain\": \"src/base.py -> out/alpha.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.88,\n    \"kind\": \"score\",\n    \"score\": 0.7\n  },\n  \"synthetic\": true\n}\n",
+    "fx/ranking-alpha-rebuild-from-parents.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/alpha.html\",\n    \"candidate\": \"rebuild-from-parents\",\n    \"chain\": \"src/base.py -> out/alpha.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.62\n  },\n  \"synthetic\": true\n}\n",
+    "fx/ranking-alpha-remove-artifact.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/alpha.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/alpha.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.95\n  },\n  \"synthetic\": true\n}\n",
+    "fx/ranking-beta-quarantine-artifact.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/beta.html\",\n    \"candidate\": \"quarantine-artifact\",\n    \"chain\": \"src/base.py -> out/beta.html\",\n    \"class\": \"reversible\",\n    \"status\": \"drifted\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.8\n  },\n  \"synthetic\": true\n}\n",
+    "fx/ranking-beta-remove-artifact.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/beta.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/beta.html\",\n    \"class\": \"reversible\",\n    \"status\": \"drifted\"\n  },\n  \"response\": {\n    \"confidence\": 0.85,\n    \"kind\": \"score\",\n    \"score\": 0.8\n  },\n  \"synthetic\": true\n}\n",
+    "fx/ranking-delta-quarantine-artifact.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/delta.html\",\n    \"candidate\": \"quarantine-artifact\",\n    \"chain\": \"src/base.py -> out/delta.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"drifted\"\n  },\n  \"response\": {\n    \"kind\": \"abstention\"\n  },\n  \"synthetic\": true\n}\n",
+    "fx/ranking-delta-remove-artifact.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/delta.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/delta.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"drifted\"\n  },\n  \"response\": {\n    \"kind\": \"abstention\"\n  },\n  \"synthetic\": true\n}\n",
+    "fx/ranking-gamma-rebuild-from-parents.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/gamma.html\",\n    \"candidate\": \"rebuild-from-parents\",\n    \"chain\": \"src/base.py -> out/gamma.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.45,\n    \"kind\": \"score\",\n    \"score\": 0.99\n  },\n  \"synthetic\": true\n}\n",
+    "fx/ranking-gamma-remove-artifact.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/gamma.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/gamma.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.45,\n    \"kind\": \"score\",\n    \"score\": 0.98\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "current-state.txt",
+    "src/report.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "plan src/report.py\nartifact build/report.html reversible current chain src/report.py -> build/report.html\ncompensation rebuild-from-parents\ncompensation remove-artifact\nartifact docs/summary.md reversible-with-compensation missing chain src/report.py -> build/report.html -> docs/summary.md\ncompensation none required, the artifact is already absent\nartifact exports/report.pdf irreversible current chain src/report.py -> build/report.html -> docs/summary.md -> exports/report.pdf\ncompensation quarantine-artifact\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "session-plain-plan",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0031\nagent writer-3\nprompt-hash d15ea5e\nmodel synth-writer-2\nfile src/base.py created 37ad49d1fbf0970e8187414c8b76e483e5d867c19544241a308dd4a94d5ad729\nartifact out/alpha.html reversible-with-compensation b6a98d9ce9a2d9149288fa3df42d377c3e42737afdcdaf714e33c0a100b51060 derived-from src/base.py\nartifact out/beta.html reversible f2c82decdd7181cf98945929a62598db7e6b477e11f6e0eb0ae97020eff151ad derived-from src/base.py\nartifact out/delta.html reversible-with-compensation 673953e0ad7fc53247f4feadc2c2d4506396840d1f8796526f48d47333ac7652 derived-from src/base.py\nartifact out/gamma.html reversible ae9a6306a205417afddd14316cc1d0d5e04a98f1be10865dce643925ee070ce2 derived-from src/base.py\n",
+    "state.txt": "file out/alpha.html b6a98d9ce9a2d9149288fa3df42d377c3e42737afdcdaf714e33c0a100b51060\nfile out/beta.html 0000000000000000000000000000000000000000000000000000000000000000\nfile out/delta.html 0000000000000000000000000000000000000000000000000000000000000000\nfile out/gamma.html ae9a6306a205417afddd14316cc1d0d5e04a98f1be10865dce643925ee070ce2\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "plan src/base.py\nartifact out/beta.html reversible drifted chain src/base.py -> out/beta.html\ncompensation quarantine-artifact\ncompensation remove-artifact\nartifact out/gamma.html reversible current chain src/base.py -> out/gamma.html\ncompensation rebuild-from-parents\ncompensation remove-artifact\nartifact out/alpha.html reversible-with-compensation current chain src/base.py -> out/alpha.html\ncompensation rebuild-from-parents\ncompensation remove-artifact\ncompensation quarantine-artifact\nartifact out/delta.html reversible-with-compensation drifted chain src/base.py -> out/delta.html\ncompensation quarantine-artifact\ncompensation remove-artifact\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "session-ranked-plan",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0031\nagent writer-3\nprompt-hash d15ea5e\nmodel synth-writer-2\nfile src/base.py created 37ad49d1fbf0970e8187414c8b76e483e5d867c19544241a308dd4a94d5ad729\nartifact out/alpha.html reversible-with-compensation b6a98d9ce9a2d9149288fa3df42d377c3e42737afdcdaf714e33c0a100b51060 derived-from src/base.py\nartifact out/beta.html reversible f2c82decdd7181cf98945929a62598db7e6b477e11f6e0eb0ae97020eff151ad derived-from src/base.py\nartifact out/delta.html reversible-with-compensation 673953e0ad7fc53247f4feadc2c2d4506396840d1f8796526f48d47333ac7652 derived-from src/base.py\nartifact out/gamma.html reversible ae9a6306a205417afddd14316cc1d0d5e04a98f1be10865dce643925ee070ce2 derived-from src/base.py\n",
+    "state.txt": "file out/alpha.html b6a98d9ce9a2d9149288fa3df42d377c3e42737afdcdaf714e33c0a100b51060\nfile out/beta.html 0000000000000000000000000000000000000000000000000000000000000000\nfile out/delta.html 0000000000000000000000000000000000000000000000000000000000000000\nfile out/gamma.html ae9a6306a205417afddd14316cc1d0d5e04a98f1be10865dce643925ee070ce2\n",
+    "fx/ranking-alpha-quarantine-artifact.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/alpha.html\",\n    \"candidate\": \"quarantine-artifact\",\n    \"chain\": \"src/base.py -> out/alpha.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.88,\n    \"kind\": \"score\",\n    \"score\": 0.7\n  },\n  \"synthetic\": true\n}\n",
+    "fx/ranking-alpha-rebuild-from-parents.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/alpha.html\",\n    \"candidate\": \"rebuild-from-parents\",\n    \"chain\": \"src/base.py -> out/alpha.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.62\n  },\n  \"synthetic\": true\n}\n",
+    "fx/ranking-alpha-remove-artifact.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/alpha.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/alpha.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.95\n  },\n  \"synthetic\": true\n}\n",
+    "fx/ranking-beta-quarantine-artifact.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/beta.html\",\n    \"candidate\": \"quarantine-artifact\",\n    \"chain\": \"src/base.py -> out/beta.html\",\n    \"class\": \"reversible\",\n    \"status\": \"drifted\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.8\n  },\n  \"synthetic\": true\n}\n",
+    "fx/ranking-beta-remove-artifact.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/beta.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/beta.html\",\n    \"class\": \"reversible\",\n    \"status\": \"drifted\"\n  },\n  \"response\": {\n    \"confidence\": 0.85,\n    \"kind\": \"score\",\n    \"score\": 0.8\n  },\n  \"synthetic\": true\n}\n",
+    "fx/ranking-delta-quarantine-artifact.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/delta.html\",\n    \"candidate\": \"quarantine-artifact\",\n    \"chain\": \"src/base.py -> out/delta.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"drifted\"\n  },\n  \"response\": {\n    \"kind\": \"abstention\"\n  },\n  \"synthetic\": true\n}\n",
+    "fx/ranking-delta-remove-artifact.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/delta.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/delta.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"drifted\"\n  },\n  \"response\": {\n    \"kind\": \"abstention\"\n  },\n  \"synthetic\": true\n}\n",
+    "fx/ranking-gamma-rebuild-from-parents.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/gamma.html\",\n    \"candidate\": \"rebuild-from-parents\",\n    \"chain\": \"src/base.py -> out/gamma.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.45,\n    \"kind\": \"score\",\n    \"score\": 0.99\n  },\n  \"synthetic\": true\n}\n",
+    "fx/ranking-gamma-remove-artifact.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/gamma.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/gamma.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.45,\n    \"kind\": \"score\",\n    \"score\": 0.98\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "plan src/base.py\nartifact out/beta.html reversible drifted chain src/base.py -> out/beta.html\ncompensation quarantine-artifact score 0.8\ncompensation remove-artifact score 0.8\nartifact out/gamma.html reversible current chain src/base.py -> out/gamma.html\ncompensation rebuild-from-parents\ncompensation remove-artifact\nartifact out/alpha.html reversible-with-compensation current chain src/base.py -> out/alpha.html\ncompensation remove-artifact score 0.95\ncompensation quarantine-artifact score 0.7\ncompensation rebuild-from-parents score 0.62\nartifact out/delta.html reversible-with-compensation drifted chain src/base.py -> out/delta.html\ncompensation quarantine-artifact\ncompensation remove-artifact\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "session-recall",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0031\nagent writer-3\nprompt-hash d15ea5e\nmodel synth-writer-2\nfile src/base.py created 37ad49d1fbf0970e8187414c8b76e483e5d867c19544241a308dd4a94d5ad729\nartifact out/alpha.html reversible-with-compensation b6a98d9ce9a2d9149288fa3df42d377c3e42737afdcdaf714e33c0a100b51060 derived-from src/base.py\nartifact out/beta.html reversible f2c82decdd7181cf98945929a62598db7e6b477e11f6e0eb0ae97020eff151ad derived-from src/base.py\nartifact out/delta.html reversible-with-compensation 673953e0ad7fc53247f4feadc2c2d4506396840d1f8796526f48d47333ac7652 derived-from src/base.py\nartifact out/gamma.html reversible ae9a6306a205417afddd14316cc1d0d5e04a98f1be10865dce643925ee070ce2 derived-from src/base.py\n",
+    "state.txt": "file out/alpha.html b6a98d9ce9a2d9149288fa3df42d377c3e42737afdcdaf714e33c0a100b51060\nfile out/beta.html 0000000000000000000000000000000000000000000000000000000000000000\nfile out/delta.html 0000000000000000000000000000000000000000000000000000000000000000\nfile out/gamma.html ae9a6306a205417afddd14316cc1d0d5e04a98f1be10865dce643925ee070ce2\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "recall src/base.py\nartifact out/beta.html reversible drifted chain src/base.py -> out/beta.html\nartifact out/gamma.html reversible current chain src/base.py -> out/gamma.html\nartifact out/alpha.html reversible-with-compensation current chain src/base.py -> out/alpha.html\nartifact out/delta.html reversible-with-compensation drifted chain src/base.py -> out/delta.html\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "judgment-recall-proposed",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0021\nagent writer-3\nprompt-hash c07ffee\nmodel synth-writer-2\nfile src/data.csv created 5be08c9684a1d25efcee09318204824278b08bbfb4aef973ffefd0b9d7478313\nfile src/report.py created 3f9dfa038845b004cc27f7264341f66ca07118d1926542f87f719b4d5eeabd70\nartifact build/report.html unclassed 224f1d44070761b167ab1d338a429921d0c63f4c0bd177c2fed6ff800e29d3b0 derived-from src/report.py\nartifact docs/summary.md unclassed 264f1497580860d4381e24d976a63c1dd8965bc48eb729864cd484e9aa0eecc0 derived-from build/report.html\n",
+    "state.txt": "file build/report.html 224f1d44070761b167ab1d338a429921d0c63f4c0bd177c2fed6ff800e29d3b0\nfile docs/summary.md 0000000000000000000000000000000000000000000000000000000000000000\n",
+    "fx/classification-bundle-irreversible.json": "{\n  \"judgment_point\": \"classification\",\n  \"request\": {\n    \"artifact\": \"dist/bundle.zip\",\n    \"digest\": \"ef17b7d320f2acc023f2018dab381827ba22f9d01b6c4c97894e1bbfe4928313\",\n    \"parents\": [\n      \"src/data.csv\"\n    ],\n    \"status\": \"missing\"\n  },\n  \"response\": {\n    \"choice\": \"irreversible\",\n    \"confidence\": 0.77,\n    \"kind\": \"choice\",\n    \"probabilities\": {\n      \"irreversible\": 0.77,\n      \"reversible\": 0.05,\n      \"reversible-with-compensation\": 0.18\n    }\n  },\n  \"synthetic\": true\n}\n",
+    "fx/classification-chart-abstention.json": "{\n  \"judgment_point\": \"classification\",\n  \"request\": {\n    \"artifact\": \"build/chart.png\",\n    \"digest\": \"d6d05c6c0ef385a06afc1fb04d2b428a07deebe61e8cdcd0845963d7d93a6bf3\",\n    \"parents\": [\n      \"src/data.csv\"\n    ],\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"kind\": \"abstention\"\n  },\n  \"synthetic\": true\n}\n",
+    "fx/classification-pdf-below-threshold.json": "{\n  \"judgment_point\": \"classification\",\n  \"request\": {\n    \"artifact\": \"exports/report.pdf\",\n    \"digest\": \"c0d475902344dc07282e196c6a17d49906f2700de4281fbda2cd8b7e34b65569\",\n    \"parents\": [\n      \"docs/summary.md\"\n    ],\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"choice\": \"reversible\",\n    \"confidence\": 0.45,\n    \"kind\": \"choice\",\n    \"probabilities\": {\n      \"irreversible\": 0.2,\n      \"reversible\": 0.45,\n      \"reversible-with-compensation\": 0.35\n    }\n  },\n  \"synthetic\": true\n}\n",
+    "fx/classification-report-html-reversible.json": "{\n  \"judgment_point\": \"classification\",\n  \"request\": {\n    \"artifact\": \"build/report.html\",\n    \"digest\": \"224f1d44070761b167ab1d338a429921d0c63f4c0bd177c2fed6ff800e29d3b0\",\n    \"parents\": [\n      \"src/report.py\"\n    ],\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"choice\": \"reversible\",\n    \"confidence\": 0.9,\n    \"kind\": \"choice\",\n    \"probabilities\": {\n      \"irreversible\": 0.03,\n      \"reversible\": 0.9,\n      \"reversible-with-compensation\": 0.07\n    }\n  },\n  \"synthetic\": true\n}\n",
+    "fx/classification-summary-reversible-with-compensation.json": "{\n  \"judgment_point\": \"classification\",\n  \"request\": {\n    \"artifact\": \"docs/summary.md\",\n    \"digest\": \"264f1497580860d4381e24d976a63c1dd8965bc48eb729864cd484e9aa0eecc0\",\n    \"parents\": [\n      \"build/report.html\"\n    ],\n    \"status\": \"drifted\"\n  },\n  \"response\": {\n    \"choice\": \"reversible-with-compensation\",\n    \"confidence\": 0.82,\n    \"kind\": \"choice\",\n    \"probabilities\": {\n      \"irreversible\": 0.07,\n      \"reversible\": 0.11,\n      \"reversible-with-compensation\": 0.82\n    }\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/report.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "recall src/report.py\nartifact build/report.html reversible proposed current chain src/report.py -> build/report.html\nartifact docs/summary.md reversible-with-compensation proposed drifted chain src/report.py -> build/report.html -> docs/summary.md\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "judgment-recall-unclassed",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0021\nagent writer-3\nprompt-hash c07ffee\nmodel synth-writer-2\nfile src/data.csv created 5be08c9684a1d25efcee09318204824278b08bbfb4aef973ffefd0b9d7478313\nfile src/report.py created 3f9dfa038845b004cc27f7264341f66ca07118d1926542f87f719b4d5eeabd70\nartifact build/report.html unclassed 224f1d44070761b167ab1d338a429921d0c63f4c0bd177c2fed6ff800e29d3b0 derived-from src/report.py\nartifact docs/summary.md unclassed 264f1497580860d4381e24d976a63c1dd8965bc48eb729864cd484e9aa0eecc0 derived-from build/report.html\n",
+    "state.txt": "file build/report.html 224f1d44070761b167ab1d338a429921d0c63f4c0bd177c2fed6ff800e29d3b0\nfile docs/summary.md 0000000000000000000000000000000000000000000000000000000000000000\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/report.py"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: stamp.txt is malformed, the artifact line for build/report.html names the class 'unclassed', which is not one of the three named classes\n"
+   }
+  },
+  {
+   "name": "refusal-missing-record",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "ghost.txt"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read ghost.txt, No such file or directory\n"
+   }
+  },
+  {
+   "name": "refusal-malformed-record",
+   "source": "oracle",
+   "setup": {
+    "record.txt": "run run-0007\nagent writer-3\n"
+   },
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: record.txt is malformed, the header names no prompt-hash\n"
+   }
+  },
+  {
+   "name": "refusal-bad-state",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0031\nagent writer-3\nprompt-hash d15ea5e\nmodel synth-writer-2\nfile src/base.py created 37ad49d1fbf0970e8187414c8b76e483e5d867c19544241a308dd4a94d5ad729\nartifact out/alpha.html reversible-with-compensation b6a98d9ce9a2d9149288fa3df42d377c3e42737afdcdaf714e33c0a100b51060 derived-from src/base.py\nartifact out/beta.html reversible f2c82decdd7181cf98945929a62598db7e6b477e11f6e0eb0ae97020eff151ad derived-from src/base.py\nartifact out/delta.html reversible-with-compensation 673953e0ad7fc53247f4feadc2c2d4506396840d1f8796526f48d47333ac7652 derived-from src/base.py\nartifact out/gamma.html reversible ae9a6306a205417afddd14316cc1d0d5e04a98f1be10865dce643925ee070ce2 derived-from src/base.py\n",
+    "state.txt": "junk\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: state.txt is malformed, the line 'junk' matches no current state line form\n"
+   }
+  },
+  {
+   "name": "refusal-nonfile-start",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0031\nagent writer-3\nprompt-hash d15ea5e\nmodel synth-writer-2\nfile src/base.py created 37ad49d1fbf0970e8187414c8b76e483e5d867c19544241a308dd4a94d5ad729\nartifact out/alpha.html reversible-with-compensation b6a98d9ce9a2d9149288fa3df42d377c3e42737afdcdaf714e33c0a100b51060 derived-from src/base.py\nartifact out/beta.html reversible f2c82decdd7181cf98945929a62598db7e6b477e11f6e0eb0ae97020eff151ad derived-from src/base.py\nartifact out/delta.html reversible-with-compensation 673953e0ad7fc53247f4feadc2c2d4506396840d1f8796526f48d47333ac7652 derived-from src/base.py\nartifact out/gamma.html reversible ae9a6306a205417afddd14316cc1d0d5e04a98f1be10865dce643925ee070ce2 derived-from src/base.py\n",
+    "state.txt": "file out/alpha.html b6a98d9ce9a2d9149288fa3df42d377c3e42737afdcdaf714e33c0a100b51060\nfile out/beta.html 0000000000000000000000000000000000000000000000000000000000000000\nfile out/delta.html 0000000000000000000000000000000000000000000000000000000000000000\nfile out/gamma.html ae9a6306a205417afddd14316cc1d0d5e04a98f1be10865dce643925ee070ce2\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "out/alpha.html"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: the recall cannot start from out/alpha.html, which is not a file entry in the stamp\n"
+   }
+  },
+  {
+   "name": "refusal-fixtures-missing-dir",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0031\nagent writer-3\nprompt-hash d15ea5e\nmodel synth-writer-2\nfile src/base.py created 37ad49d1fbf0970e8187414c8b76e483e5d867c19544241a308dd4a94d5ad729\nartifact out/alpha.html reversible-with-compensation b6a98d9ce9a2d9149288fa3df42d377c3e42737afdcdaf714e33c0a100b51060 derived-from src/base.py\nartifact out/beta.html reversible f2c82decdd7181cf98945929a62598db7e6b477e11f6e0eb0ae97020eff151ad derived-from src/base.py\nartifact out/delta.html reversible-with-compensation 673953e0ad7fc53247f4feadc2c2d4506396840d1f8796526f48d47333ac7652 derived-from src/base.py\nartifact out/gamma.html reversible ae9a6306a205417afddd14316cc1d0d5e04a98f1be10865dce643925ee070ce2 derived-from src/base.py\n",
+    "state.txt": "file out/alpha.html b6a98d9ce9a2d9149288fa3df42d377c3e42737afdcdaf714e33c0a100b51060\nfile out/beta.html 0000000000000000000000000000000000000000000000000000000000000000\nfile out/delta.html 0000000000000000000000000000000000000000000000000000000000000000\nfile out/gamma.html ae9a6306a205417afddd14316cc1d0d5e04a98f1be10865dce643925ee070ce2\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "ghost-dir"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixtures directory cannot be read, ghost-dir\n"
+   }
+  },
+  {
+   "name": "refusal-fixture-not-json",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0031\nagent writer-3\nprompt-hash d15ea5e\nmodel synth-writer-2\nfile src/base.py created 37ad49d1fbf0970e8187414c8b76e483e5d867c19544241a308dd4a94d5ad729\nartifact out/alpha.html reversible-with-compensation b6a98d9ce9a2d9149288fa3df42d377c3e42737afdcdaf714e33c0a100b51060 derived-from src/base.py\nartifact out/beta.html reversible f2c82decdd7181cf98945929a62598db7e6b477e11f6e0eb0ae97020eff151ad derived-from src/base.py\nartifact out/delta.html reversible-with-compensation 673953e0ad7fc53247f4feadc2c2d4506396840d1f8796526f48d47333ac7652 derived-from src/base.py\nartifact out/gamma.html reversible ae9a6306a205417afddd14316cc1d0d5e04a98f1be10865dce643925ee070ce2 derived-from src/base.py\n",
+    "state.txt": "file out/alpha.html b6a98d9ce9a2d9149288fa3df42d377c3e42737afdcdaf714e33c0a100b51060\nfile out/beta.html 0000000000000000000000000000000000000000000000000000000000000000\nfile out/delta.html 0000000000000000000000000000000000000000000000000000000000000000\nfile out/gamma.html ae9a6306a205417afddd14316cc1d0d5e04a98f1be10865dce643925ee070ce2\n",
+    "fx/bad.json": "this is not json\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture file is not valid JSON, fx/bad.json\n"
+   }
+  },
+  {
+   "name": "refusal-fixture-dotfile-loads",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0031\nagent writer-3\nprompt-hash d15ea5e\nmodel synth-writer-2\nfile src/base.py created 37ad49d1fbf0970e8187414c8b76e483e5d867c19544241a308dd4a94d5ad729\nartifact out/alpha.html reversible-with-compensation b6a98d9ce9a2d9149288fa3df42d377c3e42737afdcdaf714e33c0a100b51060 derived-from src/base.py\nartifact out/beta.html reversible f2c82decdd7181cf98945929a62598db7e6b477e11f6e0eb0ae97020eff151ad derived-from src/base.py\nartifact out/delta.html reversible-with-compensation 673953e0ad7fc53247f4feadc2c2d4506396840d1f8796526f48d47333ac7652 derived-from src/base.py\nartifact out/gamma.html reversible ae9a6306a205417afddd14316cc1d0d5e04a98f1be10865dce643925ee070ce2 derived-from src/base.py\n",
+    "state.txt": "file out/alpha.html b6a98d9ce9a2d9149288fa3df42d377c3e42737afdcdaf714e33c0a100b51060\nfile out/beta.html 0000000000000000000000000000000000000000000000000000000000000000\nfile out/delta.html 0000000000000000000000000000000000000000000000000000000000000000\nfile out/gamma.html ae9a6306a205417afddd14316cc1d0d5e04a98f1be10865dce643925ee070ce2\n",
+    "fx/.hidden.json": "this is not json\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture file is not valid JSON, fx/.hidden.json\n"
+   }
+  },
+  {
+   "name": "negative-value-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-1"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -1, No such file or directory\n"
+   }
+  },
+  {
+   "name": "separator-first-value",
+   "source": "oracle",
+   "setup": {
+    "b": "file out/alpha.html b6a98d9ce9a2d9149288fa3df42d377c3e42737afdcdaf714e33c0a100b51060\nfile out/beta.html 0000000000000000000000000000000000000000000000000000000000000000\nfile out/delta.html 0000000000000000000000000000000000000000000000000000000000000000\nfile out/gamma.html ae9a6306a205417afddd14316cc1d0d5e04a98f1be10865dce643925ee070ce2\n"
+   },
+   "argv": [
+    "recall",
+    "--",
+    "--",
+    "b",
+    "src/base.py"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read --, No such file or directory\n"
+   }
+  },
+  {
+   "name": "empty-fixtures-loads-cwd",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0031\nagent writer-3\nprompt-hash d15ea5e\nmodel synth-writer-2\nfile src/base.py created 37ad49d1fbf0970e8187414c8b76e483e5d867c19544241a308dd4a94d5ad729\nartifact out/alpha.html reversible-with-compensation b6a98d9ce9a2d9149288fa3df42d377c3e42737afdcdaf714e33c0a100b51060 derived-from src/base.py\nartifact out/beta.html reversible f2c82decdd7181cf98945929a62598db7e6b477e11f6e0eb0ae97020eff151ad derived-from src/base.py\nartifact out/delta.html reversible-with-compensation 673953e0ad7fc53247f4feadc2c2d4506396840d1f8796526f48d47333ac7652 derived-from src/base.py\nartifact out/gamma.html reversible ae9a6306a205417afddd14316cc1d0d5e04a98f1be10865dce643925ee070ce2 derived-from src/base.py\n",
+    "state.txt": "file out/alpha.html b6a98d9ce9a2d9149288fa3df42d377c3e42737afdcdaf714e33c0a100b51060\nfile out/beta.html 0000000000000000000000000000000000000000000000000000000000000000\nfile out/delta.html 0000000000000000000000000000000000000000000000000000000000000000\nfile out/gamma.html ae9a6306a205417afddd14316cc1d0d5e04a98f1be10865dce643925ee070ce2\n",
+    "junk.json": "this is not json\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    ""
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture file is not valid JSON, junk.json\n"
+   }
+  },
+  {
+   "name": "fixtures-abbreviated",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0031\nagent writer-3\nprompt-hash d15ea5e\nmodel synth-writer-2\nfile src/base.py created 37ad49d1fbf0970e8187414c8b76e483e5d867c19544241a308dd4a94d5ad729\nartifact out/alpha.html reversible-with-compensation b6a98d9ce9a2d9149288fa3df42d377c3e42737afdcdaf714e33c0a100b51060 derived-from src/base.py\nartifact out/beta.html reversible f2c82decdd7181cf98945929a62598db7e6b477e11f6e0eb0ae97020eff151ad derived-from src/base.py\nartifact out/delta.html reversible-with-compensation 673953e0ad7fc53247f4feadc2c2d4506396840d1f8796526f48d47333ac7652 derived-from src/base.py\nartifact out/gamma.html reversible ae9a6306a205417afddd14316cc1d0d5e04a98f1be10865dce643925ee070ce2 derived-from src/base.py\n",
+    "state.txt": "file out/alpha.html b6a98d9ce9a2d9149288fa3df42d377c3e42737afdcdaf714e33c0a100b51060\nfile out/beta.html 0000000000000000000000000000000000000000000000000000000000000000\nfile out/delta.html 0000000000000000000000000000000000000000000000000000000000000000\nfile out/gamma.html ae9a6306a205417afddd14316cc1d0d5e04a98f1be10865dce643925ee070ce2\n",
+    "fx/ranking-alpha-quarantine-artifact.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/alpha.html\",\n    \"candidate\": \"quarantine-artifact\",\n    \"chain\": \"src/base.py -> out/alpha.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.88,\n    \"kind\": \"score\",\n    \"score\": 0.7\n  },\n  \"synthetic\": true\n}\n",
+    "fx/ranking-alpha-rebuild-from-parents.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/alpha.html\",\n    \"candidate\": \"rebuild-from-parents\",\n    \"chain\": \"src/base.py -> out/alpha.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.62\n  },\n  \"synthetic\": true\n}\n",
+    "fx/ranking-alpha-remove-artifact.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/alpha.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/alpha.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.95\n  },\n  \"synthetic\": true\n}\n",
+    "fx/ranking-beta-quarantine-artifact.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/beta.html\",\n    \"candidate\": \"quarantine-artifact\",\n    \"chain\": \"src/base.py -> out/beta.html\",\n    \"class\": \"reversible\",\n    \"status\": \"drifted\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.8\n  },\n  \"synthetic\": true\n}\n",
+    "fx/ranking-beta-remove-artifact.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/beta.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/beta.html\",\n    \"class\": \"reversible\",\n    \"status\": \"drifted\"\n  },\n  \"response\": {\n    \"confidence\": 0.85,\n    \"kind\": \"score\",\n    \"score\": 0.8\n  },\n  \"synthetic\": true\n}\n",
+    "fx/ranking-delta-quarantine-artifact.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/delta.html\",\n    \"candidate\": \"quarantine-artifact\",\n    \"chain\": \"src/base.py -> out/delta.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"drifted\"\n  },\n  \"response\": {\n    \"kind\": \"abstention\"\n  },\n  \"synthetic\": true\n}\n",
+    "fx/ranking-delta-remove-artifact.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/delta.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/delta.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"drifted\"\n  },\n  \"response\": {\n    \"kind\": \"abstention\"\n  },\n  \"synthetic\": true\n}\n",
+    "fx/ranking-gamma-rebuild-from-parents.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/gamma.html\",\n    \"candidate\": \"rebuild-from-parents\",\n    \"chain\": \"src/base.py -> out/gamma.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.45,\n    \"kind\": \"score\",\n    \"score\": 0.99\n  },\n  \"synthetic\": true\n}\n",
+    "fx/ranking-gamma-remove-artifact.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/gamma.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/gamma.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.45,\n    \"kind\": \"score\",\n    \"score\": 0.98\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fi",
+    "fx"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "plan src/base.py\nartifact out/beta.html reversible drifted chain src/base.py -> out/beta.html\ncompensation quarantine-artifact score 0.8\ncompensation remove-artifact score 0.8\nartifact out/gamma.html reversible current chain src/base.py -> out/gamma.html\ncompensation rebuild-from-parents\ncompensation remove-artifact\nartifact out/alpha.html reversible-with-compensation current chain src/base.py -> out/alpha.html\ncompensation remove-artifact score 0.95\ncompensation quarantine-artifact score 0.7\ncompensation rebuild-from-parents score 0.62\nartifact out/delta.html reversible-with-compensation drifted chain src/base.py -> out/delta.html\ncompensation quarantine-artifact\ncompensation remove-artifact\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "fixtures-joined",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0031\nagent writer-3\nprompt-hash d15ea5e\nmodel synth-writer-2\nfile src/base.py created 37ad49d1fbf0970e8187414c8b76e483e5d867c19544241a308dd4a94d5ad729\nartifact out/alpha.html reversible-with-compensation b6a98d9ce9a2d9149288fa3df42d377c3e42737afdcdaf714e33c0a100b51060 derived-from src/base.py\nartifact out/beta.html reversible f2c82decdd7181cf98945929a62598db7e6b477e11f6e0eb0ae97020eff151ad derived-from src/base.py\nartifact out/delta.html reversible-with-compensation 673953e0ad7fc53247f4feadc2c2d4506396840d1f8796526f48d47333ac7652 derived-from src/base.py\nartifact out/gamma.html reversible ae9a6306a205417afddd14316cc1d0d5e04a98f1be10865dce643925ee070ce2 derived-from src/base.py\n",
+    "state.txt": "file out/alpha.html b6a98d9ce9a2d9149288fa3df42d377c3e42737afdcdaf714e33c0a100b51060\nfile out/beta.html 0000000000000000000000000000000000000000000000000000000000000000\nfile out/delta.html 0000000000000000000000000000000000000000000000000000000000000000\nfile out/gamma.html ae9a6306a205417afddd14316cc1d0d5e04a98f1be10865dce643925ee070ce2\n",
+    "fx/ranking-alpha-quarantine-artifact.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/alpha.html\",\n    \"candidate\": \"quarantine-artifact\",\n    \"chain\": \"src/base.py -> out/alpha.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.88,\n    \"kind\": \"score\",\n    \"score\": 0.7\n  },\n  \"synthetic\": true\n}\n",
+    "fx/ranking-alpha-rebuild-from-parents.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/alpha.html\",\n    \"candidate\": \"rebuild-from-parents\",\n    \"chain\": \"src/base.py -> out/alpha.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.62\n  },\n  \"synthetic\": true\n}\n",
+    "fx/ranking-alpha-remove-artifact.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/alpha.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/alpha.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.95\n  },\n  \"synthetic\": true\n}\n",
+    "fx/ranking-beta-quarantine-artifact.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/beta.html\",\n    \"candidate\": \"quarantine-artifact\",\n    \"chain\": \"src/base.py -> out/beta.html\",\n    \"class\": \"reversible\",\n    \"status\": \"drifted\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.8\n  },\n  \"synthetic\": true\n}\n",
+    "fx/ranking-beta-remove-artifact.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/beta.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/beta.html\",\n    \"class\": \"reversible\",\n    \"status\": \"drifted\"\n  },\n  \"response\": {\n    \"confidence\": 0.85,\n    \"kind\": \"score\",\n    \"score\": 0.8\n  },\n  \"synthetic\": true\n}\n",
+    "fx/ranking-delta-quarantine-artifact.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/delta.html\",\n    \"candidate\": \"quarantine-artifact\",\n    \"chain\": \"src/base.py -> out/delta.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"drifted\"\n  },\n  \"response\": {\n    \"kind\": \"abstention\"\n  },\n  \"synthetic\": true\n}\n",
+    "fx/ranking-delta-remove-artifact.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/delta.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/delta.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"drifted\"\n  },\n  \"response\": {\n    \"kind\": \"abstention\"\n  },\n  \"synthetic\": true\n}\n",
+    "fx/ranking-gamma-rebuild-from-parents.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/gamma.html\",\n    \"candidate\": \"rebuild-from-parents\",\n    \"chain\": \"src/base.py -> out/gamma.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.45,\n    \"kind\": \"score\",\n    \"score\": 0.99\n  },\n  \"synthetic\": true\n}\n",
+    "fx/ranking-gamma-remove-artifact.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/gamma.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/gamma.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.45,\n    \"kind\": \"score\",\n    \"score\": 0.98\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures=fx"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "plan src/base.py\nartifact out/beta.html reversible drifted chain src/base.py -> out/beta.html\ncompensation quarantine-artifact score 0.8\ncompensation remove-artifact score 0.8\nartifact out/gamma.html reversible current chain src/base.py -> out/gamma.html\ncompensation rebuild-from-parents\ncompensation remove-artifact\nartifact out/alpha.html reversible-with-compensation current chain src/base.py -> out/alpha.html\ncompensation remove-artifact score 0.95\ncompensation quarantine-artifact score 0.7\ncompensation rebuild-from-parents score 0.62\nartifact out/delta.html reversible-with-compensation drifted chain src/base.py -> out/delta.html\ncompensation quarantine-artifact\ncompensation remove-artifact\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "fixtures-repeated-last-wins",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0031\nagent writer-3\nprompt-hash d15ea5e\nmodel synth-writer-2\nfile src/base.py created 37ad49d1fbf0970e8187414c8b76e483e5d867c19544241a308dd4a94d5ad729\nartifact out/alpha.html reversible-with-compensation b6a98d9ce9a2d9149288fa3df42d377c3e42737afdcdaf714e33c0a100b51060 derived-from src/base.py\nartifact out/beta.html reversible f2c82decdd7181cf98945929a62598db7e6b477e11f6e0eb0ae97020eff151ad derived-from src/base.py\nartifact out/delta.html reversible-with-compensation 673953e0ad7fc53247f4feadc2c2d4506396840d1f8796526f48d47333ac7652 derived-from src/base.py\nartifact out/gamma.html reversible ae9a6306a205417afddd14316cc1d0d5e04a98f1be10865dce643925ee070ce2 derived-from src/base.py\n",
+    "state.txt": "file out/alpha.html b6a98d9ce9a2d9149288fa3df42d377c3e42737afdcdaf714e33c0a100b51060\nfile out/beta.html 0000000000000000000000000000000000000000000000000000000000000000\nfile out/delta.html 0000000000000000000000000000000000000000000000000000000000000000\nfile out/gamma.html ae9a6306a205417afddd14316cc1d0d5e04a98f1be10865dce643925ee070ce2\n",
+    "fx/ranking-alpha-quarantine-artifact.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/alpha.html\",\n    \"candidate\": \"quarantine-artifact\",\n    \"chain\": \"src/base.py -> out/alpha.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.88,\n    \"kind\": \"score\",\n    \"score\": 0.7\n  },\n  \"synthetic\": true\n}\n",
+    "fx/ranking-alpha-rebuild-from-parents.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/alpha.html\",\n    \"candidate\": \"rebuild-from-parents\",\n    \"chain\": \"src/base.py -> out/alpha.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.62\n  },\n  \"synthetic\": true\n}\n",
+    "fx/ranking-alpha-remove-artifact.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/alpha.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/alpha.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.95\n  },\n  \"synthetic\": true\n}\n",
+    "fx/ranking-beta-quarantine-artifact.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/beta.html\",\n    \"candidate\": \"quarantine-artifact\",\n    \"chain\": \"src/base.py -> out/beta.html\",\n    \"class\": \"reversible\",\n    \"status\": \"drifted\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.8\n  },\n  \"synthetic\": true\n}\n",
+    "fx/ranking-beta-remove-artifact.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/beta.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/beta.html\",\n    \"class\": \"reversible\",\n    \"status\": \"drifted\"\n  },\n  \"response\": {\n    \"confidence\": 0.85,\n    \"kind\": \"score\",\n    \"score\": 0.8\n  },\n  \"synthetic\": true\n}\n",
+    "fx/ranking-delta-quarantine-artifact.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/delta.html\",\n    \"candidate\": \"quarantine-artifact\",\n    \"chain\": \"src/base.py -> out/delta.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"drifted\"\n  },\n  \"response\": {\n    \"kind\": \"abstention\"\n  },\n  \"synthetic\": true\n}\n",
+    "fx/ranking-delta-remove-artifact.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/delta.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/delta.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"drifted\"\n  },\n  \"response\": {\n    \"kind\": \"abstention\"\n  },\n  \"synthetic\": true\n}\n",
+    "fx/ranking-gamma-rebuild-from-parents.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/gamma.html\",\n    \"candidate\": \"rebuild-from-parents\",\n    \"chain\": \"src/base.py -> out/gamma.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.45,\n    \"kind\": \"score\",\n    \"score\": 0.99\n  },\n  \"synthetic\": true\n}\n",
+    "fx/ranking-gamma-remove-artifact.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/gamma.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/gamma.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.45,\n    \"kind\": \"score\",\n    \"score\": 0.98\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "ghost-dir",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "plan src/base.py\nartifact out/beta.html reversible drifted chain src/base.py -> out/beta.html\ncompensation quarantine-artifact score 0.8\ncompensation remove-artifact score 0.8\nartifact out/gamma.html reversible current chain src/base.py -> out/gamma.html\ncompensation rebuild-from-parents\ncompensation remove-artifact\nartifact out/alpha.html reversible-with-compensation current chain src/base.py -> out/alpha.html\ncompensation remove-artifact score 0.95\ncompensation quarantine-artifact score 0.7\ncompensation rebuild-from-parents score 0.62\nartifact out/delta.html reversible-with-compensation drifted chain src/base.py -> out/delta.html\ncompensation quarantine-artifact\ncompensation remove-artifact\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "deep-chain-stamp",
+   "source": "oracle",
+   "setup": {
+    "record.txt": "run run-0042\nagent writer-3\nprompt-hash d15ea5e\nmodel synth-writer-2\n\nfile src/s.txt created\ncontent\ns\nend\nartifact out/step-0.txt derived-from src/s.txt class reversible\ncontent\nbody 0\nend\nartifact out/step-1.txt derived-from out/step-0.txt class reversible\ncontent\nbody 1\nend\nartifact out/step-2.txt derived-from out/step-1.txt class reversible\ncontent\nbody 2\nend\nartifact out/step-3.txt derived-from out/step-2.txt class reversible\ncontent\nbody 3\nend\nartifact out/step-4.txt derived-from out/step-3.txt class reversible\ncontent\nbody 4\nend\nartifact out/step-5.txt derived-from out/step-4.txt class reversible\ncontent\nbody 5\nend\nartifact out/step-6.txt derived-from out/step-5.txt class reversible\ncontent\nbody 6\nend\nartifact out/step-7.txt derived-from out/step-6.txt class reversible\ncontent\nbody 7\nend\nartifact out/step-8.txt derived-from out/step-7.txt class reversible\ncontent\nbody 8\nend\nartifact out/step-9.txt derived-from out/step-8.txt class reversible\ncontent\nbody 9\nend\nartifact out/step-10.txt derived-from out/step-9.txt class reversible\ncontent\nbody 10\nend\nartifact out/step-11.txt derived-from out/step-10.txt class reversible\ncontent\nbody 11\nend\nartifact out/step-12.txt derived-from out/step-11.txt class reversible\ncontent\nbody 12\nend\nartifact out/step-13.txt derived-from out/step-12.txt class reversible\ncontent\nbody 13\nend\nartifact out/step-14.txt derived-from out/step-13.txt class reversible\ncontent\nbody 14\nend\nartifact out/step-15.txt derived-from out/step-14.txt class reversible\ncontent\nbody 15\nend\nartifact out/step-16.txt derived-from out/step-15.txt class reversible\ncontent\nbody 16\nend\nartifact out/step-17.txt derived-from out/step-16.txt class reversible\ncontent\nbody 17\nend\nartifact out/step-18.txt derived-from out/step-17.txt class reversible\ncontent\nbody 18\nend\nartifact out/step-19.txt derived-from out/step-18.txt class reversible\ncontent\nbody 19\nend\nartifact out/step-20.txt derived-from out/step-19.txt class reversible\ncontent\nbody 20\nend\nartifact out/step-21.txt derived-from out/step-20.txt class reversible\ncontent\nbody 21\nend\nartifact out/step-22.txt derived-from out/step-21.txt class reversible\ncontent\nbody 22\nend\nartifact out/step-23.txt derived-from out/step-22.txt class reversible\ncontent\nbody 23\nend\nartifact out/step-24.txt derived-from out/step-23.txt class reversible\ncontent\nbody 24\nend\nartifact out/step-25.txt derived-from out/step-24.txt class reversible\ncontent\nbody 25\nend\nartifact out/step-26.txt derived-from out/step-25.txt class reversible\ncontent\nbody 26\nend\nartifact out/step-27.txt derived-from out/step-26.txt class reversible\ncontent\nbody 27\nend\nartifact out/step-28.txt derived-from out/step-27.txt class reversible\ncontent\nbody 28\nend\nartifact out/step-29.txt derived-from out/step-28.txt class reversible\ncontent\nbody 29\nend\nartifact out/step-30.txt derived-from out/step-29.txt class reversible\ncontent\nbody 30\nend\nartifact out/step-31.txt derived-from out/step-30.txt class reversible\ncontent\nbody 31\nend\nartifact out/step-32.txt derived-from out/step-31.txt class reversible\ncontent\nbody 32\nend\nartifact out/step-33.txt derived-from out/step-32.txt class reversible\ncontent\nbody 33\nend\nartifact out/step-34.txt derived-from out/step-33.txt class reversible\ncontent\nbody 34\nend\nartifact out/step-35.txt derived-from out/step-34.txt class reversible\ncontent\nbody 35\nend\nartifact out/step-36.txt derived-from out/step-35.txt class reversible\ncontent\nbody 36\nend\nartifact out/step-37.txt derived-from out/step-36.txt class reversible\ncontent\nbody 37\nend\nartifact out/step-38.txt derived-from out/step-37.txt class reversible\ncontent\nbody 38\nend\nartifact out/step-39.txt derived-from out/step-38.txt class reversible\ncontent\nbody 39\nend\n"
+   },
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "stamp run-0042\nagent writer-3\nprompt-hash d15ea5e\nmodel synth-writer-2\nfile src/s.txt created cbc80bb5c0c0f8944bf73b3a429505ac5cde16644978bc9a1e74c5755f8ca556\nartifact out/step-0.txt reversible 3c214434aabdfcc344c945198c592b525131c95ba62ffc480fa416ba03e0c73b derived-from src/s.txt\nartifact out/step-1.txt reversible 80f66029d24c0e5f5e706bae9694b5c54b60afd73b571600aa996b8aa268c834 derived-from out/step-0.txt\nartifact out/step-10.txt reversible 9c3441c297f820531bb58cd5da912c349792ac4168753411ca8f3fd7bf0758cc derived-from out/step-9.txt\nartifact out/step-11.txt reversible 6b24e2ed09b78dfb7737f0a11c0cd7c93ec143af675db36843460981f4546bc7 derived-from out/step-10.txt\nartifact out/step-12.txt reversible 3ab16720d3791b50bd5e2596208519274c0fd1aa75fbc8c62563cf2907584ac1 derived-from out/step-11.txt\nartifact out/step-13.txt reversible f6ed407a1bd0737099fa62040e6d32829a127a3c41f0c9da2957fbc0fa585a6d derived-from out/step-12.txt\nartifact out/step-14.txt reversible 3661e96c68dfe4639b6b99ad61605c35f49a200531521ea34e9aac6584f27f2b derived-from out/step-13.txt\nartifact out/step-15.txt reversible 496ff900ec041eba04523034f6a6e0b88c83ad234e9e15637fe90e3522c40db7 derived-from out/step-14.txt\nartifact out/step-16.txt reversible dbcc874c59f03bab38dc5159eb6fbd02d9849c9bbd8f6853554de65d6e67550f derived-from out/step-15.txt\nartifact out/step-17.txt reversible 691b26b121ddd42f954c8166f167be162a0168e4c9dba822d8d10aabd5f32d6d derived-from out/step-16.txt\nartifact out/step-18.txt reversible c9990f44ac24f7253b5f15ca2733f9244a54888f948b55d963cbcd6a9367f983 derived-from out/step-17.txt\nartifact out/step-19.txt reversible a3efe7bdbbad7063fbfba41f7ec201168933c548bbc8abf6305205647627a309 derived-from out/step-18.txt\nartifact out/step-2.txt reversible 73b54f4d1be1435eb71c8ac14e36499f1f2a647b92908cb2513c5e53668ee7bb derived-from out/step-1.txt\nartifact out/step-20.txt reversible aba75a3228896700d84f8ad4ac115665e83d7bea326b23989b3b8a18389e0dd4 derived-from out/step-19.txt\nartifact out/step-21.txt reversible c1830e8bf606270c6eb279f197baecd3f89bc336292ece24935020074097fb51 derived-from out/step-20.txt\nartifact out/step-22.txt reversible b3820a8acfe7f054193aad6044110ae0818d511fab5c1e7136bff720d4622395 derived-from out/step-21.txt\nartifact out/step-23.txt reversible 39d0802ff7826e99ece98277fdc7d898a874ecb208b72b85c4d777657068c3a3 derived-from out/step-22.txt\nartifact out/step-24.txt reversible 3dac1824056bdd3716a10b6d3aa8bb0c9c7e51b1fc56283950cebb9f01378fae derived-from out/step-23.txt\nartifact out/step-25.txt reversible 0c7678eed1b7680b23fa9f6cf1625d019e0a312449fc592f5316c5ba53bb57c9 derived-from out/step-24.txt\nartifact out/step-26.txt reversible 3ae631a321567d9274491b7e31da4af985dbefd0336b2749ad0b1f9ee9b79211 derived-from out/step-25.txt\nartifact out/step-27.txt reversible b355d2adb5c587a24e9717d81541f03cb97dbf4a9b8e9318634e975b11e4b756 derived-from out/step-26.txt\nartifact out/step-28.txt reversible 9005ab083d4be3cd407c4b91425d0029e3c2f8a571bdd2a1cb1a1876959c2b4c derived-from out/step-27.txt\nartifact out/step-29.txt reversible 8787e32ed76186daf957cb264fe6f9a78f8ca6c3f14e6360e8698bcdd1fe6622 derived-from out/step-28.txt\nartifact out/step-3.txt reversible da2b492ba82db122ee55a030626d050affc49901a9319cf79f92888eff2ea9ab derived-from out/step-2.txt\nartifact out/step-30.txt reversible ec33213b62aae0a1cd03b058ba4e71f7bea8ba0697cb1e783a0b7f411bc835ac derived-from out/step-29.txt\nartifact out/step-31.txt reversible d552c2ed01fb1f6e908259a53e5c355c07a8beb8842db62a130926aee36bdc62 derived-from out/step-30.txt\nartifact out/step-32.txt reversible 9f6e5af3feafb709dafdbe4871fdb94373b729ac2bd5f8af5c092031025a7a89 derived-from out/step-31.txt\nartifact out/step-33.txt reversible 8c320f55874425d165f9b660492af4414e4c1b75a75101e5ec189d306134aa19 derived-from out/step-32.txt\nartifact out/step-34.txt reversible 75d5167a20c336f97d100d2c530f3ea0f24515bc9be9d69219abb4834b4aa3eb derived-from out/step-33.txt\nartifact out/step-35.txt reversible e26244e1bfc8f3cc642c4fd72d19f0c530c2cd8593b23c7b7b7d8436d189f734 derived-from out/step-34.txt\nartifact out/step-36.txt reversible deb1e4496c3aca17eab913e9af3cd0896d9c7dee2301356261e6aefa155fed45 derived-from out/step-35.txt\nartifact out/step-37.txt reversible 42e35f21a96cfdcf7e32763d2485d58d43c46902f94c7f946c7d71e127631959 derived-from out/step-36.txt\nartifact out/step-38.txt reversible c77322ccbe110425860bee76730ac9e075deeed2cf8195a9a73cae78a95b6439 derived-from out/step-37.txt\nartifact out/step-39.txt reversible ccd45521ef996686e87ac4d04175db9190a72e2e711f4acd8bcee4e204d1105b derived-from out/step-38.txt\nartifact out/step-4.txt reversible 0dc386b8704d3ed9ddcca7af62d7ff8b8dcf8c017ca7af1a63c223030a368d7a derived-from out/step-3.txt\nartifact out/step-5.txt reversible c7fad4c9d0a129237e1441f1e84173687cf3076b05ea84c573e35a666535162b derived-from out/step-4.txt\nartifact out/step-6.txt reversible e4570b322f0f85270f2b2956cc56a377b3881f3be9a524210517fd2d4b94577d derived-from out/step-5.txt\nartifact out/step-7.txt reversible 8d1cd39752c80c3cd300d2f38801ffa51a05cebd2a64934aa9a01257a012d572 derived-from out/step-6.txt\nartifact out/step-8.txt reversible c431b60404aecaadbb4c551f2622b885272a5f8bb5b6afa8ce5244243f4d5878 derived-from out/step-7.txt\nartifact out/step-9.txt reversible 98d567c7049dcfb92e0ccecb092a3018a623b0a5e4ab9b98b3fafc25968efba0 derived-from out/step-8.txt\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "stamp-of-shuffled-record",
+   "source": "oracle",
+   "setup": {
+    "record.txt": "run run-0007\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\n\nfile src/legacy.py deleted\n\nartifact build/report.html derived-from src/report.py class reversible\ncontent\n<html>report</html>\nend\n\nfile src/report.py created\ncontent\nprint(\"report\")\nend\n"
+   },
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "stamp run-0007\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/legacy.py deleted none\nfile src/report.py created 3f9dfa038845b004cc27f7264341f66ca07118d1926542f87f719b4d5eeabd70\nartifact build/report.html reversible 224f1d44070761b167ab1d338a429921d0c63f4c0bd177c2fed6ff800e29d3b0 derived-from src/report.py\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "root-help",
+   "source": "clap",
+   "setup": {},
+   "argv": [
+    "--help"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "Stamp what a run left behind and walk the stamp graph for a recall.\n\nUsage: badbatch [COMMAND]\n\nCommands:\n  stamp   Print the stamp for one recorded run record.\n  recall  Print the recall walk for one stamped file against a recorded current state.\n  plan    Print the execution plan for one stamped file against a recorded current state.\n\nOptions:\n  -h, --help  Print help\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "root-help-short",
+   "source": "clap",
+   "setup": {},
+   "argv": [
+    "-h"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "Stamp what a run left behind and walk the stamp graph for a recall.\n\nUsage: badbatch [COMMAND]\n\nCommands:\n  stamp   Print the stamp for one recorded run record.\n  recall  Print the recall walk for one stamped file against a recorded current state.\n  plan    Print the execution plan for one stamped file against a recorded current state.\n\nOptions:\n  -h, --help  Print help\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "root-help-cluster",
+   "source": "clap",
+   "setup": {},
+   "argv": [
+    "-hx"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "Stamp what a run left behind and walk the stamp graph for a recall.\n\nUsage: badbatch [COMMAND]\n\nCommands:\n  stamp   Print the stamp for one recorded run record.\n  recall  Print the recall walk for one stamped file against a recorded current state.\n  plan    Print the execution plan for one stamped file against a recorded current state.\n\nOptions:\n  -h, --help  Print help\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "stamp-help",
+   "source": "clap",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "--help"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "Print the stamp for one recorded run record.\n\nUsage: badbatch stamp <RECORD>\n\nArguments:\n  <RECORD>  \n\nOptions:\n  -h, --help  Print help\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "recall-help",
+   "source": "clap",
+   "setup": {},
+   "argv": [
+    "recall",
+    "--help"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "Print the recall walk for one stamped file against a recorded current state.\n\nUsage: badbatch recall [OPTIONS] <STAMP> <STATE> <FILE>\n\nArguments:\n  <STAMP>  \n  <STATE>  \n  <FILE>   \n\nOptions:\n      --fixtures <FIXTURES>  Directory of recorded judgment fixtures that may propose classes for unclassed artifacts.\n  -h, --help                 Print help\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "plan-help",
+   "source": "clap",
+   "setup": {},
+   "argv": [
+    "plan",
+    "--help"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "Print the execution plan for one stamped file against a recorded current state.\n\nUsage: badbatch plan [OPTIONS] <STAMP> <STATE> <FILE>\n\nArguments:\n  <STAMP>  \n  <STATE>  \n  <FILE>   \n\nOptions:\n      --fixtures <FIXTURES>  Directory of recorded judgment fixtures that may propose classes for unclassed artifacts and rank candidate compensations.\n  -h, --help                 Print help\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "help-after-positional",
+   "source": "clap",
+   "setup": {
+    "a": "stamp run-0007\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nartifact out/b.html reversible bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb derived-from src/a.py\n",
+    "b": "file out/b.html bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\n"
+   },
+   "argv": [
+    "stamp",
+    "a",
+    "--help"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "Print the stamp for one recorded run record.\n\nUsage: badbatch stamp <RECORD>\n\nArguments:\n  <RECORD>  \n\nOptions:\n  -h, --help  Print help\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "help-after-extra-positional",
+   "source": "clap",
+   "setup": {
+    "a": "stamp run-0007\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nartifact out/b.html reversible bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb derived-from src/a.py\n",
+    "b": "file out/b.html bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\n"
+   },
+   "argv": [
+    "stamp",
+    "a",
+    "extra",
+    "--help"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "Print the stamp for one recorded run record.\n\nUsage: badbatch stamp <RECORD>\n\nArguments:\n  <RECORD>  \n\nOptions:\n  -h, --help  Print help\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "help-after-unknown-flag",
+   "source": "clap",
+   "setup": {},
+   "argv": [
+    "--bogus",
+    "--help"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "Stamp what a run left behind and walk the stamp graph for a recall.\n\nUsage: badbatch [COMMAND]\n\nCommands:\n  stamp   Print the stamp for one recorded run record.\n  recall  Print the recall walk for one stamped file against a recorded current state.\n  plan    Print the execution plan for one stamped file against a recorded current state.\n\nOptions:\n  -h, --help  Print help\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "no-args",
+   "source": "clap",
+   "setup": {},
+   "argv": [],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: the invocation does not parse\nUsage: badbatch [COMMAND]\n"
+   }
+  },
+  {
+   "name": "unknown-subcommand",
+   "source": "clap",
+   "setup": {},
+   "argv": [
+    "bogus"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: unrecognized subcommand 'bogus'\n\nUsage: badbatch [COMMAND]\n\nFor more information, try '--help'.\n"
+   }
+  },
+  {
+   "name": "help-blocked-by-subcommand-word",
+   "source": "clap",
+   "setup": {},
+   "argv": [
+    "bogus",
+    "--help"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: unrecognized subcommand 'bogus'\n\nUsage: badbatch [COMMAND]\n\nFor more information, try '--help'.\n"
+   }
+  },
+  {
+   "name": "unknown-flag-at-root",
+   "source": "clap",
+   "setup": {},
+   "argv": [
+    "--bogus"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: unexpected argument '--bogus' found\n\nUsage: badbatch [COMMAND]\n\nFor more information, try '--help'.\n"
+   }
+  },
+  {
+   "name": "unknown-flag-in-subcommand",
+   "source": "clap",
+   "setup": {
+    "a": "stamp run-0007\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nartifact out/b.html reversible bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb derived-from src/a.py\n",
+    "b": "file out/b.html bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\n"
+   },
+   "argv": [
+    "stamp",
+    "--bogus",
+    "a"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: unexpected argument '--bogus' found\n\n  tip: to pass '--bogus' as a value, use '-- --bogus'\n\nUsage: badbatch stamp <RECORD>\n\nFor more information, try '--help'.\n"
+   }
+  },
+  {
+   "name": "help-with-joined-value",
+   "source": "clap",
+   "setup": {},
+   "argv": [
+    "--help=x"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: unexpected value 'x' for '--help' found; no more were expected\n\nUsage: badbatch --help\n\nFor more information, try '--help'.\n"
+   }
+  },
+  {
+   "name": "short-help-with-joined-value",
+   "source": "clap",
+   "setup": {},
+   "argv": [
+    "-h=x"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: unexpected value 'x' for '--help' found; no more were expected\n\nUsage: badbatch --help\n\nFor more information, try '--help'.\n"
+   }
+  },
+  {
+   "name": "fixtures-missing-value",
+   "source": "clap",
+   "setup": {
+    "a": "stamp run-0007\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nartifact out/b.html reversible bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb derived-from src/a.py\n",
+    "b": "file out/b.html bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\n"
+   },
+   "argv": [
+    "recall",
+    "a",
+    "b",
+    "src/a.py",
+    "--fixtures"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: a value is required for '--fixtures <FIXTURES>' but none was supplied\n\nFor more information, try '--help'.\n"
+   }
+  },
+  {
+   "name": "fixtures-value-is-help",
+   "source": "clap",
+   "setup": {
+    "a": "stamp run-0007\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nartifact out/b.html reversible bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb derived-from src/a.py\n",
+    "b": "file out/b.html bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\n"
+   },
+   "argv": [
+    "recall",
+    "a",
+    "b",
+    "src/a.py",
+    "--fixtures",
+    "--help"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: a value is required for '--fixtures <FIXTURES>' but none was supplied\n\nFor more information, try '--help'.\n"
+   }
+  },
+  {
+   "name": "extra-positional",
+   "source": "clap",
+   "setup": {
+    "a": "stamp run-0007\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nartifact out/b.html reversible bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb derived-from src/a.py\n",
+    "b": "file out/b.html bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\n"
+   },
+   "argv": [
+    "stamp",
+    "a",
+    "b"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: unexpected argument 'b' found\n\nUsage: badbatch stamp <RECORD>\n\nFor more information, try '--help'.\n"
+   }
+  },
+  {
+   "name": "stamp-double-separator-tail",
+   "source": "clap",
+   "setup": {
+    "a": "stamp run-0007\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nartifact out/b.html reversible bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb derived-from src/a.py\n",
+    "b": "file out/b.html bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\n"
+   },
+   "argv": [
+    "stamp",
+    "--",
+    "a",
+    "--"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: unexpected argument 'a' found\n\nUsage: badbatch stamp <RECORD>\n\nFor more information, try '--help'.\n"
+   }
+  },
+  {
+   "name": "subcommand-never-abbreviates",
+   "source": "clap",
+   "setup": {},
+   "argv": [
+    "rec"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: unrecognized subcommand 'rec'\n\n  tip: a similar subcommand exists: 'recall'\n\nUsage: badbatch [COMMAND]\n\nFor more information, try '--help'.\n"
+   }
+  },
+  {
+   "name": "separator-names-the-record",
+   "source": "clap",
+   "setup": {
+    "a": "stamp run-0007\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nartifact out/b.html reversible bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb derived-from src/a.py\n",
+    "b": "file out/b.html bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\n"
+   },
+   "argv": [
+    "stamp",
+    "--",
+    "--"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read --, No such file or directory\n"
+   }
+  },
+  {
+   "name": "root-separator-alone",
+   "source": "clap",
+   "setup": {},
+   "argv": [
+    "--"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: the invocation does not parse\nUsage: badbatch [COMMAND]\n"
+   }
+  },
+  {
+   "name": "root-separator-then-stamp",
+   "source": "clap",
+   "setup": {},
+   "argv": [
+    "--",
+    "stamp"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: unexpected argument 'stamp' found\n\n  tip: subcommand 'stamp' exists; to use it, remove the '--' before it\n\nUsage: badbatch [COMMAND]\n\nFor more information, try '--help'.\n"
+   }
+  },
+  {
+   "name": "negative-at-root",
+   "source": "clap",
+   "setup": {},
+   "argv": [
+    "-1"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: unexpected argument '-1' found\n\nUsage: badbatch [COMMAND]\n\nFor more information, try '--help'.\n"
+   }
+  },
+  {
+   "name": "root-fixtures-flag-unknown",
+   "source": "clap",
+   "setup": {},
+   "argv": [
+    "--fi"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: unexpected argument '--fi' found\n\nUsage: badbatch [COMMAND]\n\nFor more information, try '--help'.\n"
+   }
+  },
+  {
+   "name": "recall-separator-only-set",
+   "source": "clap",
+   "setup": {
+    "a": "stamp run-0007\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nartifact out/b.html reversible bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb derived-from src/a.py\n",
+    "b": "file out/b.html bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\n"
+   },
+   "argv": [
+    "recall",
+    "--",
+    "--",
+    "b",
+    "src/a.py"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read --, No such file or directory\n"
+   }
+  }
+ ]
+}
