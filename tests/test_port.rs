@@ -491,39 +491,76 @@ fn no_python_files_stand_in_the_tree() {
 
 /// The crate roots one source text imports, resolving grouped,
 /// nested, aliased, glob, and bare module forms.
+///
+/// A use statement is recognized at a line start, past any
+/// indentation and past one pub marker, so a re-export and a
+/// use standing inside a module or a function body are read
+/// on the same terms as a use at the head of a file. Round 6
+/// strengthened the scan on exactly those two forms, which the
+/// port review recorded as evasions of the earlier reading.
 fn imported_roots(text: &str) -> Vec<String> {
     let mut roots = Vec::new();
     let bytes = text.as_bytes();
     let mut i = 0;
-    while i + 4 < bytes.len() {
-        if (i == 0 || bytes[i - 1] == b'\n') && bytes[i..].starts_with(b"use ") {
-            // Take the statement up to its semicolon.
-            let mut end = i + 4;
-            let mut depth = 0i32;
-            while end < bytes.len() {
-                match bytes[end] {
-                    b'{' => depth += 1,
-                    b'}' => depth -= 1,
-                    b';' if depth == 0 => break,
-                    _ => {}
+    while i < bytes.len() {
+        if i == 0 || bytes[i - 1] == b'\n' {
+            let mut j = i;
+            while j < bytes.len() && (bytes[j] == b' ' || bytes[j] == b'\t') {
+                j += 1;
+            }
+            if bytes[j..].starts_with(b"pub ") {
+                j += 4;
+            }
+            if bytes[j..].starts_with(b"use ") {
+                // Take the statement up to its semicolon.
+                let mut end = j + 4;
+                let mut depth = 0i32;
+                while end < bytes.len() {
+                    match bytes[end] {
+                        b'{' => depth += 1,
+                        b'}' => depth -= 1,
+                        b';' if depth == 0 => break,
+                        _ => {}
+                    }
+                    end += 1;
                 }
-                end += 1;
+                let statement = &text[j + 4..end];
+                let first = statement
+                    .split(|c: char| c == ':' || c == '{' || c == ';' || c.is_whitespace())
+                    .next()
+                    .unwrap_or("")
+                    .trim();
+                if !first.is_empty() {
+                    roots.push(first.to_string());
+                }
+                i = end;
+                continue;
             }
-            let statement = &text[i + 4..end];
-            let first = statement
-                .split(|c: char| c == ':' || c == '{' || c == ';' || c.is_whitespace())
-                .next()
-                .unwrap_or("")
-                .trim();
-            if !first.is_empty() {
-                roots.push(first.to_string());
-            }
-            i = end;
-        } else {
-            i += 1;
         }
+        i += 1;
     }
     roots
+}
+
+/// Whether a source text names a crate root as the head of a
+/// qualified path, the import-free form an import scan cannot
+/// see. The root must stand at a path boundary, not inside a
+/// longer identifier and not behind another path segment.
+fn names_path_head(text: &str, root: &str) -> bool {
+    let needle = format!("{root}::");
+    let bytes = text.as_bytes();
+    let mut from = 0;
+    while let Some(at) = text[from..].find(needle.as_str()).map(|found| found + from) {
+        let boundary = at == 0 || {
+            let prev = bytes[at - 1];
+            !(prev.is_ascii_alphanumeric() || prev == b'_' || prev == b':')
+        };
+        if boundary {
+            return true;
+        }
+        from = at + needle.len();
+    }
+    false
 }
 
 #[test]
@@ -542,6 +579,37 @@ fn the_import_scan_resolves_every_use_form() {
     assert_eq!(imported_roots("use sha2::Digest as _;\n"), ["sha2"]);
     assert_eq!(imported_roots("use clap::*;\n"), ["clap"]);
     assert_eq!(imported_roots("use serde;\n"), ["serde"]);
+    // The two forms Round 6 closed. A re-export at a line
+    // start and a use standing indented inside a body are read
+    // as imports now.
+    assert_eq!(
+        imported_roots("pub use serde_json::Value;\n"),
+        ["serde_json"]
+    );
+    assert_eq!(
+        imported_roots("    use serde_json::Value;\n"),
+        ["serde_json"]
+    );
+    assert_eq!(imported_roots("\tuse serde::Serialize;\n"), ["serde"]);
+    assert_eq!(
+        imported_roots("  pub use serde_json::Value;\n"),
+        ["serde_json"]
+    );
+    // The path head scan must find a qualified path and must
+    // not find the root inside a longer name or behind
+    // another segment.
+    assert!(names_path_head(
+        "let x = serde_json::json!(1);\n",
+        "serde_json"
+    ));
+    assert!(!names_path_head(
+        "let x = myserde_json::json!(1);\n",
+        "serde_json"
+    ));
+    assert!(!names_path_head(
+        "let x = other::serde_json::json!(1);\n",
+        "serde_json"
+    ));
 }
 
 #[test]
@@ -558,8 +626,54 @@ fn the_shipped_sources_never_import_the_serde_family() {
                     path.display()
                 );
             }
+            // An import-free qualified path is the one form
+            // the import scan cannot see, so the family's path
+            // heads are refused in the shipped sources
+            // outright. The family is not a shipped dependency,
+            // so such a path could not compile either; the pin
+            // keeps both readings inside the suite.
+            for root in ["serde", "serde_json"] {
+                assert!(
+                    !names_path_head(&text, root),
+                    "{} names {root} as a path head",
+                    path.display()
+                );
+            }
         }
     }
+}
+
+#[test]
+fn anyhow_stays_confined_to_the_binary_entry() {
+    // BB-30 confines anyhow to the binary entry, and until
+    // Round 6 no test failed when a library source named it.
+    // The confinement is pinned now in both of the scan's
+    // forms, an import and a qualified path, with main.rs as
+    // the one permitted file and as the witness that the pin
+    // guards a real use.
+    let src = Path::new(env!("CARGO_MANIFEST_DIR")).join("src");
+    let mut witness = false;
+    for entry in std::fs::read_dir(&src).expect("read src") {
+        let path = entry.expect("entry").path();
+        if path.extension().is_some_and(|e| e == "rs") {
+            let text = std::fs::read_to_string(&path).expect("read source");
+            let names_it = imported_roots(&text).iter().any(|root| root == "anyhow")
+                || names_path_head(&text, "anyhow");
+            if path.file_name().is_some_and(|name| name == "main.rs") {
+                witness = names_it;
+            } else {
+                assert!(
+                    !names_it,
+                    "{} names anyhow outside the binary entry",
+                    path.display()
+                );
+            }
+        }
+    }
+    assert!(
+        witness,
+        "main.rs must name anyhow, or the confinement pin guards nothing"
+    );
 }
 
 // The printed float form, BB-35.

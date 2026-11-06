@@ -2,10 +2,10 @@
 //!
 //! Subcommands
 //!   stamp   print the stamp for one recorded run record
-//!   recall  print the recall walk for one stamped file
-//!           against a recorded current state
-//!   plan    print the execution plan for one stamped file
-//!           against a recorded current state
+//!   recall  print the recall walk for one or more stamped
+//!           files against a recorded current state
+//!   plan    print the execution plan for one or more
+//!           stamped files against a recorded current state
 //!
 //! The argument parsing is clap, adopted under the
 //! maintainer's tool choice ruling. Before clap sees the
@@ -50,11 +50,11 @@ use std::os::unix::ffi::OsStrExt;
 use badbatch::errors::Error;
 use badbatch::judgment::FixturePlayer;
 use badbatch::paths::py_path_folded;
-use badbatch::plan::{build_plan, format_plan};
+use badbatch::plan::{build_plan_multi, format_plan_multi};
 use badbatch::pytext::{PyStr, is_decimal};
 use badbatch::records::parse_run_record;
 use badbatch::stamps::{build_stamp, format_stamp, parse_stamp};
-use badbatch::walk::{format_recall, parse_current_state, recall_walk};
+use badbatch::walk::{format_recall_multi, parse_current_state, recall_walk_multi, start_refusal};
 
 #[derive(Parser)]
 #[command(
@@ -78,13 +78,13 @@ enum Commands {
     Stamp(StampArgs),
     #[command(
         name = "recall",
-        about = "Print the recall walk for one stamped file against a recorded current state.",
+        about = "Print the recall walk for one or more stamped files against a recorded current state.",
         infer_long_args = true
     )]
     Recall(RecallArgs),
     #[command(
         name = "plan",
-        about = "Print the execution plan for one stamped file against a recorded current state.",
+        about = "Print the execution plan for one or more stamped files against a recorded current state.",
         infer_long_args = true
     )]
     Plan(PlanArgs),
@@ -99,7 +99,7 @@ struct StampArgs {
 struct RecallArgs {
     stamp: OsString,
     state: OsString,
-    file: OsString,
+    file: Vec<OsString>,
     #[arg(
         long = "fixtures",
         help = "Directory of recorded judgment fixtures that may propose classes for unclassed artifacts."
@@ -111,7 +111,7 @@ struct RecallArgs {
 struct PlanArgs {
     stamp: OsString,
     state: OsString,
-    file: OsString,
+    file: Vec<OsString>,
     #[arg(
         long = "fixtures",
         help = "Directory of recorded judgment fixtures that may propose classes for unclassed artifacts and rank candidate compensations."
@@ -136,12 +136,25 @@ impl Cmd {
         }
     }
 
-    fn slots(self) -> usize {
+    fn shape(self) -> SlotShape {
         match self {
-            Cmd::Stamp => 1,
-            Cmd::Recall | Cmd::Plan => 3,
+            Cmd::Stamp => SlotShape::Fixed(1),
+            Cmd::Recall | Cmd::Plan => SlotShape::VariableStart,
         }
     }
+}
+
+/// How a command's positional shares are counted by the
+/// separator distribution.
+///
+/// The stamp command fills exactly one slot. The walk
+/// commands fill two fixed slots, the stamp and the current
+/// state, and every later share stands as one start, under
+/// BB-46.
+#[derive(Clone, Copy)]
+enum SlotShape {
+    Fixed(usize),
+    VariableStart,
 }
 
 /// One subcommand of the command line, with the long flags the
@@ -414,7 +427,7 @@ enum Scan {
 /// the next share in order. Each share then gives up its first
 /// separator token, and a share that does not end holding
 /// exactly one token holds a list.
-fn distribute(segments: &[Vec<SegTok>], action_count: usize) -> Option<Vec<Slot>> {
+fn distribute(segments: &[Vec<SegTok>], shape: SlotShape) -> Option<Vec<Slot>> {
     // A trailing separator that closes a segment holding no
     // positional, once any flag has been consumed, is a usage
     // refusal in the oracle, not a completed invocation: the
@@ -440,7 +453,9 @@ fn distribute(segments: &[Vec<SegTok>], action_count: usize) -> Option<Vec<Slot>
         if arguments == 0 {
             continue;
         }
-        if slots.len() + arguments > action_count {
+        if let SlotShape::Fixed(count) = shape
+            && slots.len() + arguments > count
+        {
             return None;
         }
         let first_separator = segment
@@ -469,8 +484,19 @@ fn distribute(segments: &[Vec<SegTok>], action_count: usize) -> Option<Vec<Slot>
             }
         }
     }
-    if slots.len() != action_count {
-        return None;
+    match shape {
+        SlotShape::Fixed(count) => {
+            if slots.len() != count {
+                return None;
+            }
+        }
+        SlotShape::VariableStart => {
+            // The two fixed slots and at least one start must
+            // stand, or the invocation is not this command's.
+            if slots.len() < 3 {
+                return None;
+            }
+        }
     }
     Some(slots)
 }
@@ -620,7 +646,7 @@ fn scan(tokens: &[OsString]) -> Scan {
     };
     let cmd = specs[index].cmd;
     let assigned = if clean {
-        distribute(&segments, cmd.slots())
+        distribute(&segments, cmd.shape())
     } else {
         None
     };
@@ -865,23 +891,39 @@ fn run_assigned(assigned: &Assigned) -> ExitCode {
             Err(error) => return answer_library_error(error),
         },
     };
-    if matches!(assigned.slots[2], Slot::Listed) {
-        return answer_error_line(&format!("{LIST_START_LINE}\n"), 1);
+    // The starts are examined in argument order at the start
+    // check, after the fixtures load, under BB-45. The first
+    // start that cannot stand decides the refusal, a list in
+    // the uncaught family's voice and an unknown name in the
+    // walk's. A repeated start contributes nothing beyond its
+    // first occurrence, under BB-44.
+    let mut starts: Vec<PyStr> = Vec::new();
+    for slot in &assigned.slots[2..] {
+        match slot {
+            Slot::Listed => {
+                return answer_error_line(&format!("{LIST_START_LINE}\n"), 1);
+            }
+            Slot::One(raw) => {
+                let name = PyStr::from_surrogateescape(raw.as_bytes());
+                if !stamp.files.iter().any(|entry| entry.path == name) {
+                    return answer_library_error(start_refusal(&name));
+                }
+                if !starts.contains(&name) {
+                    starts.push(name);
+                }
+            }
+        }
     }
-    let Slot::One(file_raw) = &assigned.slots[2] else {
-        unreachable!("a listed start slot is answered above");
-    };
-    let start = PyStr::from_surrogateescape(file_raw.as_bytes());
     let source_ref = player
         .as_ref()
         .map(|held| held as &dyn badbatch::judgment::JudgmentSource);
     match assigned.cmd {
-        Cmd::Recall => match recall_walk(&stamp, &state, &start, source_ref) {
-            Ok(entries) => print_document(&format_recall(&start, &entries)),
+        Cmd::Recall => match recall_walk_multi(&stamp, &state, &starts, source_ref) {
+            Ok(entries) => print_document(&format_recall_multi(&starts, &entries)),
             Err(error) => answer_library_error(error),
         },
-        Cmd::Plan => match build_plan(&stamp, &state, &start, source_ref) {
-            Ok(entries) => print_document(&format_plan(&start, &entries)),
+        Cmd::Plan => match build_plan_multi(&stamp, &state, &starts, source_ref) {
+            Ok(entries) => print_document(&format_plan_multi(&starts, &entries)),
             Err(error) => answer_library_error(error),
         },
         Cmd::Stamp => unreachable!("the stamp command is answered above"),

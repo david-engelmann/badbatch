@@ -24,7 +24,10 @@ pub use judgment::{
     check_answer, check_ranking_answer, classification_request, ranking_request, trusted,
     trusted_score, validate_fixture,
 };
-pub use plan::{build_plan, candidates_for, format_plan};
+pub use plan::{build_plan, build_plan_multi, candidates_for, format_plan, format_plan_multi};
 pub use records::{ACTIONS, CLASSES, UNCLASSED, content_digest, parse_run_record};
 pub use stamps::{build_stamp, format_stamp, parse_stamp};
-pub use walk::{format_recall, parse_current_state, recall_walk};
+pub use walk::{
+    format_recall, format_recall_multi, parse_current_state, recall_walk, recall_walk_multi,
+    start_refusal,
+};
