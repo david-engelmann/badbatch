@@ -542,7 +542,7 @@
    ],
    "expect": {
     "code": 0,
-    "stdout": "Stamp what a run left behind and walk the stamp graph for a recall.\n\nUsage: badbatch [COMMAND]\n\nCommands:\n  stamp   Print the stamp for one recorded run record.\n  recall  Print the recall walk for one stamped file against a recorded current state.\n  plan    Print the execution plan for one stamped file against a recorded current state.\n\nOptions:\n  -h, --help  Print help\n",
+    "stdout": "Stamp what a run left behind and walk the stamp graph for a recall.\n\nUsage: badbatch [COMMAND]\n\nCommands:\n  stamp   Print the stamp for one recorded run record.\n  recall  Print the recall walk for one or more stamped files against a recorded current state.\n  plan    Print the execution plan for one or more stamped files against a recorded current state.\n\nOptions:\n  -h, --help  Print help\n",
     "stderr": ""
    }
   },
@@ -555,7 +555,7 @@
    ],
    "expect": {
     "code": 0,
-    "stdout": "Stamp what a run left behind and walk the stamp graph for a recall.\n\nUsage: badbatch [COMMAND]\n\nCommands:\n  stamp   Print the stamp for one recorded run record.\n  recall  Print the recall walk for one stamped file against a recorded current state.\n  plan    Print the execution plan for one stamped file against a recorded current state.\n\nOptions:\n  -h, --help  Print help\n",
+    "stdout": "Stamp what a run left behind and walk the stamp graph for a recall.\n\nUsage: badbatch [COMMAND]\n\nCommands:\n  stamp   Print the stamp for one recorded run record.\n  recall  Print the recall walk for one or more stamped files against a recorded current state.\n  plan    Print the execution plan for one or more stamped files against a recorded current state.\n\nOptions:\n  -h, --help  Print help\n",
     "stderr": ""
    }
   },
@@ -568,7 +568,7 @@
    ],
    "expect": {
     "code": 0,
-    "stdout": "Stamp what a run left behind and walk the stamp graph for a recall.\n\nUsage: badbatch [COMMAND]\n\nCommands:\n  stamp   Print the stamp for one recorded run record.\n  recall  Print the recall walk for one stamped file against a recorded current state.\n  plan    Print the execution plan for one stamped file against a recorded current state.\n\nOptions:\n  -h, --help  Print help\n",
+    "stdout": "Stamp what a run left behind and walk the stamp graph for a recall.\n\nUsage: badbatch [COMMAND]\n\nCommands:\n  stamp   Print the stamp for one recorded run record.\n  recall  Print the recall walk for one or more stamped files against a recorded current state.\n  plan    Print the execution plan for one or more stamped files against a recorded current state.\n\nOptions:\n  -h, --help  Print help\n",
     "stderr": ""
    }
   },
@@ -596,7 +596,7 @@
    ],
    "expect": {
     "code": 0,
-    "stdout": "Print the recall walk for one stamped file against a recorded current state.\n\nUsage: badbatch recall [OPTIONS] <STAMP> <STATE> <FILE>\n\nArguments:\n  <STAMP>  \n  <STATE>  \n  <FILE>   \n\nOptions:\n      --fixtures <FIXTURES>  Directory of recorded judgment fixtures that may propose classes for unclassed artifacts.\n  -h, --help                 Print help\n",
+    "stdout": "Print the recall walk for one or more stamped files against a recorded current state.\n\nUsage: badbatch recall [OPTIONS] <STAMP> <STATE> [FILE]...\n\nArguments:\n  <STAMP>    \n  <STATE>    \n  [FILE]...  \n\nOptions:\n      --fixtures <FIXTURES>  Directory of recorded judgment fixtures that may propose classes for unclassed artifacts.\n  -h, --help                 Print help\n",
     "stderr": ""
    }
   },
@@ -610,7 +610,7 @@
    ],
    "expect": {
     "code": 0,
-    "stdout": "Print the execution plan for one stamped file against a recorded current state.\n\nUsage: badbatch plan [OPTIONS] <STAMP> <STATE> <FILE>\n\nArguments:\n  <STAMP>  \n  <STATE>  \n  <FILE>   \n\nOptions:\n      --fixtures <FIXTURES>  Directory of recorded judgment fixtures that may propose classes for unclassed artifacts and rank candidate compensations.\n  -h, --help                 Print help\n",
+    "stdout": "Print the execution plan for one or more stamped files against a recorded current state.\n\nUsage: badbatch plan [OPTIONS] <STAMP> <STATE> [FILE]...\n\nArguments:\n  <STAMP>    \n  <STATE>    \n  [FILE]...  \n\nOptions:\n      --fixtures <FIXTURES>  Directory of recorded judgment fixtures that may propose classes for unclassed artifacts and rank candidate compensations.\n  -h, --help                 Print help\n",
     "stderr": ""
    }
   },
@@ -661,7 +661,7 @@
    ],
    "expect": {
     "code": 0,
-    "stdout": "Stamp what a run left behind and walk the stamp graph for a recall.\n\nUsage: badbatch [COMMAND]\n\nCommands:\n  stamp   Print the stamp for one recorded run record.\n  recall  Print the recall walk for one stamped file against a recorded current state.\n  plan    Print the execution plan for one stamped file against a recorded current state.\n\nOptions:\n  -h, --help  Print help\n",
+    "stdout": "Stamp what a run left behind and walk the stamp graph for a recall.\n\nUsage: badbatch [COMMAND]\n\nCommands:\n  stamp   Print the stamp for one recorded run record.\n  recall  Print the recall walk for one or more stamped files against a recorded current state.\n  plan    Print the execution plan for one or more stamped files against a recorded current state.\n\nOptions:\n  -h, --help  Print help\n",
     "stderr": ""
    }
   },

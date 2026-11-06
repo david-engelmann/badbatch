@@ -19,7 +19,7 @@ use crate::judgment::{
 };
 use crate::pytext::{PyStr, py_float_repr};
 use crate::stamps::Stamp;
-use crate::walk::recall_walk;
+use crate::walk::recall_walk_multi;
 
 /// The candidate compensations one walk entry carries, in
 /// order.
@@ -113,7 +113,25 @@ pub fn build_plan(
     start: &PyStr,
     player: Option<&dyn JudgmentSource>,
 ) -> Result<Vec<PlanEntry>> {
-    let entries = recall_walk(stamp, state, start, player)?;
+    build_plan_multi(stamp, state, std::slice::from_ref(start), player)
+}
+
+/// The execution plan for one or more stamped files, in walk
+/// order, under BB-42 to BB-47.
+///
+/// The plan runs the multi-start walk the recall runs, so
+/// classification proposals and refusals behave exactly as
+/// they behave there, and each artifact of the union is asked
+/// its ranking questions once, with the chain field of each
+/// request naming the chain the walk prints for the artifact
+/// under BB-43.
+pub fn build_plan_multi(
+    stamp: &Stamp,
+    state: &HashMap<PyStr, PyStr>,
+    starts: &[PyStr],
+    player: Option<&dyn JudgmentSource>,
+) -> Result<Vec<PlanEntry>> {
+    let entries = recall_walk_multi(stamp, state, starts, player)?;
     let mut planned = Vec::new();
     for entry in &entries {
         let candidates = candidates_for(&entry.rev_class, &entry.status)?;
@@ -155,7 +173,13 @@ pub fn build_plan(
 
 /// Render a plan as the deterministic document text.
 pub fn format_plan(start: &PyStr, entries: &[PlanEntry]) -> String {
-    let mut lines: Vec<String> = vec![format!("plan {start}")];
+    format_plan_multi(std::slice::from_ref(start), entries)
+}
+
+/// Render a plan for one or more starts, one header line per
+/// start in argument order, under BB-44.
+pub fn format_plan_multi(starts: &[PyStr], entries: &[PlanEntry]) -> String {
+    let mut lines: Vec<String> = starts.iter().map(|start| format!("plan {start}")).collect();
     for entry in entries {
         let chain = entry
             .chain
