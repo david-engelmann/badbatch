@@ -59,7 +59,7 @@ use badbatch::walk::{format_recall_multi, parse_current_state, recall_walk_multi
 #[derive(Parser)]
 #[command(
     name = "badbatch",
-    about = "Stamp what a run left behind and walk the stamp graph for a recall.",
+    about = "Walks a batch of stamped artifacts and lists everything downstream of the bad one, so a poisoned prompt or a broken model version can be recalled like a product recall.",
     disable_version_flag = true,
     disable_help_subcommand = true
 )]

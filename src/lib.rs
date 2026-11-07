@@ -1,5 +1,4 @@
-//! badbatch. Stamps what a run left behind and walks the stamp
-//! graph.
+//! Walks a batch of stamped artifacts and lists everything downstream of the bad one, so a poisoned prompt or a broken model version can be recalled like a product recall.
 //!
 //! Badbatch stamps what a run left behind. It never records
 //! the run itself. A stamp is built from a run record another

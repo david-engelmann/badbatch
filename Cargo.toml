@@ -2,7 +2,7 @@
 name = "badbatch"
 version = "0.1.0"
 edition = "2024"
-description = "Stamp what a run left behind and walk the stamp graph for a recall"
+description = "Walks a batch of stamped artifacts and lists everything downstream of the bad one, so a poisoned prompt or a broken model version can be recalled like a product recall."
 license = "MIT"
 
 [dependencies]

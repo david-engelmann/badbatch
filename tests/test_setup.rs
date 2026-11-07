@@ -133,6 +133,45 @@ fn round_counts(text: &str) -> Vec<String> {
     found
 }
 
+const DESCRIPTION: &str = "Walks a batch of stamped artifacts and lists everything downstream of the bad one, so a poisoned prompt or a broken model version can be recalled like a product recall.";
+
+#[test]
+fn the_description_stands_on_every_surface() {
+    let readme = read("README.md");
+    let lede = readme
+        .lines()
+        .find(|line| !line.is_empty() && !line.starts_with('#'))
+        .expect("the README carries a lede line");
+    assert_eq!(lede, DESCRIPTION, "the README lede must be the description");
+    let manifest = read("Cargo.toml");
+    let description_lines: Vec<&str> = manifest
+        .lines()
+        .filter(|line| line.starts_with("description ="))
+        .collect();
+    assert_eq!(
+        description_lines,
+        vec![format!("description = \"{DESCRIPTION}\"").as_str()],
+        "the manifest must carry exactly one description field, the description"
+    );
+    let lib = read("src/lib.rs");
+    let doc_line = lib.lines().next().expect("the crate carries doc lines");
+    assert_eq!(
+        doc_line,
+        format!("//! {DESCRIPTION}"),
+        "the first crate doc line must be the description"
+    );
+    let corpus = read("tests/cli_corpus.json");
+    assert!(
+        corpus.contains(DESCRIPTION),
+        "the corpus root help expectations must carry the description"
+    );
+    let main = read("src/main.rs");
+    assert!(
+        main.contains(&format!("about = \"{DESCRIPTION}\"")),
+        "the command line about must carry the description"
+    );
+}
+
 #[test]
 fn the_setup_digit_class_is_the_unicode_decimal_class() {
     // The Python pins read digits in the decimal class of the
