@@ -74,7 +74,7 @@ fn state_may_name_paths_the_stamp_never_mentions() {
 #[test]
 fn malformed_state_is_refused() {
     let cases = vec![
-        format!("file a.txt not-a-digest\n"),
+        "file a.txt not-a-digest\n".to_string(),
         format!("file a.txt {}\nfile a.txt {}\n", d('a'), d('b')),
         "something else entirely\n".to_string(),
         "file a.txt none\n".to_string(),
