@@ -133,6 +133,66 @@ fn round_counts(text: &str) -> Vec<String> {
     found
 }
 
+const DESCRIPTION: &str = "Walks a batch of stamped artifacts and lists everything downstream of the bad one, so a poisoned prompt or a broken model version can be recalled like a product recall.";
+
+#[test]
+fn the_description_stands_on_every_surface() {
+    let readme = read("README.md");
+    let lede = readme
+        .lines()
+        .find(|line| !line.is_empty() && !line.starts_with('#'))
+        .expect("the README carries a lede line");
+    assert_eq!(lede, DESCRIPTION, "the README lede must be the description");
+    let manifest = read("Cargo.toml");
+    let description_lines: Vec<&str> = manifest
+        .lines()
+        .filter(|line| line.starts_with("description ="))
+        .collect();
+    assert_eq!(
+        description_lines,
+        vec![format!("description = \"{DESCRIPTION}\"").as_str()],
+        "the manifest must carry exactly one description field, the description"
+    );
+    let lib = read("src/lib.rs");
+    let doc_line = lib.lines().next().expect("the crate carries doc lines");
+    assert_eq!(
+        doc_line,
+        format!("//! {DESCRIPTION}"),
+        "the first crate doc line must be the description"
+    );
+    let corpus = read("tests/cli_corpus.json");
+    for case in [
+        "root-help",
+        "root-help-short",
+        "root-help-cluster",
+        "help-after-unknown-flag",
+    ] {
+        let marker = format!("\"name\": \"{case}\"");
+        let start = corpus
+            .find(&marker)
+            .unwrap_or_else(|| panic!("the corpus must carry the {case} case"));
+        let rest = &corpus[start..];
+        let end = rest[marker.len()..]
+            .find("\"name\": \"")
+            .map(|i| marker.len() + i)
+            .unwrap_or(rest.len());
+        assert!(
+            rest[..end].contains(DESCRIPTION),
+            "the {case} root help expectation must carry the description"
+        );
+    }
+    let main = read("src/main.rs");
+    let first_about = main
+        .lines()
+        .find(|line| line.contains("about = \""))
+        .expect("the command declaration carries an about attribute");
+    assert_eq!(
+        first_about,
+        format!("    about = \"{DESCRIPTION}\","),
+        "the root about attribute must be the description"
+    );
+}
+
 #[test]
 fn the_setup_digit_class_is_the_unicode_decimal_class() {
     // The Python pins read digits in the decimal class of the

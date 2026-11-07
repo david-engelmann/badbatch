@@ -863,7 +863,7 @@ fn help_fires_and_is_blocked_exactly_where_the_oracle_put_it() {
     assert!(
         outcome
             .stdout_text()
-            .starts_with("Stamp what a run left behind")
+            .starts_with("Walks a batch of stamped artifacts")
     );
     let outcome = run_cli(&["stamp", "record.txt", "extra", "--help"], &dir);
     assert_eq!(outcome.code, 0);
