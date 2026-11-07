@@ -24,7 +24,7 @@ cd badbatch
 cargo build
 ```
 
-The binary lands at target/debug/badbatch, and the test suite runs with `cargo test`.
+The binary lands at target/debug/badbatch, and the test suite runs with `cargo test`. The build needs a Unix environment such as Linux, macOS, or WSL on Windows.
 
 ## Quickstart
 
@@ -55,7 +55,7 @@ artifact exports/report.pdf irreversible 492731e3de3cdce6740a08859ff78756a4f4cc0
 
 ### recall
 
-`badbatch recall <stamp> <current-state> <start>...` walks the stamp graph from one or more stamped files at once and prints the union of the artifacts any start reaches, each artifact once, as the block at the top of this page shows for one start. Every artifact line names the artifact, its class, its status against the current state, current or drifted or missing, and its chain, and the chain an artifact carries is the chain the single start walk from the earliest start in argument order that reaches it would print. The walk reports the status it finds and never repairs a drifted artifact and never restores a missing one. With `--fixtures <directory>` the walk also consults recorded judgment fixtures, and a trusted answer may propose a class for an artifact the stamp leaves unclassed, printed as the class word followed by the word proposed and never recorded as the class.
+`badbatch recall <stamp> <current-state> <start>...` walks the stamp graph from one or more stamped files at once and prints the union of the artifacts any start reaches, each artifact once, as the block at the top of this page shows for one start. Every artifact line names the artifact, its class, its status against the current state, current or drifted or missing, and its chain, and the chain an artifact carries is the chain the single start walk from the earliest start in argument order that reaches it would print. The walk reports the status it finds and never repairs a drifted artifact and never restores a missing one. With `--fixtures <directory>` the walk also consults recorded judgment fixtures, and a trusted answer may propose a class for an artifact the stamp leaves unclassed, printed as the class word followed by the word proposed and never recorded as the class. Where no trusted answer proposes a class for an unclassed artifact the walk would list, the recall refuses with one error line naming the source and the artifact, and plan refuses the same way, since both run the one walk.
 
 ### plan
 
@@ -75,7 +75,7 @@ compensation quarantine-artifact
 
 With `--fixtures <directory>` a trusted recorded ranking may order the candidates an artifact carries, printing the score after the candidate name, and the candidates no trusted score covers keep their canonical order after them. The plan executes nothing and approves nothing, and a ranking is never written back into any file.
 
-Every command reads only the files it is handed and writes only to the standard output. A file that cannot be read or an input that is malformed refuses with one error line and exit status 2, and a malformed invocation exits with status 2. A line that cannot be printed because its stream is already gone answers with status 120 instead.
+Every command reads only the files it is handed and writes nothing to any file. Documents print to the standard output and error lines to the standard error. A file that cannot be read or an input that is malformed refuses with one error line and exit status 2, and a malformed invocation exits with status 2. A line that cannot be printed because its stream is already gone answers with status 120 instead, and a document of 8192 bytes or more that cannot finish printing answers with status 2 when its error line can be printed, and an input past a reader ceiling refuses with status 1, as BB-37 states.
 
 ## Status
 

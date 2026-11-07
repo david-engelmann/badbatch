@@ -161,14 +161,35 @@ fn the_description_stands_on_every_surface() {
         "the first crate doc line must be the description"
     );
     let corpus = read("tests/cli_corpus.json");
-    assert!(
-        corpus.contains(DESCRIPTION),
-        "the corpus root help expectations must carry the description"
-    );
+    for case in [
+        "root-help",
+        "root-help-short",
+        "root-help-cluster",
+        "help-after-unknown-flag",
+    ] {
+        let marker = format!("\"name\": \"{case}\"");
+        let start = corpus
+            .find(&marker)
+            .unwrap_or_else(|| panic!("the corpus must carry the {case} case"));
+        let rest = &corpus[start..];
+        let end = rest[marker.len()..]
+            .find("\"name\": \"")
+            .map(|i| marker.len() + i)
+            .unwrap_or(rest.len());
+        assert!(
+            rest[..end].contains(DESCRIPTION),
+            "the {case} root help expectation must carry the description"
+        );
+    }
     let main = read("src/main.rs");
-    assert!(
-        main.contains(&format!("about = \"{DESCRIPTION}\"")),
-        "the command line about must carry the description"
+    let first_about = main
+        .lines()
+        .find(|line| line.contains("about = \""))
+        .expect("the command declaration carries an about attribute");
+    assert_eq!(
+        first_about,
+        format!("    about = \"{DESCRIPTION}\","),
+        "the root about attribute must be the description"
     );
 }
 
