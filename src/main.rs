@@ -1032,36 +1032,50 @@ mod tests {
         assert_eq!(derived_root_longs(), vec!["--help".to_string()]);
     }
 
-    /// Derive the short of the help argument of the root
-    /// command from the built command, finding the argument
-    /// by its help long in the manner derived_root_longs
-    /// collects the longs of the root command, and standing
-    /// absent where the built command carries no argument
-    /// with the help long.
-    fn derived_root_help_short() -> Option<char> {
+    /// Derive the short of the help argument of every
+    /// command in the tree, the root command first and
+    /// then its subcommands in their own order, finding
+    /// each argument by its help long in the manner
+    /// derived_root_longs collects the longs of the root
+    /// command, and standing absent in a command's place
+    /// where that command carries no argument with the
+    /// help long.
+    fn derived_help_shorts() -> Vec<Option<char>> {
+        fn help_short(command: &clap::Command) -> Option<char> {
+            for arg in command.get_arguments() {
+                if arg.get_long() == Some("help") {
+                    return arg.get_short();
+                }
+            }
+            None
+        }
         let mut command = Cli::command();
         command.build();
-        for arg in command.get_arguments() {
-            if arg.get_long() == Some("help") {
-                return arg.get_short();
-            }
+        let mut shorts = vec![help_short(&command)];
+        for sub in command.get_subcommands() {
+            shorts.push(help_short(sub));
         }
-        None
+        shorts
     }
 
     /// BB-58. The two reads that test the second point of
     /// a token against the code point 0x68, the short help
     /// test of reads_as_positional and the short help
-    /// branch of help_read, rest on the help argument of
-    /// the root command carrying the short h. This pin
-    /// derives that short from the built command and
-    /// asserts it is the letter h, so a help short
-    /// customized to another letter, or a root command
-    /// left with no help argument at all, fails here in
-    /// the open instead of leaving the two reads standing
-    /// behind the parser in silence.
+    /// branch of help_read, test that point in every
+    /// context the scan walks, on the root and behind a
+    /// subcommand alike, and they rest on the help
+    /// argument of every command in the tree carrying
+    /// the short h. This pin derives the help short of
+    /// every command from the built command and asserts
+    /// each one is the letter h, so a help short
+    /// customized to another letter on any command, or a
+    /// command left with no help argument at all, fails
+    /// here in the open instead of leaving the two reads
+    /// standing behind the parser in silence.
     #[test]
-    fn root_help_short_is_the_letter_h() {
-        assert_eq!(derived_root_help_short(), Some('h'));
+    fn every_help_short_is_the_letter_h() {
+        let shorts = derived_help_shorts();
+        assert_eq!(shorts.len(), 4);
+        assert!(shorts.iter().all(|short| *short == Some('h')));
     }
 }
