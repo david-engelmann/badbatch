@@ -206,11 +206,15 @@ fn subcommand_specs() -> Vec<SubcommandSpec> {
 }
 
 fn root_longs() -> Vec<String> {
-    // The command factory's model of the root command does not
-    // surface the generated help flag, so the root table is the
-    // one flag the root parser carries, named outright. The
-    // subcommand tables below are derived from the factory,
-    // which does surface theirs.
+    // The root table is the one flag the root parser carries,
+    // named outright. The unbuilt command the factory hands
+    // back surfaces no root argument at all, and the built
+    // command surfaces the generated help argument alone, as
+    // the probe of Round 9 recorded, so the table holds the
+    // help long because the root declares no other long. The
+    // set stands guarded by the pin of BB-57 in the test
+    // module below. The subcommand tables are derived from
+    // the factory, which does surface theirs.
     vec!["--help".to_string()]
 }
 
@@ -982,5 +986,82 @@ fn main() -> ExitCode {
     {
         Ok(handle) => handle.join().unwrap_or(ExitCode::from(2)),
         Err(_) => run(),
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    /// Derive the root long set from the built command in
+    /// the manner subcommand_specs derives the long set of
+    /// a subcommand, collecting the long of every argument
+    /// the root command carries and completing the set with
+    /// the help long where it stands absent.
+    fn derived_root_longs() -> Vec<String> {
+        let mut command = Cli::command();
+        command.build();
+        let mut longs: Vec<String> = Vec::new();
+        for arg in command.get_arguments() {
+            let Some(long) = arg.get_long() else {
+                continue;
+            };
+            let name = format!("--{long}");
+            if !longs.contains(&name) {
+                longs.push(name);
+            }
+        }
+        if !longs.iter().any(|long| long == "--help") {
+            longs.push("--help".to_string());
+        }
+        longs
+    }
+
+    /// BB-57. The hand set the scan reads help tokens
+    /// against on the root, the table root_longs returns,
+    /// holds the help long alone, and it holds it because
+    /// the root command declares no other long. This pin
+    /// derives the root long set from the built command and
+    /// asserts the derived set is the one help long, so a
+    /// long added to the root command, declared as an
+    /// argument or raised by an attribute, fails here in
+    /// the open instead of leaving the hand set standing
+    /// behind the parser in silence.
+    #[test]
+    fn root_long_set_is_the_one_help_long() {
+        assert_eq!(derived_root_longs(), vec!["--help".to_string()]);
+    }
+
+    /// Derive the short of the help argument of the root
+    /// command from the built command, finding the argument
+    /// by its help long in the manner derived_root_longs
+    /// collects the longs of the root command, and standing
+    /// absent where the built command carries no argument
+    /// with the help long.
+    fn derived_root_help_short() -> Option<char> {
+        let mut command = Cli::command();
+        command.build();
+        for arg in command.get_arguments() {
+            if arg.get_long() == Some("help") {
+                return arg.get_short();
+            }
+        }
+        None
+    }
+
+    /// BB-58. The two reads that test the second point of
+    /// a token against the code point 0x68, the short help
+    /// test of reads_as_positional and the short help
+    /// branch of help_read, rest on the help argument of
+    /// the root command carrying the short h. This pin
+    /// derives that short from the built command and
+    /// asserts it is the letter h, so a help short
+    /// customized to another letter, or a root command
+    /// left with no help argument at all, fails here in
+    /// the open instead of leaving the two reads standing
+    /// behind the parser in silence.
+    #[test]
+    fn root_help_short_is_the_letter_h() {
+        assert_eq!(derived_root_help_short(), Some('h'));
     }
 }
