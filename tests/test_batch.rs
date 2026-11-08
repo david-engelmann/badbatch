@@ -715,3 +715,127 @@ fn a_walk_with_no_start_is_not_assigned() {
     assert_eq!(outcome.code, 2);
     assert_eq!(outcome.stdout_text(), "");
 }
+
+// The Round 8 pins. The headers alone outcome of BB-42,
+// pinned under BB-53, and the start list boundary of
+// BB-54. The batch session above reaches an artifact from
+// every file it stamps, so the headers alone cases stand
+// in a directory of their own, whose stamp carries one
+// file no artifact derives from.
+
+fn cli_dir_lonely(name: &str) -> (PathBuf, PathBuf, PathBuf) {
+    let dir = common::test_dir(name);
+    let stamp_text = format!(
+        "stamp run-0042\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\n\
+file gen/a.txt created {a}\n\
+file gen/lonely.txt created {l}\n\
+artifact mid/only-a.txt reversible {oa} derived-from gen/a.txt\n",
+        a = d('1'),
+        l = d('9'),
+        oa = d('a'),
+    );
+    let state_text = format!("file mid/only-a.txt {}\n", d('a'));
+    let stamp = common::write(&dir, "stamp.txt", &stamp_text);
+    let state = common::write(&dir, "state.txt", &state_text);
+    (dir, stamp, state)
+}
+
+#[test]
+fn a_start_reaching_no_artifact_prints_the_recall_header_alone() {
+    let (dir, stamp, state) = cli_dir_lonely("batch-cli-lonely-recall");
+    let outcome = common::run_cli(
+        &[
+            "recall",
+            stamp.to_str().expect("utf8"),
+            state.to_str().expect("utf8"),
+            "gen/lonely.txt",
+        ],
+        &dir,
+    );
+    assert_eq!(outcome.code, 0);
+    assert_eq!(outcome.stdout_text(), "recall gen/lonely.txt\n");
+}
+
+#[test]
+fn a_start_reaching_no_artifact_prints_the_plan_header_alone() {
+    let (dir, stamp, state) = cli_dir_lonely("batch-cli-lonely-plan");
+    let outcome = common::run_cli(
+        &[
+            "plan",
+            stamp.to_str().expect("utf8"),
+            state.to_str().expect("utf8"),
+            "gen/lonely.txt",
+        ],
+        &dir,
+    );
+    assert_eq!(outcome.code, 0);
+    assert_eq!(outcome.stdout_text(), "plan gen/lonely.txt\n");
+}
+
+#[test]
+fn an_empty_recall_result_renders_the_header_lines_alone() {
+    assert_eq!(
+        format_recall_multi(&starts(&["gen/a.txt"]), &[]),
+        "recall gen/a.txt\n"
+    );
+    assert_eq!(
+        format_recall_multi(&starts(&["gen/a.txt", "gen/b.txt"]), &[]),
+        "recall gen/a.txt\nrecall gen/b.txt\n"
+    );
+}
+
+#[test]
+fn an_empty_plan_result_renders_the_header_lines_alone() {
+    assert_eq!(
+        format_plan_multi(&starts(&["gen/a.txt"]), &[]),
+        "plan gen/a.txt\n"
+    );
+    assert_eq!(
+        format_plan_multi(&starts(&["gen/a.txt", "gen/b.txt"]), &[]),
+        "plan gen/a.txt\nplan gen/b.txt\n"
+    );
+}
+
+// The start list boundary at the walk and format levels,
+// BB-54. The walk returns the entries of the list as given,
+// a name repeated counting as the name once, and the
+// formatters render the list as given, a name repeated
+// printing once per occurrence. The deduplication that
+// keeps a command's document free of repeats belongs to
+// the commands that build the list, as the repeated start
+// pin of Round 6 holds at the command level.
+
+#[test]
+fn a_repeated_start_returns_the_entries_of_the_name_once() {
+    let stamp = batch_stamp();
+    let state = batch_state();
+    let once = recall_walk_multi(&stamp, &state, &starts(&["gen/a.txt"]), None)
+        .expect("walk with the name once");
+    assert_eq!(once.len(), 7);
+    let twice = recall_walk_multi(&stamp, &state, &starts(&["gen/a.txt", "gen/a.txt"]), None)
+        .expect("walk with the name repeated");
+    assert_eq!(twice, once);
+    let pair = recall_walk_multi(&stamp, &state, &starts(&["gen/a.txt", "gen/b.txt"]), None)
+        .expect("walk with two starts");
+    assert_eq!(pair.len(), 8);
+    let trailed = recall_walk_multi(
+        &stamp,
+        &state,
+        &starts(&["gen/a.txt", "gen/b.txt", "gen/a.txt"]),
+        None,
+    )
+    .expect("walk with a trailed repeat");
+    assert_eq!(trailed, pair);
+}
+
+#[test]
+fn a_formatter_prints_the_start_list_as_given() {
+    assert_eq!(
+        format_recall_multi(&starts(&["gen/a.txt", "gen/a.txt"]), &[]),
+        "recall gen/a.txt\nrecall gen/a.txt\n"
+    );
+    assert_eq!(
+        format_plan_multi(&starts(&["gen/a.txt", "gen/a.txt"]), &[]),
+        "plan gen/a.txt\nplan gen/a.txt\n"
+    );
+}
