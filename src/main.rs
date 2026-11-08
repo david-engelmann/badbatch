@@ -1027,19 +1027,27 @@ mod tests {
     /// argument or raised by an attribute, fails here in
     /// the open instead of leaving the hand set standing
     /// behind the parser in silence.
+    ///
+    /// BB-61 adds the second assertion, that the table
+    /// root_longs returns equals the derived set, so an
+    /// edit to the table alone fails here as well.
     #[test]
     fn root_long_set_is_the_one_help_long() {
         assert_eq!(derived_root_longs(), vec!["--help".to_string()]);
+        assert_eq!(root_longs(), derived_root_longs());
     }
 
     /// Derive the short of the help argument of every
-    /// command in the tree, the root command first and
-    /// then its subcommands in their own order, finding
-    /// each argument by its help long in the manner
+    /// command in the tree, walking the built command
+    /// recursively, each command first and then its
+    /// subcommands in their own order, finding each
+    /// argument by its help long in the manner
     /// derived_root_longs collects the longs of the root
     /// command, and standing absent in a command's place
     /// where that command carries no argument with the
-    /// help long.
+    /// help long. BB-62 gives the walk this recursive
+    /// form, where the derivation of BB-58 as first
+    /// written walked one level deep.
     fn derived_help_shorts() -> Vec<Option<char>> {
         fn help_short(command: &clap::Command) -> Option<char> {
             for arg in command.get_arguments() {
@@ -1049,12 +1057,16 @@ mod tests {
             }
             None
         }
+        fn collect(command: &clap::Command, shorts: &mut Vec<Option<char>>) {
+            shorts.push(help_short(command));
+            for sub in command.get_subcommands() {
+                collect(sub, shorts);
+            }
+        }
         let mut command = Cli::command();
         command.build();
-        let mut shorts = vec![help_short(&command)];
-        for sub in command.get_subcommands() {
-            shorts.push(help_short(sub));
-        }
+        let mut shorts = Vec::new();
+        collect(&command, &mut shorts);
         shorts
     }
 
