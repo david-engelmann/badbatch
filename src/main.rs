@@ -1090,4 +1090,717 @@ mod tests {
         assert_eq!(shorts.len(), 4);
         assert!(shorts.iter().all(|short| *short == Some('h')));
     }
+
+    /// Build the token stream a scan pin hands the scan.
+    fn stream(texts: &[&str]) -> Vec<OsString> {
+        texts.iter().map(|text| OsString::from(*text)).collect()
+    }
+
+    /// Assert the scan fires the help of the named command,
+    /// or the help of the root where the name is absent.
+    fn assert_help_fires(tokens: &[&str], command: Option<&str>) {
+        match scan(&stream(tokens)) {
+            Scan::FireHelp(fired) => assert_eq!(fired.map(|cmd| cmd.name()), command),
+            Scan::Assigned(_) => {
+                panic!("the scan assigned an invocation where a pin expected help to fire")
+            }
+            Scan::Run(_) => {
+                panic!("the scan handed the stream over where a pin expected help to fire")
+            }
+        }
+    }
+
+    /// Assert the scan hands the invocation to the crate
+    /// parser carrying exactly this stream.
+    fn assert_handed_over(tokens: &[&str], expected: &[&str]) {
+        match scan(&stream(tokens)) {
+            Scan::Run(carried) => assert_eq!(carried, stream(expected)),
+            Scan::FireHelp(_) => {
+                panic!("help fired where a pin expected the stream handed over")
+            }
+            Scan::Assigned(_) => {
+                panic!("the scan assigned an invocation a pin expected handed over")
+            }
+        }
+    }
+
+    /// Assert the scan assigns the invocation to the named
+    /// command with these slots and this fixtures value. A
+    /// slot written as None in the expectation is a slot
+    /// holding a list.
+    fn assert_assigned(
+        tokens: &[&str],
+        command: &str,
+        slots: &[Option<&str>],
+        fixtures: Option<&str>,
+    ) {
+        match scan(&stream(tokens)) {
+            Scan::Assigned(assigned) => {
+                assert_eq!(assigned.cmd.name(), command);
+                let carried: Vec<Option<OsString>> = assigned
+                    .slots
+                    .iter()
+                    .map(|slot| match slot {
+                        Slot::One(value) => Some(value.clone()),
+                        Slot::Listed => None,
+                    })
+                    .collect();
+                let expected: Vec<Option<OsString>> =
+                    slots.iter().map(|slot| slot.map(OsString::from)).collect();
+                assert_eq!(carried, expected);
+                assert_eq!(assigned.fixtures, fixtures.map(OsString::from));
+            }
+            Scan::FireHelp(_) => panic!("help fired where a pin expected an assignment"),
+            Scan::Run(_) => {
+                panic!("the scan handed the stream over where a pin expected an assignment")
+            }
+        }
+    }
+
+    /// BB-70, the help family. The exact long in the root
+    /// table fires the root help.
+    #[test]
+    fn scan_help_long_fires_at_the_root() {
+        assert_help_fires(&["--help"], None);
+    }
+
+    /// BB-70, the help family. An unambiguous abbreviation
+    /// of the help long fires, the prefix match of the help
+    /// read being the scan's own form of the inference the
+    /// parser applies.
+    #[test]
+    fn scan_help_long_abbreviation_fires_at_the_root() {
+        assert_help_fires(&["--hel"], None);
+    }
+
+    /// BB-70, the help family. The short alone fires at the
+    /// root.
+    #[test]
+    fn scan_help_short_fires_at_the_root() {
+        assert_help_fires(&["-h"], None);
+    }
+
+    /// BB-70, the help family. The short leading a cluster
+    /// fires, the third point being neither an equals sign
+    /// nor a dash.
+    #[test]
+    fn scan_help_short_cluster_fires_at_the_root() {
+        assert_help_fires(&["-hx"], None);
+    }
+
+    /// BB-70, the help family. The short carrying an equals
+    /// argument is refused on the terms of BB-39, and the
+    /// stream handed over carries the replacement the read
+    /// builds, the help long with the argument joined.
+    #[test]
+    fn scan_help_short_with_an_equals_argument_refuses() {
+        assert_handed_over(&["-h=x"], &["--help=x"]);
+    }
+
+    /// BB-70, the help family. The short carrying a dash led
+    /// argument is refused with the replacement built from
+    /// the dash on.
+    #[test]
+    fn scan_help_short_with_a_dash_argument_refuses() {
+        assert_handed_over(&["-h-x"], &["--help=-x"]);
+    }
+
+    /// BB-70, the help family. The long carrying an equals
+    /// argument is refused carrying the token itself, and
+    /// the tokens after it pass into the raw stream
+    /// untouched, which is how the refusal's block shows
+    /// against the no answer reading the token would
+    /// otherwise take.
+    #[test]
+    fn scan_help_long_with_an_equals_argument_refuses() {
+        assert_handed_over(&["--help=x", "stamp", "rec"], &["--help=x", "stamp", "rec"]);
+    }
+
+    /// BB-70, the help family. The abbreviated long carrying
+    /// an equals argument is refused in the same arm at the
+    /// root, with the same block standing behind it.
+    #[test]
+    fn scan_help_abbreviated_long_with_an_equals_argument_refuses() {
+        assert_handed_over(&["--hel=x", "stamp", "rec"], &["--hel=x", "stamp", "rec"]);
+    }
+
+    /// BB-70, the help family. Behind a subcommand the long
+    /// form reads no answer in every shape, because the
+    /// subcommand tables are derived from the unbuilt
+    /// command, which surfaces no generated help argument,
+    /// so no subcommand table holds the help long. The
+    /// abbreviated long behind stamp is handed over as
+    /// gathered, and the crate parser fires the help on
+    /// that stream, which is how the corpus help cases
+    /// behind subcommands are answered.
+    #[test]
+    fn scan_help_abbreviated_long_behind_stamp_reads_no_answer() {
+        assert_handed_over(&["stamp", "--h"], &["stamp", "--h"]);
+    }
+
+    /// BB-70, the help family. The exact long behind recall
+    /// reads no answer on the same table fact, and the
+    /// stream is handed over as gathered.
+    #[test]
+    fn scan_help_long_behind_recall_reads_no_answer() {
+        assert_handed_over(&["recall", "--help"], &["recall", "--help"]);
+    }
+
+    /// BB-70, the help family. The abbreviated long
+    /// carrying an equals argument behind plan reads no
+    /// answer in the same arm, and the fall-through stream
+    /// shows the gathered order, the token ahead of the
+    /// separator and the value behind it.
+    #[test]
+    fn scan_help_abbreviated_long_with_an_equals_argument_behind_plan_reads_no_answer() {
+        assert_handed_over(&["plan", "a", "--hel=x"], &["plan", "--hel=x", "--", "a"]);
+    }
+
+    /// BB-70, the help family. The short fires behind plan
+    /// and names plan.
+    #[test]
+    fn scan_help_short_fires_behind_plan() {
+        assert_help_fires(&["plan", "-h"], Some("plan"));
+    }
+
+    /// BB-70, the help family. Help fires in a deeper
+    /// position behind a command, after a value, on the
+    /// terms of BB-39.
+    #[test]
+    fn scan_help_fires_in_a_deeper_position_behind_a_command() {
+        assert_help_fires(&["recall", "a", "-h"], Some("recall"));
+    }
+
+    /// BB-70, the help family. A consumed fixtures pair does
+    /// not block help, which fires behind it.
+    #[test]
+    fn scan_help_fires_after_a_consumed_fixtures_pair() {
+        assert_help_fires(&["recall", "--fixtures=d", "-h"], Some("recall"));
+    }
+
+    /// BB-70, the help family. A long that no table entry
+    /// begins with reads as no help answer, and the stream
+    /// is handed over as gathered.
+    #[test]
+    fn scan_help_long_matching_no_table_entry_reads_no_answer() {
+        assert_handed_over(&["--helpme"], &["--helpme"]);
+    }
+
+    /// BB-70, the help family. A long whose name carries a
+    /// non ASCII point reads as no help answer, the ASCII
+    /// stem read failing before any match is tried.
+    #[test]
+    fn scan_help_long_with_a_non_ascii_name_reads_no_answer() {
+        assert_handed_over(&["--h\u{00e9}"], &["--h\u{00e9}"]);
+    }
+
+    /// BB-70, the help family. Help never fires after a
+    /// separator, and the short standing after one is a
+    /// start value like any other.
+    #[test]
+    fn scan_help_never_fires_after_a_separator() {
+        assert_assigned(
+            &["recall", "a", "b", "c", "--", "-h"],
+            "recall",
+            &[Some("a"), Some("b"), Some("c"), Some("-h")],
+            None,
+        );
+    }
+
+    /// BB-70, the help family. The short help family decides
+    /// ahead of the space rule, so the short carrying a
+    /// space in one token still fires.
+    #[test]
+    fn scan_help_short_family_token_carrying_a_space_fires() {
+        assert_help_fires(&["stamp", "-h y"], Some("stamp"));
+    }
+
+    /// BB-70, the help family. A pending fixtures value
+    /// blocks help, the short standing as the value
+    /// candidate and reading as no positional there, on the
+    /// terms of BB-39.
+    #[test]
+    fn scan_help_pending_fixtures_value_blocks_help() {
+        assert_handed_over(
+            &["recall", "--fixtures", "-h"],
+            &["recall", "--fixtures", "-h"],
+        );
+    }
+
+    /// BB-70, the separator family. A separator at the root
+    /// blocks the scan, and the stream ends as the raw
+    /// stream.
+    #[test]
+    fn scan_separator_at_the_root_blocks_the_scan() {
+        assert_handed_over(&["--", "stamp"], &["--", "stamp"]);
+    }
+
+    /// BB-70, the separator family. The first separator in
+    /// a segment is discounted, joining the share of the
+    /// value before it, and the values assign in order.
+    #[test]
+    fn scan_separator_between_values_is_discounted() {
+        assert_assigned(
+            &["recall", "a", "--", "b", "c"],
+            "recall",
+            &[Some("a"), Some("b"), Some("c")],
+            None,
+        );
+    }
+
+    /// BB-70, the separator family. A separator leading a
+    /// segment joins the first share, which gives it up and
+    /// keeps its value.
+    #[test]
+    fn scan_separator_leading_a_segment_joins_the_first_share() {
+        assert_assigned(
+            &["recall", "--", "a", "b", "c"],
+            "recall",
+            &[Some("a"), Some("b"), Some("c")],
+            None,
+        );
+    }
+
+    /// BB-70, the separator family. Two separators opening
+    /// a segment leave the first share holding the
+    /// separator itself as a value after the discount.
+    #[test]
+    fn scan_separator_pair_opens_a_share_holding_the_separator_itself() {
+        assert_assigned(
+            &["recall", "--", "--", "b", "c"],
+            "recall",
+            &[Some("--"), Some("b"), Some("c")],
+            None,
+        );
+    }
+
+    /// BB-70, the separator family. A share whose only
+    /// token is a later separator gives that separator up
+    /// and ends empty, so the state slot holds a list.
+    #[test]
+    fn scan_separator_pair_leaves_the_state_slot_a_list() {
+        assert_assigned(
+            &["recall", "stamp.txt", "--", "--", "out/f.html"],
+            "recall",
+            &[Some("stamp.txt"), None, Some("out/f.html")],
+            None,
+        );
+    }
+
+    /// BB-70, the separator family. The same shape one slot
+    /// later leaves the start slot holding a list.
+    #[test]
+    fn scan_separator_pair_leaves_the_start_slot_a_list() {
+        assert_assigned(
+            &["recall", "stamp.txt", "state.txt", "--", "--"],
+            "recall",
+            &[Some("stamp.txt"), Some("state.txt"), None],
+            None,
+        );
+    }
+
+    /// BB-70, the separator family. A trailing separator
+    /// after a complete invocation with no flag consumed is
+    /// absorbed into the last share and the command runs,
+    /// on the terms of BB-46.
+    #[test]
+    fn scan_trailing_separator_is_absorbed_after_a_complete_invocation() {
+        assert_assigned(
+            &["recall", "a", "b", "c", "--"],
+            "recall",
+            &[Some("a"), Some("b"), Some("c")],
+            None,
+        );
+    }
+
+    /// BB-70, the separator family. A trailing separator
+    /// closing a segment that holds nothing else, after a
+    /// flag was consumed, refuses the distribution, and the
+    /// invocation falls through with the gathered stream, a
+    /// separator, and the flattened segment tokens.
+    #[test]
+    fn scan_trailing_separator_closing_an_empty_segment_after_a_flag_refuses() {
+        assert_handed_over(
+            &["recall", "a", "b", "c", "--fixtures=dir", "--"],
+            &["recall", "--fixtures=dir", "--", "a", "b", "c", "--"],
+        );
+    }
+
+    /// BB-70, the separator family. A separator closing an
+    /// earlier value segment, with a flag pair standing
+    /// between values, leaves the distribution standing, on
+    /// the terms of BB-46.
+    #[test]
+    fn scan_separator_closing_a_value_segment_after_a_flag_pair_stands() {
+        assert_assigned(
+            &["recall", "a", "b", "--fixtures", "dir", "c", "--"],
+            "recall",
+            &[Some("a"), Some("b"), Some("c")],
+            Some("dir"),
+        );
+    }
+
+    /// BB-70, the separator family. The fixed shape of
+    /// stamp refuses two values, and the fall-through
+    /// stream carries the separator and both values.
+    #[test]
+    fn scan_fixed_shape_overfilled_falls_through() {
+        assert_handed_over(&["stamp", "a", "b"], &["stamp", "--", "a", "b"]);
+    }
+
+    /// BB-70, the separator family. The variable shape of
+    /// recall refuses two slots, the two fixed slots with
+    /// no start standing.
+    #[test]
+    fn scan_variable_shape_underfilled_falls_through() {
+        assert_handed_over(&["recall", "a", "b"], &["recall", "--", "a", "b"]);
+    }
+
+    /// BB-70, the separator family. Stamp with no value at
+    /// all falls through carrying the command word alone,
+    /// every segment standing empty.
+    #[test]
+    fn scan_stamp_with_no_value_falls_through() {
+        assert_handed_over(&["stamp"], &["stamp"]);
+    }
+
+    /// BB-70, the fixtures family. The joined form after
+    /// the values assigns with the fixtures value standing.
+    #[test]
+    fn scan_fixtures_joined_value_after_the_values() {
+        assert_assigned(
+            &["recall", "a", "b", "c", "--fixtures=dir"],
+            "recall",
+            &[Some("a"), Some("b"), Some("c")],
+            Some("dir"),
+        );
+    }
+
+    /// BB-70, the fixtures family. The separate value
+    /// stands as the fixtures value of the assignment.
+    #[test]
+    fn scan_fixtures_separate_value_stands() {
+        assert_assigned(
+            &["recall", "--fixtures", "dir", "a", "b", "c"],
+            "recall",
+            &[Some("a"), Some("b"), Some("c")],
+            Some("dir"),
+        );
+    }
+
+    /// BB-70, the fixtures family. An unambiguous
+    /// abbreviation of the flag's name stands for the flag
+    /// in its standing form, on the terms of BB-39.
+    #[test]
+    fn scan_fixtures_abbreviated_name_standing() {
+        assert_assigned(
+            &["recall", "--fixt", "dir", "a", "b", "c"],
+            "recall",
+            &[Some("a"), Some("b"), Some("c")],
+            Some("dir"),
+        );
+    }
+
+    /// BB-70, the fixtures family. The abbreviation in its
+    /// joined form behind plan stands as well.
+    #[test]
+    fn scan_fixtures_abbreviated_name_joined_behind_plan() {
+        assert_assigned(
+            &["plan", "--f=dir", "a", "b", "c"],
+            "plan",
+            &[Some("a"), Some("b"), Some("c")],
+            Some("dir"),
+        );
+    }
+
+    /// BB-70, the fixtures family. A value candidate that
+    /// reads as a flag token blocks the scan, and the
+    /// stream ends as the raw stream, on the terms of
+    /// BB-39.
+    #[test]
+    fn scan_fixtures_value_reading_as_a_flag_blocks() {
+        assert_handed_over(
+            &["recall", "--fixtures", "--help"],
+            &["recall", "--fixtures", "--help"],
+        );
+    }
+
+    /// BB-70, the fixtures family. A separator standing
+    /// where the value belongs blocks the scan in the same
+    /// arm, the pending read of the separator answering not
+    /// positional by its first rule.
+    #[test]
+    fn scan_fixtures_separator_after_the_flag_blocks() {
+        assert_handed_over(
+            &["recall", "--fixtures", "--", "a"],
+            &["recall", "--fixtures", "--", "a"],
+        );
+    }
+
+    /// BB-70, the fixtures family. The flag standing at the
+    /// end with no token after it hands the raw stream
+    /// over, the scan still pending.
+    #[test]
+    fn scan_fixtures_flag_standing_at_the_end_hands_the_raw_stream() {
+        assert_handed_over(
+            &["recall", "a", "b", "c", "--fixtures"],
+            &["recall", "a", "b", "c", "--fixtures"],
+        );
+    }
+
+    /// BB-70, the fixtures family. A separate value is
+    /// joined into the gathered stream at the flag's slot
+    /// with an equals sign, and a fall-through hands the
+    /// joined form over, the assignment failing here only
+    /// for want of slots.
+    #[test]
+    fn scan_fixtures_pending_value_is_joined_into_the_gathered_stream() {
+        assert_handed_over(
+            &["recall", "--fixtures", "dir"],
+            &["recall", "--fixtures=dir"],
+        );
+    }
+
+    /// BB-70, the fixtures family. Where the flag stands
+    /// more than once its last value stands, on the terms
+    /// of BB-38, in the joined repetition.
+    #[test]
+    fn scan_fixtures_repeated_joined_flag_last_value_stands() {
+        assert_assigned(
+            &["recall", "--fixtures=one", "--fixtures=two", "a", "b", "c"],
+            "recall",
+            &[Some("a"), Some("b"), Some("c")],
+            Some("two"),
+        );
+    }
+
+    /// BB-70, the fixtures family. The last value stands as
+    /// well where a separate value is followed by a joined
+    /// repetition, the earlier flag token leaving the
+    /// gathered stream.
+    #[test]
+    fn scan_fixtures_separate_then_joined_last_value_stands() {
+        assert_assigned(
+            &[
+                "recall",
+                "--fixtures",
+                "one",
+                "--fixtures=two",
+                "a",
+                "b",
+                "c",
+            ],
+            "recall",
+            &[Some("a"), Some("b"), Some("c")],
+            Some("two"),
+        );
+    }
+
+    /// BB-70, the fixtures family. A joined empty value
+    /// stands as a fixtures value, distinct from no flag,
+    /// the flag's presence being what the command tests on
+    /// the terms of BB-38.
+    #[test]
+    fn scan_fixtures_empty_joined_value_stands_as_a_value() {
+        assert_assigned(
+            &["recall", "--fixtures=", "a", "b", "c"],
+            "recall",
+            &[Some("a"), Some("b"), Some("c")],
+            Some(""),
+        );
+    }
+
+    /// BB-70, the fixtures family. A value that looks like
+    /// a negative number is a value in the flag's value
+    /// position, on the terms of BB-39.
+    #[test]
+    fn scan_fixtures_negative_number_stands_as_a_value() {
+        assert_assigned(
+            &["recall", "--fixtures", "-5", "a", "b", "c"],
+            "recall",
+            &[Some("a"), Some("b"), Some("c")],
+            Some("-5"),
+        );
+    }
+
+    /// BB-70, the fixtures family. Behind stamp, which
+    /// declares no value flag, the flag's name is an
+    /// unknown optional, and the stream falls through
+    /// dirtied.
+    #[test]
+    fn scan_fixtures_flag_behind_a_command_without_one_is_an_unknown_optional() {
+        assert_handed_over(
+            &["stamp", "--fixtures", "x"],
+            &["stamp", "--fixtures", "--", "x"],
+        );
+    }
+
+    /// BB-70, the fixtures family. A stem that extends the
+    /// flag's name matches nothing, and the token is an
+    /// unknown optional rather than the flag.
+    #[test]
+    fn scan_fixtures_extended_name_is_not_the_flag() {
+        assert_handed_over(
+            &["recall", "--fixturesx", "a", "b", "c"],
+            &["recall", "--fixturesx", "--", "a", "b", "c"],
+        );
+    }
+
+    /// BB-70, the recognition family. Stamp assigns its one
+    /// slot to its record value.
+    #[test]
+    fn scan_stamp_assigns_its_one_slot() {
+        assert_assigned(&["stamp", "rec"], "stamp", &[Some("rec")], None);
+    }
+
+    /// BB-70, the recognition family. A positional at the
+    /// root blocks the scan, and every later token passes
+    /// into the raw stream untouched.
+    #[test]
+    fn scan_positional_at_the_root_blocks_the_scan() {
+        assert_handed_over(&["word", "stamp", "rec"], &["word", "stamp", "rec"]);
+    }
+
+    /// BB-70, the recognition family. A help token after a
+    /// root block does not fire, passing into the raw
+    /// stream like every token after the block.
+    #[test]
+    fn scan_tokens_after_a_root_block_pass_untouched() {
+        assert_handed_over(&["word", "--help"], &["word", "--help"]);
+    }
+
+    /// BB-70, the recognition family. An unknown optional
+    /// at the root clears the clean state, and the
+    /// fall-through stream carries the optional ahead of
+    /// the separator and the gathered values.
+    #[test]
+    fn scan_unknown_optional_at_the_root_dirties_the_stream() {
+        assert_handed_over(
+            &["--bogus", "stamp", "rec"],
+            &["--bogus", "stamp", "--", "rec"],
+        );
+    }
+
+    /// BB-70, the recognition family. An unknown optional
+    /// behind a command dirties the stream in the same way.
+    #[test]
+    fn scan_unknown_optional_behind_a_command_dirties_the_stream() {
+        assert_handed_over(
+            &["stamp", "--bogus", "rec"],
+            &["stamp", "--bogus", "--", "rec"],
+        );
+    }
+
+    /// BB-70, the recognition family. A dirtied stream is
+    /// denied the direct run even where the distribution
+    /// would fit its values exactly, because an unknown
+    /// optional in the gathered stream means the parser
+    /// refused the invocation as unrecognized.
+    #[test]
+    fn scan_unknown_optional_denies_the_direct_run() {
+        assert_handed_over(
+            &["recall", "--bogus", "a", "b", "c"],
+            &["recall", "--bogus", "--", "a", "b", "c"],
+        );
+    }
+
+    /// BB-70, the recognition family. Subcommand names
+    /// never abbreviate, on the terms of BB-39, and the
+    /// abbreviation standing at the root reads as a
+    /// positional and blocks.
+    #[test]
+    fn scan_subcommand_names_never_abbreviate() {
+        assert_handed_over(&["sta", "rec"], &["sta", "rec"]);
+    }
+
+    /// BB-70, the recognition family. An empty stream hands
+    /// an empty stream over.
+    #[test]
+    fn scan_empty_stream_hands_an_empty_stream() {
+        assert_handed_over(&[], &[]);
+    }
+
+    /// BB-70, the recognition family. With no subcommand
+    /// entered, the gathered stream is handed over as it
+    /// stands, with no separator appended.
+    #[test]
+    fn scan_no_subcommand_hands_the_gathered_stream_as_it_stands() {
+        assert_handed_over(&["--bogus"], &["--bogus"]);
+    }
+
+    /// BB-70, the recognition family. A subcommand's name
+    /// behind a command is an ordinary value, the name
+    /// match standing only where no command is entered.
+    #[test]
+    fn scan_subcommand_word_behind_a_command_is_a_value() {
+        assert_assigned(&["stamp", "recall"], "stamp", &[Some("recall")], None);
+    }
+
+    /// BB-70, the recognition family. A value that looks
+    /// like a negative number reads as a positional, on the
+    /// terms of BB-39.
+    #[test]
+    fn scan_negative_number_is_a_positional() {
+        assert_assigned(&["stamp", "-5"], "stamp", &[Some("-5")], None);
+    }
+
+    /// BB-70, the recognition family. The dotted negative
+    /// form with no digit before the point reads as a
+    /// positional as well, the digits before the point
+    /// standing empty under the pattern.
+    #[test]
+    fn scan_dotted_negative_with_no_leading_digit_is_a_positional() {
+        assert_assigned(&["stamp", "-.5"], "stamp", &[Some("-.5")], None);
+    }
+
+    /// BB-70, the recognition family. A trailing point with
+    /// no digit after it breaks the negative pattern, and
+    /// the token dirties the stream as an unknown optional.
+    #[test]
+    fn scan_number_with_a_trailing_point_is_not_a_positional() {
+        assert_handed_over(&["stamp", "-5."], &["stamp", "-5."]);
+    }
+
+    /// BB-70, the recognition family. The negative pattern
+    /// matches just before one trailing newline, as the
+    /// pattern's end anchor does, so the token carrying it
+    /// reads as a positional.
+    #[test]
+    fn scan_negative_number_before_a_trailing_newline_is_a_positional() {
+        assert_assigned(&["stamp", "-5\n"], "stamp", &[Some("-5\n")], None);
+    }
+
+    /// BB-70, the recognition family. A lone dash reads as
+    /// a positional.
+    #[test]
+    fn scan_lone_dash_is_a_positional() {
+        assert_assigned(&["stamp", "-"], "stamp", &[Some("-")], None);
+    }
+
+    /// BB-70, the recognition family. A dash token carrying
+    /// a space reads as a positional whatever its prefix.
+    #[test]
+    fn scan_dash_token_carrying_a_space_is_a_positional() {
+        assert_assigned(&["stamp", "-x y"], "stamp", &[Some("-x y")], None);
+    }
+
+    /// BB-70, the recognition family. An empty token reads
+    /// as a positional and reaches the slot as it stands.
+    #[test]
+    fn scan_empty_token_is_a_positional() {
+        assert_assigned(&["stamp", ""], "stamp", &[Some("")], None);
+    }
+
+    /// BB-70, the recognition family. The short help family
+    /// decides ahead of the space rule in the pending read
+    /// as well, so a fixtures value candidate of that
+    /// family carrying a space blocks the scan rather than
+    /// standing as a value.
+    #[test]
+    fn scan_pending_help_family_token_carrying_a_space_blocks() {
+        assert_handed_over(
+            &["recall", "--fixtures", "-h y", "a"],
+            &["recall", "--fixtures", "-h y", "a"],
+        );
+    }
 }
