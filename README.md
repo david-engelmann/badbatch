@@ -79,7 +79,7 @@ Every command reads only the files it is handed and writes nothing to any file. 
 
 ## Status
 
-The tool is complete at the surface its contract describes, with no stubbed or held back part, and the full CI gate runs on every change. Round 10 landed in PR 22, completing the two help pins with the root table assertion and the recursive short derivation. Round 11 landed in PR 24, firing the help short behind every command in the committed corpus. Closed rounds 11 of 100.
+The tool is complete at the surface its contract describes, with no stubbed or held back part, and the full CI gate runs on every change. Round 10 landed in PR 22, completing the two help pins with the root table assertion and the recursive short derivation. Round 11 landed in PR 24, firing the help short behind every command in the committed corpus. Round 12 landed in PR 26, pinning the argument scanner's branches by direct unit tests. Closed rounds 12 of 100.
 
 ## License
 
