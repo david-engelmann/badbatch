@@ -1332,7 +1332,7 @@ mod tests {
     /// stream.
     #[test]
     fn scan_separator_at_the_root_blocks_the_scan() {
-        assert_handed_over(&["--", "stamp"], &["--", "stamp"]);
+        assert_handed_over(&["--", "stamp", "rec"], &["--", "stamp", "rec"]);
     }
 
     /// BB-70, the separator family. The first separator in
