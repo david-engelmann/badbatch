@@ -587,6 +587,20 @@
    }
   },
   {
+   "name": "stamp-help-short",
+   "source": "clap",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-h"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "Print the stamp for one recorded run record.\n\nUsage: badbatch stamp <RECORD>\n\nArguments:\n  <RECORD>  \n\nOptions:\n  -h, --help  Print help\n",
+    "stderr": ""
+   }
+  },
+  {
    "name": "recall-help",
    "source": "clap",
    "setup": {},
@@ -601,12 +615,40 @@
    }
   },
   {
+   "name": "recall-help-short",
+   "source": "clap",
+   "setup": {},
+   "argv": [
+    "recall",
+    "-h"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "Print the recall walk for one or more stamped files against a recorded current state.\n\nUsage: badbatch recall [OPTIONS] <STAMP> <STATE> [FILE]...\n\nArguments:\n  <STAMP>    \n  <STATE>    \n  [FILE]...  \n\nOptions:\n      --fixtures <FIXTURES>  Directory of recorded judgment fixtures that may propose classes for unclassed artifacts.\n  -h, --help                 Print help\n",
+    "stderr": ""
+   }
+  },
+  {
    "name": "plan-help",
    "source": "clap",
    "setup": {},
    "argv": [
     "plan",
     "--help"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "Print the execution plan for one or more stamped files against a recorded current state.\n\nUsage: badbatch plan [OPTIONS] <STAMP> <STATE> [FILE]...\n\nArguments:\n  <STAMP>    \n  <STATE>    \n  [FILE]...  \n\nOptions:\n      --fixtures <FIXTURES>  Directory of recorded judgment fixtures that may propose classes for unclassed artifacts and rank candidate compensations.\n  -h, --help                 Print help\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "plan-help-short",
+   "source": "clap",
+   "setup": {},
+   "argv": [
+    "plan",
+    "-h"
    ],
    "expect": {
     "code": 0,
