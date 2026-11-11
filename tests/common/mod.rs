@@ -213,13 +213,65 @@ pub fn load_corpus() -> Vec<CorpusCase> {
 
 /// Run one corpus case in a fresh directory and compare the
 /// exit code and both streams byte for byte.
+/// A snapshot of one staged directory, the relative path of
+/// every directory it holds standing with no bytes and the
+/// relative path of every file it holds standing with its
+/// bytes, so two snapshots stand equal only when the directory
+/// stands exactly as it stood.
+fn snapshot(dir: &Path) -> BTreeMap<PathBuf, Option<Vec<u8>>> {
+    let mut entries = BTreeMap::new();
+    collect(dir, dir, &mut entries);
+    entries
+}
+
+fn collect(root: &Path, dir: &Path, entries: &mut BTreeMap<PathBuf, Option<Vec<u8>>>) {
+    for entry in std::fs::read_dir(dir).expect("read staged dir") {
+        let entry = entry.expect("read staged entry");
+        let path = entry.path();
+        let rel = path
+            .strip_prefix(root)
+            .expect("staged entry stands under the root")
+            .to_path_buf();
+        if entry.file_type().expect("staged entry type").is_dir() {
+            entries.insert(rel, None);
+            collect(root, &path, entries);
+        } else {
+            entries.insert(rel, Some(std::fs::read(&path).expect("read staged file")));
+        }
+    }
+}
+
+/// Name the difference between two snapshots of one staged
+/// directory, entry by entry.
+fn describe_change(
+    before: &BTreeMap<PathBuf, Option<Vec<u8>>>,
+    after: &BTreeMap<PathBuf, Option<Vec<u8>>>,
+) -> String {
+    let mut parts = Vec::new();
+    for (rel, bytes) in after {
+        match before.get(rel) {
+            None => parts.push(format!("created {}", rel.display())),
+            Some(old) if old != bytes => parts.push(format!("modified {}", rel.display())),
+            _ => {}
+        }
+    }
+    for rel in before.keys() {
+        if !after.contains_key(rel) {
+            parts.push(format!("deleted {}", rel.display()));
+        }
+    }
+    parts.join(", ")
+}
+
 pub fn run_corpus_case(case: &CorpusCase) -> Result<(), String> {
     let dir = test_dir("corpus");
     for (rel, content) in &case.setup {
         write(&dir, rel, content);
     }
+    let before = snapshot(&dir);
     let args: Vec<&str> = case.argv.iter().map(|a| a.as_str()).collect();
     let outcome = run_cli(&args, &dir);
+    let after = snapshot(&dir);
     let result = if outcome.code as i64 != case.code {
         Err(format!(
             "exit code {} != expected {} (stderr {:?})",
@@ -238,6 +290,11 @@ pub fn run_corpus_case(case: &CorpusCase) -> Result<(), String> {
             "stderr {:?} != expected {:?}",
             outcome.stderr_text(),
             case.stderr
+        ))
+    } else if after != before {
+        Err(format!(
+            "staged directory changed: {}",
+            describe_change(&before, &after)
         ))
     } else {
         Ok(())

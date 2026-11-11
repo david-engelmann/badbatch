@@ -1803,4 +1803,29 @@ mod tests {
             &["recall", "--fixtures", "-h y", "a"],
         );
     }
+
+    /// BB-75, the fixtures family. A word carrying a space
+    /// stands as the fixtures value through the pending
+    /// arm, joined at the flag's slot like any separate
+    /// value, the space the word carries being no bar to
+    /// the value standing.
+    #[test]
+    fn scan_fixtures_value_carrying_a_space_stands() {
+        assert_assigned(
+            &["recall", "--fixtures", "a b", "a", "b", "c"],
+            "recall",
+            &[Some("a"), Some("b"), Some("c")],
+            Some("a b"),
+        );
+    }
+
+    /// BB-75, the recognition family. The dotted negative
+    /// with digits on both sides of the point reads as a
+    /// positional, the dotted arm of the pattern answering
+    /// where a point stands with digits before it and
+    /// digits after it.
+    #[test]
+    fn scan_dotted_negative_with_digits_on_both_sides_is_a_positional() {
+        assert_assigned(&["stamp", "-5.5"], "stamp", &[Some("-5.5")], None);
+    }
 }
