@@ -2773,6 +2773,141 @@
     "stdout": "plan src/base.py\nartifact out/gone.html reversible-with-compensation missing chain src/base.py -> out/gone.html\ncompensation none required, the artifact is already absent\n",
     "stderr": ""
    }
+  },
+  {
+   "name": "recall-chain-tie-lexicographic",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb18\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/s.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nartifact out/m2.bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/s.py\nartifact out/m1.bin reversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from src/s.py\nartifact out/t.bin reversible ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff derived-from out/m2.bin, out/m1.bin\n",
+    "state.txt": "file src/s.py aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/s.py"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "recall src/s.py\nartifact out/m1.bin reversible missing chain src/s.py -> out/m1.bin\nartifact out/m2.bin reversible missing chain src/s.py -> out/m2.bin\nartifact out/t.bin reversible missing chain src/s.py -> out/m1.bin -> out/t.bin\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "recall-chain-shortest-beats-lexicographic",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb18\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/s.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nartifact out/a.bin reversible bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb derived-from src/s.py\nartifact out/b.bin reversible cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc derived-from out/a.bin\nartifact out/z.bin reversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from src/s.py\nartifact out/t.bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from out/b.bin, out/z.bin\n",
+    "state.txt": "file src/s.py aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/s.py"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "recall src/s.py\nartifact out/a.bin reversible missing chain src/s.py -> out/a.bin\nartifact out/b.bin reversible missing chain src/s.py -> out/a.bin -> out/b.bin\nartifact out/t.bin reversible missing chain src/s.py -> out/z.bin -> out/t.bin\nartifact out/z.bin reversible missing chain src/s.py -> out/z.bin\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "recall-earliest-start-owns-longer-chain",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb18\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/s1.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nfile src/s2.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact out/mid.bin reversible cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc derived-from src/s1.py\nartifact out/t.bin reversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from out/mid.bin, src/s2.py\n",
+    "state.txt": "file src/s1.py aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nfile src/s2.py bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nfile out/t.bin dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/s1.py",
+    "src/s2.py"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "recall src/s1.py\nrecall src/s2.py\nartifact out/mid.bin reversible missing chain src/s1.py -> out/mid.bin\nartifact out/t.bin reversible current chain src/s1.py -> out/mid.bin -> out/t.bin\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "recall-start-without-downstream",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb18\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/s.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nfile src/lonely.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact out/only.bin reversible cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc derived-from src/s.py\n",
+    "state.txt": "file src/s.py aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nfile src/lonely.py bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/s.py",
+    "src/lonely.py"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "recall src/s.py\nrecall src/lonely.py\nartifact out/only.bin reversible missing chain src/s.py -> out/only.bin\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "recall-stamp-undeclared-parent",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb18\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/s.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nartifact out/ghost.bin reversible bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb derived-from src/ghost.py\nartifact out/real.bin reversible cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc derived-from src/s.py\n",
+    "state.txt": "file src/s.py aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/s.py"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: stamp.txt is malformed, the artifact out/ghost.bin derives from src/ghost.py, which the stamp does not carry\n"
+   }
+  },
+  {
+   "name": "recall-entries-class-then-path",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb18\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/s.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nartifact out/zeta.bin irreversible bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb derived-from src/s.py\nartifact out/alpha.bin irreversible cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc derived-from src/s.py\nartifact out/mid.bin reversible-with-compensation dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from src/s.py\nartifact out/first.bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/s.py\n",
+    "state.txt": "file src/s.py aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nfile out/alpha.bin 0000000000000000000000000000000000000000000000000000000000000000\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/s.py"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "recall src/s.py\nartifact out/first.bin reversible missing chain src/s.py -> out/first.bin\nartifact out/mid.bin reversible-with-compensation missing chain src/s.py -> out/mid.bin\nartifact out/alpha.bin irreversible drifted chain src/s.py -> out/alpha.bin\nartifact out/zeta.bin irreversible missing chain src/s.py -> out/zeta.bin\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "recall-cycle-artifacts-both-listed",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb18\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/s.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nartifact out/a.bin reversible bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb derived-from src/s.py, out/b.bin\nartifact out/b.bin reversible cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc derived-from out/a.bin\n",
+    "state.txt": "file src/s.py aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/s.py"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "recall src/s.py\nartifact out/a.bin reversible missing chain src/s.py -> out/a.bin\nartifact out/b.bin reversible missing chain src/s.py -> out/a.bin -> out/b.bin\n",
+    "stderr": ""
+   }
   }
  ]
 }
