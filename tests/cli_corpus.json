@@ -2598,6 +2598,181 @@
     "stdout": "",
     "stderr": "error: record.txt is malformed, the artifact out/a.html derives from itself through a chain of artifacts, out/a.html then out/b.html then out/a.html\n"
    }
+  },
+  {
+   "name": "plan-partial-scores-two",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/base.py created 00000000000000000000000000000000000000000000000000000000000000b0\nartifact out/pair.html reversible 00000000000000000000000000000000000000000000000000000000000000b1 derived-from src/base.py\n",
+    "state.txt": "file src/base.py 00000000000000000000000000000000000000000000000000000000000000b0\nfile out/pair.html 00000000000000000000000000000000000000000000000000000000000000b1\n",
+    "fx/rank-pair-remove.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/pair.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/pair.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.4\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "plan src/base.py\nartifact out/pair.html reversible current chain src/base.py -> out/pair.html\ncompensation remove-artifact score 0.4\ncompensation rebuild-from-parents\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "plan-partial-scores-three",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/base.py created 00000000000000000000000000000000000000000000000000000000000000b0\nartifact out/trio.html reversible-with-compensation 00000000000000000000000000000000000000000000000000000000000000b2 derived-from src/base.py\n",
+    "state.txt": "file src/base.py 00000000000000000000000000000000000000000000000000000000000000b0\nfile out/trio.html 00000000000000000000000000000000000000000000000000000000000000b2\n",
+    "fx/rank-trio-rebuild.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/trio.html\",\n    \"candidate\": \"rebuild-from-parents\",\n    \"chain\": \"src/base.py -> out/trio.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.3\n  },\n  \"synthetic\": true\n}\n",
+    "fx/rank-trio-quarantine.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/trio.html\",\n    \"candidate\": \"quarantine-artifact\",\n    \"chain\": \"src/base.py -> out/trio.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.9\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "plan src/base.py\nartifact out/trio.html reversible-with-compensation current chain src/base.py -> out/trio.html\ncompensation quarantine-artifact score 0.9\ncompensation rebuild-from-parents score 0.3\ncompensation remove-artifact\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "plan-partial-below-threshold-mix",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/base.py created 00000000000000000000000000000000000000000000000000000000000000b0\nartifact out/mix.html reversible 00000000000000000000000000000000000000000000000000000000000000b3 derived-from src/base.py\n",
+    "state.txt": "file src/base.py 00000000000000000000000000000000000000000000000000000000000000b0\nfile out/mix.html 00000000000000000000000000000000000000000000000000000000000000b3\n",
+    "fx/rank-mix-rebuild.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/mix.html\",\n    \"candidate\": \"rebuild-from-parents\",\n    \"chain\": \"src/base.py -> out/mix.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.45,\n    \"kind\": \"score\",\n    \"score\": 0.99\n  },\n  \"synthetic\": true\n}\n",
+    "fx/rank-mix-remove.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/mix.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/mix.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.5\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "plan src/base.py\nartifact out/mix.html reversible current chain src/base.py -> out/mix.html\ncompensation remove-artifact score 0.5\ncompensation rebuild-from-parents\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "plan-two-starts",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/a.py created 00000000000000000000000000000000000000000000000000000000000000a0\nfile src/b.py created 00000000000000000000000000000000000000000000000000000000000000a1\nartifact out/from-a.html reversible 00000000000000000000000000000000000000000000000000000000000000a2 derived-from src/a.py\nartifact out/from-b.html reversible 00000000000000000000000000000000000000000000000000000000000000a3 derived-from src/b.py\n",
+    "state.txt": "file src/a.py 00000000000000000000000000000000000000000000000000000000000000a0\nfile src/b.py 00000000000000000000000000000000000000000000000000000000000000a1\nfile out/from-a.html 00000000000000000000000000000000000000000000000000000000000000a2\nfile out/from-b.html 00000000000000000000000000000000000000000000000000000000000000a3\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py",
+    "src/b.py"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "plan src/a.py\nplan src/b.py\nartifact out/from-a.html reversible current chain src/a.py -> out/from-a.html\ncompensation rebuild-from-parents\ncompensation remove-artifact\nartifact out/from-b.html reversible current chain src/b.py -> out/from-b.html\ncompensation rebuild-from-parents\ncompensation remove-artifact\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "plan-two-starts-shared",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/a.py created 00000000000000000000000000000000000000000000000000000000000000a0\nfile src/b.py created 00000000000000000000000000000000000000000000000000000000000000a1\nartifact out/shared.html reversible 00000000000000000000000000000000000000000000000000000000000000a4 derived-from src/a.py, src/b.py\nartifact out/only-b.html reversible 00000000000000000000000000000000000000000000000000000000000000a5 derived-from src/b.py\n",
+    "state.txt": "file src/a.py 00000000000000000000000000000000000000000000000000000000000000a0\nfile src/b.py 00000000000000000000000000000000000000000000000000000000000000a1\nfile out/shared.html 00000000000000000000000000000000000000000000000000000000000000a4\nfile out/only-b.html 00000000000000000000000000000000000000000000000000000000000000a5\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py",
+    "src/b.py"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "plan src/a.py\nplan src/b.py\nartifact out/only-b.html reversible current chain src/b.py -> out/only-b.html\ncompensation rebuild-from-parents\ncompensation remove-artifact\nartifact out/shared.html reversible current chain src/a.py -> out/shared.html\ncompensation rebuild-from-parents\ncompensation remove-artifact\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "plan-proposed-class",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/base.py created 00000000000000000000000000000000000000000000000000000000000000b0\nartifact out/prop.html unclassed 00000000000000000000000000000000000000000000000000000000000000b6 derived-from src/base.py\n",
+    "state.txt": "file src/base.py 00000000000000000000000000000000000000000000000000000000000000b0\nfile out/prop.html 00000000000000000000000000000000000000000000000000000000000000b6\n",
+    "fx/class-prop.json": "{\n  \"judgment_point\": \"classification\",\n  \"request\": {\n    \"artifact\": \"out/prop.html\",\n    \"digest\": \"00000000000000000000000000000000000000000000000000000000000000b6\",\n    \"parents\": [\n      \"src/base.py\"\n    ],\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"choice\": \"reversible\",\n    \"confidence\": 0.9,\n    \"kind\": \"choice\",\n    \"probabilities\": {\n      \"irreversible\": 0.05,\n      \"reversible\": 0.9,\n      \"reversible-with-compensation\": 0.05\n    }\n  },\n  \"synthetic\": true\n}\n",
+    "fx/rank-prop-remove.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/prop.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/prop.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.6\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "plan src/base.py\nartifact out/prop.html reversible proposed current chain src/base.py -> out/prop.html\ncompensation remove-artifact score 0.6\ncompensation rebuild-from-parents\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "plan-single-candidate-unasked",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/base.py created 00000000000000000000000000000000000000000000000000000000000000b0\nartifact out/locked.html irreversible 00000000000000000000000000000000000000000000000000000000000000b7 derived-from src/base.py\n",
+    "state.txt": "file src/base.py 00000000000000000000000000000000000000000000000000000000000000b0\nfile out/locked.html 00000000000000000000000000000000000000000000000000000000000000b7\n",
+    "fx/rank-locked-quarantine.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/locked.html\",\n    \"candidate\": \"quarantine-artifact\",\n    \"chain\": \"src/base.py -> out/locked.html\",\n    \"class\": \"irreversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.9\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "plan src/base.py\nartifact out/locked.html irreversible current chain src/base.py -> out/locked.html\ncompensation quarantine-artifact\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "plan-missing-unasked",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/base.py created 00000000000000000000000000000000000000000000000000000000000000b0\nartifact out/gone.html reversible-with-compensation 00000000000000000000000000000000000000000000000000000000000000b8 derived-from src/base.py\n",
+    "state.txt": "file src/base.py 00000000000000000000000000000000000000000000000000000000000000b0\n",
+    "fx/rank-gone-rebuild.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/gone.html\",\n    \"candidate\": \"rebuild-from-parents\",\n    \"chain\": \"src/base.py -> out/gone.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"missing\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.9\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "plan src/base.py\nartifact out/gone.html reversible-with-compensation missing chain src/base.py -> out/gone.html\ncompensation none required, the artifact is already absent\n",
+    "stderr": ""
+   }
   }
  ]
 }
