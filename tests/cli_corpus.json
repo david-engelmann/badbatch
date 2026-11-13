@@ -3140,6 +3140,120 @@
     "stdout": "plan src/base.py\nartifact out/loud.html reversible current chain src/base.py -> out/loud.html\ncompensation rebuild-from-parents\ncompensation remove-artifact\n",
     "stderr": ""
    }
+  },
+  {
+   "name": "recall-state-comments-and-blanks",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb14\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nfile src/b.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact build/only-a.bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py\nartifact build/shared.bin reversible cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc derived-from src/a.py, src/b.py\nartifact build/deep.bin irreversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from build/shared.bin\n",
+    "state.txt": "# recorded after the run\n\nfile src/a.py aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nfile src/b.py bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nfile build/shared.bin cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\nfile build/deep.bin 0000000000000000000000000000000000000000000000000000000000000000\n   \n# end of state\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "recall src/a.py\nartifact build/only-a.bin reversible missing chain src/a.py -> build/only-a.bin\nartifact build/shared.bin reversible current chain src/a.py -> build/shared.bin\nartifact build/deep.bin irreversible drifted chain src/a.py -> build/shared.bin -> build/deep.bin\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "recall-state-line-two-parts",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb14\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nfile src/b.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact build/only-a.bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py\nartifact build/shared.bin reversible cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc derived-from src/a.py, src/b.py\nartifact build/deep.bin irreversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from build/shared.bin\n",
+    "state.txt": "file src/a.py aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nfile src/b.py\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: state.txt is malformed, the line 'file src/b.py' matches no current state line form\n"
+   }
+  },
+  {
+   "name": "recall-state-line-four-parts",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb14\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nfile src/b.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact build/only-a.bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py\nartifact build/shared.bin reversible cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc derived-from src/a.py, src/b.py\nartifact build/deep.bin irreversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from build/shared.bin\n",
+    "state.txt": "file src/a.py aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nfile src/b.py bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb extra\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: state.txt is malformed, the line 'file src/b.py bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb extra' matches no current state line form\n"
+   }
+  },
+  {
+   "name": "recall-state-line-wrong-head",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb14\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nfile src/b.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact build/only-a.bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py\nartifact build/shared.bin reversible cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc derived-from src/a.py, src/b.py\nartifact build/deep.bin irreversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from build/shared.bin\n",
+    "state.txt": "file src/a.py aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nartifact src/b.py bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: state.txt is malformed, the line 'artifact src/b.py bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb' matches no current state line form\n"
+   }
+  },
+  {
+   "name": "recall-state-digest-quote-repr",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb14\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nfile src/b.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact build/only-a.bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py\nartifact build/shared.bin reversible cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc derived-from src/a.py, src/b.py\nartifact build/deep.bin irreversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from build/shared.bin\n",
+    "state.txt": "file src/a.py ab'cd\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: state.txt is malformed, the line for src/a.py carries the digest \"ab'cd\", which is not sixty-four lowercase hex characters\n"
+   }
+  },
+  {
+   "name": "recall-state-dot-segment-path",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb14\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nfile src/b.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact build/only-a.bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py\nartifact build/shared.bin reversible cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc derived-from src/a.py, src/b.py\nartifact build/deep.bin irreversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from build/shared.bin\n",
+    "state.txt": "file src/a.py aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nfile src/b.py bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nfile build/./shared.bin cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\nfile build/deep.bin 0000000000000000000000000000000000000000000000000000000000000000\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "recall src/a.py\nartifact build/only-a.bin reversible missing chain src/a.py -> build/only-a.bin\nartifact build/shared.bin reversible missing chain src/a.py -> build/shared.bin\nartifact build/deep.bin irreversible drifted chain src/a.py -> build/shared.bin -> build/deep.bin\n",
+    "stderr": ""
+   }
   }
  ]
 }
