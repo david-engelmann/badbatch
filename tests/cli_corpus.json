@@ -2908,6 +2908,102 @@
     "stdout": "recall src/s.py\nartifact out/a.bin reversible missing chain src/s.py -> out/a.bin\nartifact out/b.bin reversible missing chain src/s.py -> out/a.bin -> out/b.bin\n",
     "stderr": ""
    }
+  },
+  {
+   "name": "stamp-multi-parent-sorted",
+   "source": "oracle",
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "setup": {
+    "record.txt": "run run-2000\nagent writer-9\nprompt-hash d19\nmodel synth-9\nfile src/z.py created\ncontent\nz\nend\nfile src/a.py created\ncontent\na\nend\nartifact out/m.html derived-from src/z.py, src/a.py class reversible\ncontent\n<html>m</html>\nend\n"
+   },
+   "expect": {
+    "code": 0,
+    "stdout": "stamp run-2000\nagent writer-9\nprompt-hash d19\nmodel synth-9\nfile src/a.py created 87428fc522803d31065e7bce3cf03fe475096631e5e07bbd7a0fde60c4cf25c7\nfile src/z.py created c865f6c5ab8d1b0bcd383a5e1e3879d22681c96bf462c269b7581d523fbe70ab\nartifact out/m.html reversible a978cddc52efe2423ee7d3f152821d47517f1ca9cba8643530f2385ef26121f9 derived-from src/a.py, src/z.py\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "stamp-empty-content",
+   "source": "oracle",
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "setup": {
+    "record.txt": "run run-2000\nagent writer-9\nprompt-hash d19\nmodel synth-9\nfile src/empty.py created\ncontent\nend\n"
+   },
+   "expect": {
+    "code": 0,
+    "stdout": "stamp run-2000\nagent writer-9\nprompt-hash d19\nmodel synth-9\nfile src/empty.py created e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "stamp-multiline-content",
+   "source": "oracle",
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "setup": {
+    "record.txt": "run run-2000\nagent writer-9\nprompt-hash d19\nmodel synth-9\nfile src/multi.py created\ncontent\nalpha\nbeta\ngamma\nend\n"
+   },
+   "expect": {
+    "code": 0,
+    "stdout": "stamp run-2000\nagent writer-9\nprompt-hash d19\nmodel synth-9\nfile src/multi.py created 4fdbc441ea7b546100e086ac1e4fc5ae6749b7314311c99db05be450eca12996\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "stamp-parent-mixed-kinds",
+   "source": "oracle",
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "setup": {
+    "record.txt": "run run-2000\nagent writer-9\nprompt-hash d19\nmodel synth-9\nfile src/base.py created\ncontent\nbase\nend\nartifact out/one.html derived-from src/base.py class reversible\ncontent\none\nend\nartifact out/two.html derived-from src/base.py, out/one.html class reversible\ncontent\ntwo\nend\n"
+   },
+   "expect": {
+    "code": 0,
+    "stdout": "stamp run-2000\nagent writer-9\nprompt-hash d19\nmodel synth-9\nfile src/base.py created f34848ca92665c342abd5816c9e3eda0e82180671195362bcd0080544a3bc2ac\nartifact out/one.html reversible 2c8b08da5ce60398e1f19af0e5dccc744df274b826abe585eaba68c525434806 derived-from src/base.py\nartifact out/two.html reversible 27dd8ed44a83ff94d557f9fd0412ed5a8cbca69ea04922d88c01184a07300a5a derived-from out/one.html, src/base.py\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "stamp-deleted-mid-sort",
+   "source": "oracle",
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "setup": {
+    "record.txt": "run run-2000\nagent writer-9\nprompt-hash d19\nmodel synth-9\nfile src/zzz.py created\ncontent\nz\nend\nfile src/mid.py deleted\nfile src/aaa.py created\ncontent\na\nend\n"
+   },
+   "expect": {
+    "code": 0,
+    "stdout": "stamp run-2000\nagent writer-9\nprompt-hash d19\nmodel synth-9\nfile src/aaa.py created 87428fc522803d31065e7bce3cf03fe475096631e5e07bbd7a0fde60c4cf25c7\nfile src/mid.py deleted none\nfile src/zzz.py created c865f6c5ab8d1b0bcd383a5e1e3879d22681c96bf462c269b7581d523fbe70ab\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "stamp-artifact-empty-content",
+   "source": "oracle",
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "setup": {
+    "record.txt": "run run-2000\nagent writer-9\nprompt-hash d19\nmodel synth-9\nfile src/a.py created\ncontent\na\nend\nartifact out/e.html derived-from src/a.py class reversible\ncontent\nend\n"
+   },
+   "expect": {
+    "code": 0,
+    "stdout": "stamp run-2000\nagent writer-9\nprompt-hash d19\nmodel synth-9\nfile src/a.py created 87428fc522803d31065e7bce3cf03fe475096631e5e07bbd7a0fde60c4cf25c7\nartifact out/e.html reversible e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 derived-from src/a.py\n",
+    "stderr": ""
+   }
   }
  ]
 }
