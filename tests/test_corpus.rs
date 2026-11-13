@@ -14,7 +14,7 @@ fn the_corpus_runs_and_its_split_is_pinned() {
     let cases = load_corpus();
     let oracle = cases.iter().filter(|case| case.source == "oracle").count();
     let clap = cases.iter().filter(|case| case.source == "clap").count();
-    assert_eq!((oracle, clap), (113, 30), "corpus source split");
+    assert_eq!((oracle, clap), (119, 30), "corpus source split");
     let mut failures = Vec::new();
     for case in &cases {
         if let Err(detail) = run_corpus_case(case) {
