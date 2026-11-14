@@ -3254,6 +3254,102 @@
     "stdout": "recall src/a.py\nartifact build/only-a.bin reversible missing chain src/a.py -> build/only-a.bin\nartifact build/shared.bin reversible missing chain src/a.py -> build/shared.bin\nartifact build/deep.bin irreversible drifted chain src/a.py -> build/shared.bin -> build/deep.bin\n",
     "stderr": ""
    }
+  },
+  {
+   "name": "record-header-missing-run",
+   "source": "oracle",
+   "setup": {
+    "record.txt": ""
+   },
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: record.txt is malformed, the header names no run\n"
+   }
+  },
+  {
+   "name": "record-header-missing-agent",
+   "source": "oracle",
+   "setup": {
+    "record.txt": "run run-0007\n"
+   },
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: record.txt is malformed, the header names no agent\n"
+   }
+  },
+  {
+   "name": "record-header-missing-model",
+   "source": "oracle",
+   "setup": {
+    "record.txt": "run run-0007\nagent writer-3\nprompt-hash cafe01\n"
+   },
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: record.txt is malformed, the header names no model\n"
+   }
+  },
+  {
+   "name": "record-parents-double-comma",
+   "source": "oracle",
+   "setup": {
+    "record.txt": "run run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/a.py created\ncontent\nalpha\nend\nfile src/b.py created\ncontent\nbeta\nend\nartifact build/out.bin derived-from src/a.py,,src/b.py class reversible\ncontent\nx\nend\n"
+   },
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: record.txt is malformed, the artifact entry for build/out.bin has an empty derivation list\n"
+   }
+  },
+  {
+   "name": "record-parents-trailing-comma",
+   "source": "oracle",
+   "setup": {
+    "record.txt": "run run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/a.py created\ncontent\nalpha\nend\nartifact build/out.bin derived-from src/a.py, class reversible\ncontent\nx\nend\n"
+   },
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: record.txt is malformed, the artifact entry for build/out.bin has an empty derivation list\n"
+   }
+  },
+  {
+   "name": "record-content-literal-lines",
+   "source": "oracle",
+   "setup": {
+    "record.txt": "run run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/a.py created\ncontent\n# not a comment\n\nend \nend\n"
+   },
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "stamp run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/a.py created a4628be35c34cb90eaee222fbd9866da34d30aceae7ed154ce21b4484538e612\n",
+    "stderr": ""
+   }
   }
  ]
 }
