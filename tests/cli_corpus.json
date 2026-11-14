@@ -3468,6 +3468,24 @@
     "stdout": "",
     "stderr": "error: stamp.txt is malformed, the artifact out/ghost.bin derives from src/ghost.py, which the stamp does not carry\n"
    }
+  },
+  {
+   "name": "recall-order-stamp-before-missing-state",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb18\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/s.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nartifact out/ghost.bin reversible bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb derived-from src/ghost.py\nartifact out/real.bin reversible cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc derived-from src/s.py\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: stamp.txt is malformed, the artifact out/ghost.bin derives from src/ghost.py, which the stamp does not carry\n"
+   }
   }
  ]
 }
