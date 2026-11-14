@@ -3486,6 +3486,102 @@
     "stdout": "",
     "stderr": "error: stamp.txt is malformed, the artifact out/ghost.bin derives from src/ghost.py, which the stamp does not carry\n"
    }
+  },
+  {
+   "name": "stamp-headers-only",
+   "source": "oracle",
+   "setup": {
+    "record.txt": "run run-2000\nagent writer-9\nprompt-hash d19\nmodel synth-9\n"
+   },
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "stamp run-2000\nagent writer-9\nprompt-hash d19\nmodel synth-9\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "stamp-modified-file",
+   "source": "oracle",
+   "setup": {
+    "record.txt": "run run-2000\nagent writer-9\nprompt-hash d19\nmodel synth-9\nfile src/mid.py modified\ncontent\nchanged\nend\n"
+   },
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "stamp run-2000\nagent writer-9\nprompt-hash d19\nmodel synth-9\nfile src/mid.py modified 7f8b1dfc466b6249f06cbe55c9174df2578e7754da793fded244ef5cba2a38f1\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "stamp-artifacts-reversed",
+   "source": "oracle",
+   "setup": {
+    "record.txt": "run run-2000\nagent writer-9\nprompt-hash d19\nmodel synth-9\nfile src/base.py created\ncontent\nbase\nend\nartifact out/two.html derived-from src/base.py class reversible\ncontent\ntwo\nend\nartifact out/one.html derived-from src/base.py class reversible\ncontent\none\nend\n"
+   },
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "stamp run-2000\nagent writer-9\nprompt-hash d19\nmodel synth-9\nfile src/base.py created f34848ca92665c342abd5816c9e3eda0e82180671195362bcd0080544a3bc2ac\nartifact out/one.html reversible 2c8b08da5ce60398e1f19af0e5dccc744df274b826abe585eaba68c525434806 derived-from src/base.py\nartifact out/two.html reversible 27dd8ed44a83ff94d557f9fd0412ed5a8cbca69ea04922d88c01184a07300a5a derived-from src/base.py\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "stamp-content-trailing-blank",
+   "source": "oracle",
+   "setup": {
+    "record.txt": "run run-2000\nagent writer-9\nprompt-hash d19\nmodel synth-9\nfile src/tail.py created\ncontent\nlast\n\nend\n"
+   },
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "stamp run-2000\nagent writer-9\nprompt-hash d19\nmodel synth-9\nfile src/tail.py created 9d0355fbf66c7a6ca2a6eaa2737695f93ea3d0230314139404d8cfd0c3851629\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "stamp-content-unicode",
+   "source": "oracle",
+   "setup": {
+    "record.txt": "run run-2000\nagent writer-9\nprompt-hash d19\nmodel synth-9\nfile src/uni.py created\ncontent\ncafé\nend\n"
+   },
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "stamp run-2000\nagent writer-9\nprompt-hash d19\nmodel synth-9\nfile src/uni.py created 7b49b9e063bd91a4f9252b413261f5557b9c570aa61516989499f64a62dbcdd6\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "stamp-artifact-no-parent-tokens",
+   "source": "oracle",
+   "setup": {
+    "record.txt": "run run-2000\nagent writer-9\nprompt-hash d19\nmodel synth-9\nfile src/base.py created\ncontent\nbase\nend\nartifact out/x.html derived-from class reversible\ncontent\nx\nend\n"
+   },
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: record.txt is malformed, the artifact entry for out/x.html has an empty derivation list\n"
+   }
   }
  ]
 }
