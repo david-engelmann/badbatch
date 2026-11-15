@@ -3822,6 +3822,102 @@
     "stdout": "plan src/base.py\nartifact out/drift2.html reversible drifted chain src/base.py -> out/drift2.html\ncompensation quarantine-artifact score 0.2\ncompensation remove-artifact\n",
     "stderr": ""
    }
+  },
+  {
+   "name": "record-diamond-no-cycle",
+   "source": "oracle",
+   "setup": {
+    "record.txt": "run run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/a.py created\ncontent\nalpha\nend\nartifact out/d.html derived-from src/a.py class reversible\ncontent\n<html>d</html>\nend\nartifact out/b.html derived-from out/d.html class reversible\ncontent\n<html>b</html>\nend\nartifact out/c.html derived-from out/d.html class reversible\ncontent\n<html>c</html>\nend\nartifact out/a.html derived-from out/b.html, out/c.html class reversible\ncontent\n<html>a</html>\nend\n"
+   },
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "stamp run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/a.py created b6a98d9ce9a2d9149288fa3df42d377c3e42737afdcdaf714e33c0a100b51060\nartifact out/a.html reversible b37a2d85867c52c535b14de42625f053eda73c8c46bb0c53262430abebf4fcd2 derived-from out/b.html, out/c.html\nartifact out/b.html reversible 0e90ea535a1f105fadbf06637dc98a16c2a624d95a44a0a76545d9f559dcd6f9 derived-from out/d.html\nartifact out/c.html reversible 13a56f9668bded67ee690434b5f534770785e22cbbc2765620cb8024efe30f90 derived-from out/d.html\nartifact out/d.html reversible e0d5dc11afc442871e3c1a9bb16d61bffbb8f01e71e3c4a08b45d8d4546488e8 derived-from src/a.py\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "record-deleted-comment-then-content",
+   "source": "oracle",
+   "setup": {
+    "record.txt": "run run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/a.py deleted\n# the run removed it\ncontent\nalpha\nend\n"
+   },
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: record.txt is malformed, the deleted file entry for src/a.py carries a content block\n"
+   }
+  },
+  {
+   "name": "record-header-comments-interleaved",
+   "source": "oracle",
+   "setup": {
+    "record.txt": "run run-1000\n# recorded by the harness\nagent writer-9\n\nprompt-hash cafe01\n# the model run\nmodel synth-9\nfile src/a.py created\ncontent\nalpha\nend\n"
+   },
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "stamp run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/a.py created b6a98d9ce9a2d9149288fa3df42d377c3e42737afdcdaf714e33c0a100b51060\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "record-duplicate-beats-cycle",
+   "source": "oracle",
+   "setup": {
+    "record.txt": "run run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/a.py created\ncontent\nalpha\nend\nfile src/a.py created\ncontent\nalpha\nend\nartifact out/a.html derived-from out/b.html class reversible\ncontent\n<html>a</html>\nend\nartifact out/b.html derived-from out/a.html class reversible\ncontent\n<html>b</html>\nend\n"
+   },
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: record.txt is malformed, the file path src/a.py is entered twice\n"
+   }
+  },
+  {
+   "name": "record-undeclared-beats-cycle",
+   "source": "oracle",
+   "setup": {
+    "record.txt": "run run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/a.py created\ncontent\nalpha\nend\nartifact out/a.html derived-from out/b.html class reversible\ncontent\n<html>a</html>\nend\nartifact out/b.html derived-from out/a.html class reversible\ncontent\n<html>b</html>\nend\nartifact out/z.html derived-from out/ghost.html class reversible\ncontent\n<html>z</html>\nend\n"
+   },
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: record.txt is malformed, the artifact out/z.html derives from out/ghost.html, which the record never declares as a file or as an artifact\n"
+   }
+  },
+  {
+   "name": "record-two-cycles-first-reported",
+   "source": "oracle",
+   "setup": {
+    "record.txt": "run run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/a.py created\ncontent\nalpha\nend\nartifact out/m.html derived-from out/n.html class reversible\ncontent\n<html>m</html>\nend\nartifact out/n.html derived-from out/m.html class reversible\ncontent\n<html>n</html>\nend\nartifact out/a.html derived-from out/b.html class reversible\ncontent\n<html>a</html>\nend\nartifact out/b.html derived-from out/a.html class reversible\ncontent\n<html>b</html>\nend\n"
+   },
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: record.txt is malformed, the artifact out/m.html derives from itself through a chain of artifacts, out/m.html then out/n.html then out/m.html\n"
+   }
   }
  ]
 }
