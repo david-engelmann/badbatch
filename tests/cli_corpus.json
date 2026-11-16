@@ -4128,6 +4128,102 @@
     "stdout": "",
     "stderr": "error: record.txt is malformed, the artifact path out/a.html is entered twice\n"
    }
+  },
+  {
+   "name": "record-header-prompt-hash-at-eof",
+   "source": "oracle",
+   "setup": {
+    "record.txt": "run run-1000\nagent writer-9\n"
+   },
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: record.txt is malformed, the header names no prompt-hash\n"
+   }
+  },
+  {
+   "name": "record-header-wrong-field-at-agent",
+   "source": "oracle",
+   "setup": {
+    "record.txt": "run run-1000\nagentx writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/a.py created\ncontent\nalpha\nend\nartifact out/a.html derived-from src/a.py class reversible\ncontent\n<html>alpha</html>\nend\n"
+   },
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: record.txt is malformed, the header line 'agentx writer-9' does not name the agent exactly once\n"
+   }
+  },
+  {
+   "name": "record-header-entry-line-as-model",
+   "source": "oracle",
+   "setup": {
+    "record.txt": "run run-1000\nagent writer-9\nprompt-hash cafe01\nfile src/a.py created\ncontent\nalpha\nend\n"
+   },
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: record.txt is malformed, the header line 'file src/a.py created' does not name the model exactly once\n"
+   }
+  },
+  {
+   "name": "record-file-content-opener-extra",
+   "source": "oracle",
+   "setup": {
+    "record.txt": "run run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/a.py created\ncontent extra\nalpha\nend\nartifact out/a.html derived-from src/a.py class reversible\ncontent\n<html>alpha</html>\nend\n"
+   },
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: record.txt is malformed, the file entry for src/a.py is not followed by a content block\n"
+   }
+  },
+  {
+   "name": "record-content-opener-word-inside",
+   "source": "oracle",
+   "setup": {
+    "record.txt": "run run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/a.py created\ncontent\nalpha\ncontent\nbeta\nend\nartifact out/a.html derived-from src/a.py class reversible\ncontent\n<html>alpha</html>\nend\n"
+   },
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "stamp run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/a.py created 1ef3cb22022161c7e3b70705bce7b3edffbf4a1fb67abe2ae5c63de51ae74bfd\nartifact out/a.html reversible b75f9f691221f0cf518033d57d550e139250b30c6a6ee104751630c8dcbb3a8a derived-from src/a.py\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "record-artifact-content-after-comment",
+   "source": "oracle",
+   "setup": {
+    "record.txt": "run run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/a.py created\ncontent\nalpha\nend\nartifact out/a.html derived-from src/a.py class reversible\n# the page the run built\ncontent\n<html>alpha</html>\nend\n"
+   },
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "stamp run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/a.py created b6a98d9ce9a2d9149288fa3df42d377c3e42737afdcdaf714e33c0a100b51060\nartifact out/a.html reversible b75f9f691221f0cf518033d57d550e139250b30c6a6ee104751630c8dcbb3a8a derived-from src/a.py\n",
+    "stderr": ""
+   }
   }
  ]
 }
