@@ -4032,6 +4032,102 @@
      "record.txt": "run run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/a.py created\ncontent\nalpha\nend\nartifact out/a.html derived-from src/a.py kind wobbly\ncontent\n<html>alpha</html>\nend\n"
     }
    }
+  },
+  {
+   "name": "record-file-duplicate-before-artifact-duplicate",
+   "source": "oracle",
+   "setup": {
+    "record.txt": "run run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/a.py created\ncontent\nalpha\nend\nfile src/a.py created\ncontent\nalpha\nend\nartifact out/a.html derived-from src/a.py class reversible\ncontent\n<html>alpha</html>\nend\nartifact out/a.html derived-from src/a.py class reversible\ncontent\n<html>alpha</html>\nend\n"
+   },
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: record.txt is malformed, the file path src/a.py is entered twice\n"
+   }
+  },
+  {
+   "name": "record-artifact-duplicate-before-also-file",
+   "source": "oracle",
+   "setup": {
+    "record.txt": "run run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/a.py created\ncontent\nalpha\nend\nartifact src/a.py derived-from src/a.py class reversible\ncontent\n<html>alpha</html>\nend\nartifact src/a.py derived-from src/a.py class reversible\ncontent\n<html>alpha</html>\nend\n"
+   },
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: record.txt is malformed, the artifact path src/a.py is entered twice\n"
+   }
+  },
+  {
+   "name": "record-also-file-before-undeclared-parent",
+   "source": "oracle",
+   "setup": {
+    "record.txt": "run run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/a.py created\ncontent\nalpha\nend\nartifact src/a.py derived-from src/ghost.py class reversible\ncontent\n<html>alpha</html>\nend\n"
+   },
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: record.txt is malformed, the artifact path src/a.py is also a file path\n"
+   }
+  },
+  {
+   "name": "record-undeclared-parent-before-later-also-file",
+   "source": "oracle",
+   "setup": {
+    "record.txt": "run run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/a.py created\ncontent\nalpha\nend\nartifact out/a.html derived-from src/ghost.py class reversible\ncontent\n<html>alpha</html>\nend\nartifact src/a.py derived-from src/a.py class reversible\ncontent\n<html>alpha</html>\nend\n"
+   },
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: record.txt is malformed, the artifact out/a.html derives from src/ghost.py, which the record never declares as a file or as an artifact\n"
+   }
+  },
+  {
+   "name": "record-first-undeclared-parent-named",
+   "source": "oracle",
+   "setup": {
+    "record.txt": "run run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/a.py created\ncontent\nalpha\nend\nartifact out/a.html derived-from src/ghost1.py, src/ghost2.py class reversible\ncontent\n<html>alpha</html>\nend\n"
+   },
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: record.txt is malformed, the artifact out/a.html derives from src/ghost1.py, which the record never declares as a file or as an artifact\n"
+   }
+  },
+  {
+   "name": "record-artifact-duplicate-before-undeclared-parent",
+   "source": "oracle",
+   "setup": {
+    "record.txt": "run run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/a.py created\ncontent\nalpha\nend\nartifact out/a.html derived-from src/a.py class reversible\ncontent\n<html>alpha</html>\nend\nartifact out/a.html derived-from src/ghost.py class reversible\ncontent\n<html>alpha</html>\nend\n"
+   },
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: record.txt is malformed, the artifact path out/a.html is entered twice\n"
+   }
   }
  ]
 }
