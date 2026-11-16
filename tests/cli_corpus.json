@@ -3918,6 +3918,120 @@
     "stdout": "",
     "stderr": "error: record.txt is malformed, the artifact out/m.html derives from itself through a chain of artifacts, out/m.html then out/n.html then out/m.html\n"
    }
+  },
+  {
+   "name": "record-file-path-before-action",
+   "source": "oracle",
+   "setup": {
+    "record.txt": "run run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile /abs.py copied\ncontent\nalpha\nend\nartifact out/a.html derived-from src/a.py class reversible\ncontent\n<html>alpha</html>\nend\n"
+   },
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: record.txt is malformed, the path '/abs.py' is absolute, empty, or carries a parent reference\n",
+    "files": {
+     "record.txt": "run run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile /abs.py copied\ncontent\nalpha\nend\nartifact out/a.html derived-from src/a.py class reversible\ncontent\n<html>alpha</html>\nend\n"
+    }
+   }
+  },
+  {
+   "name": "record-file-action-before-content",
+   "source": "oracle",
+   "setup": {
+    "record.txt": "run run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/a.py copied\nartifact out/a.html derived-from src/a.py class reversible\ncontent\n<html>alpha</html>\nend\n"
+   },
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: record.txt is malformed, the file entry for src/a.py names the action 'copied', which is not created, modified, or deleted\n",
+    "files": {
+     "record.txt": "run run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/a.py copied\nartifact out/a.html derived-from src/a.py class reversible\ncontent\n<html>alpha</html>\nend\n"
+    }
+   }
+  },
+  {
+   "name": "record-artifact-path-before-class",
+   "source": "oracle",
+   "setup": {
+    "record.txt": "run run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/a.py created\ncontent\nalpha\nend\nartifact /abs.html derived-from src/a.py kind reversible\ncontent\n<html>alpha</html>\nend\n"
+   },
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: record.txt is malformed, the path '/abs.html' is absolute, empty, or carries a parent reference\n",
+    "files": {
+     "record.txt": "run run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/a.py created\ncontent\nalpha\nend\nartifact /abs.html derived-from src/a.py kind reversible\ncontent\n<html>alpha</html>\nend\n"
+    }
+   }
+  },
+  {
+   "name": "record-artifact-class-before-parents",
+   "source": "oracle",
+   "setup": {
+    "record.txt": "run run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/a.py created\ncontent\nalpha\nend\nartifact out/a.html derived-from , class wobbly\ncontent\n<html>alpha</html>\nend\n"
+   },
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: record.txt is malformed, the artifact entry for out/a.html names the class 'wobbly', which is not one of the three named classes\n",
+    "files": {
+     "record.txt": "run run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/a.py created\ncontent\nalpha\nend\nartifact out/a.html derived-from , class wobbly\ncontent\n<html>alpha</html>\nend\n"
+    }
+   }
+  },
+  {
+   "name": "record-artifact-parents-before-parent-path",
+   "source": "oracle",
+   "setup": {
+    "record.txt": "run run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/a.py created\ncontent\nalpha\nend\nartifact out/a.html derived-from , ../x class reversible\ncontent\n<html>alpha</html>\nend\n"
+   },
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: record.txt is malformed, the artifact entry for out/a.html has an empty derivation list\n",
+    "files": {
+     "record.txt": "run run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/a.py created\ncontent\nalpha\nend\nartifact out/a.html derived-from , ../x class reversible\ncontent\n<html>alpha</html>\nend\n"
+    }
+   }
+  },
+  {
+   "name": "record-artifact-class-position-before-value",
+   "source": "oracle",
+   "setup": {
+    "record.txt": "run run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/a.py created\ncontent\nalpha\nend\nartifact out/a.html derived-from src/a.py kind wobbly\ncontent\n<html>alpha</html>\nend\n"
+   },
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: record.txt is malformed, the artifact entry for out/a.html names no class\n",
+    "files": {
+     "record.txt": "run run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/a.py created\ncontent\nalpha\nend\nartifact out/a.html derived-from src/a.py kind wobbly\ncontent\n<html>alpha</html>\nend\n"
+    }
+   }
   }
  ]
 }
