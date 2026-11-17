@@ -4338,6 +4338,25 @@
     "stdout": "",
     "stderr": "error: stamp.txt is malformed, the line 'bogus line here' matches no stamp line form\n"
    }
+  },
+  {
+   "name": "stamp-artifact-duplicate-before-digest",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb31\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nartifact out/a.bin reversible bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb derived-from src/a.py\nartifact out/a.bin reversible short derived-from src/a.py\n",
+    "state.txt": "file src/a.py aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: stamp.txt is malformed, the path out/a.bin is stamped twice\n"
+   }
   }
  ]
 }
