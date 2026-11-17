@@ -4224,6 +4224,139 @@
     "stdout": "stamp run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/a.py created b6a98d9ce9a2d9149288fa3df42d377c3e42737afdcdaf714e33c0a100b51060\nartifact out/a.html reversible b75f9f691221f0cf518033d57d550e139250b30c6a6ee104751630c8dcbb3a8a derived-from src/a.py\n",
     "stderr": ""
    }
+  },
+  {
+   "name": "stamp-open-line-is-agent",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "agent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n",
+    "state.txt": "file src/a.py aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: stamp.txt is malformed, it does not open with a stamp line naming the run\n"
+   }
+  },
+  {
+   "name": "stamp-file-action-before-duplicate",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb31\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nfile src/a.py bogus bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\n",
+    "state.txt": "file src/a.py aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: stamp.txt is malformed, the file line for src/a.py names the action 'bogus'\n"
+   }
+  },
+  {
+   "name": "stamp-file-duplicate-before-digest",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb31\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nfile src/a.py created short\n",
+    "state.txt": "file src/a.py aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: stamp.txt is malformed, the path src/a.py is stamped twice\n"
+   }
+  },
+  {
+   "name": "stamp-artifact-class-before-duplicate",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb31\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nartifact out/a.bin reversible bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb derived-from src/a.py\nartifact out/a.bin bogus-class cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc derived-from src/a.py\n",
+    "state.txt": "file src/a.py aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: stamp.txt is malformed, the artifact line for out/a.bin names the class 'bogus-class', which is not one of the three named classes\n"
+   }
+  },
+  {
+   "name": "stamp-artifact-digest-before-empty-parents",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb31\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nartifact out/a.bin reversible notdigest derived-from src/a.py,\n",
+    "state.txt": "file src/a.py aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: stamp.txt is malformed, the artifact line for out/a.bin carries the digest 'notdigest', which is not sixty-four lowercase hex characters\n"
+   }
+  },
+  {
+   "name": "stamp-undeclared-parent-behind-line-defect",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb31\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nartifact out/a.bin reversible bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb derived-from src/ghost.py\nbogus line here\n",
+    "state.txt": "file src/a.py aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: stamp.txt is malformed, the line 'bogus line here' matches no stamp line form\n"
+   }
+  },
+  {
+   "name": "stamp-artifact-duplicate-before-digest",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb31\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nartifact out/a.bin reversible bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb derived-from src/a.py\nartifact out/a.bin reversible short derived-from src/a.py\n",
+    "state.txt": "file src/a.py aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: stamp.txt is malformed, the path out/a.bin is stamped twice\n"
+   }
   }
  ]
 }
