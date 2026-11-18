@@ -4699,6 +4699,184 @@
     "stdout": "",
     "stderr": "error: stamp.txt is malformed, the path build/out.bin is stamped twice\n"
    }
+  },
+  {
+   "name": "fixture-order-extra-field-before-synthetic",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb14\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nfile src/b.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact build/only-a.bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py\nartifact build/shared.bin reversible cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc derived-from src/a.py, src/b.py\nartifact build/deep.bin irreversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from build/shared.bin\n",
+    "state.txt": "file src/a.py aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nfile src/b.py bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nfile build/shared.bin cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\nfile build/deep.bin 0000000000000000000000000000000000000000000000000000000000000000\n",
+    "fx2/x.json": "{\n  \"judgment_point\": \"classification\",\n  \"request\": {\n    \"artifact\": \"build/only-a.bin\",\n    \"digest\": \"eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\n    \"parents\": [\n      \"src/a.py\"\n    ],\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"choice\": \"reversible\",\n    \"confidence\": 0.9,\n    \"kind\": \"choice\",\n    \"probabilities\": {\n      \"irreversible\": 0.05,\n      \"reversible\": 0.9,\n      \"reversible-with-compensation\": 0.05\n    }\n  },\n  \"synthetic\": false,\n  \"zz\": 1\n}\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py",
+    "--fixtures",
+    "fx2"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture x.json carries the field 'zz', which the fixture envelope does not carry\n"
+   }
+  },
+  {
+   "name": "fixture-order-synthetic-before-point",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb14\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nfile src/b.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact build/only-a.bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py\nartifact build/shared.bin reversible cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc derived-from src/a.py, src/b.py\nartifact build/deep.bin irreversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from build/shared.bin\n",
+    "state.txt": "file src/a.py aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nfile src/b.py bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nfile build/shared.bin cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\nfile build/deep.bin 0000000000000000000000000000000000000000000000000000000000000000\n",
+    "fx2/x.json": "{\n  \"judgment_point\": \"luck\",\n  \"request\": {\n    \"artifact\": \"build/only-a.bin\",\n    \"digest\": \"eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\n    \"parents\": [\n      \"src/a.py\"\n    ],\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"choice\": \"reversible\",\n    \"confidence\": 0.9,\n    \"kind\": \"choice\",\n    \"probabilities\": {\n      \"irreversible\": 0.05,\n      \"reversible\": 0.9,\n      \"reversible-with-compensation\": 0.05\n    }\n  }\n}\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py",
+    "--fixtures",
+    "fx2"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture x.json is not marked synthetic\n"
+   }
+  },
+  {
+   "name": "fixture-order-point-before-request",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb14\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nfile src/b.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact build/only-a.bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py\nartifact build/shared.bin reversible cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc derived-from src/a.py, src/b.py\nartifact build/deep.bin irreversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from build/shared.bin\n",
+    "state.txt": "file src/a.py aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nfile src/b.py bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nfile build/shared.bin cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\nfile build/deep.bin 0000000000000000000000000000000000000000000000000000000000000000\n",
+    "fx2/x.json": "{\n  \"judgment_point\": \"luck\",\n  \"request\": [\n    1,\n    2\n  ],\n  \"response\": {\n    \"choice\": \"reversible\",\n    \"confidence\": 0.9,\n    \"kind\": \"choice\",\n    \"probabilities\": {\n      \"irreversible\": 0.05,\n      \"reversible\": 0.9,\n      \"reversible-with-compensation\": 0.05\n    }\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py",
+    "--fixtures",
+    "fx2"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture x.json field 'judgment_point' names no judgment point this tool records\n"
+   }
+  },
+  {
+   "name": "fixture-order-request-before-response",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb14\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nfile src/b.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact build/only-a.bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py\nartifact build/shared.bin reversible cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc derived-from src/a.py, src/b.py\nartifact build/deep.bin irreversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from build/shared.bin\n",
+    "state.txt": "file src/a.py aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nfile src/b.py bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nfile build/shared.bin cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\nfile build/deep.bin 0000000000000000000000000000000000000000000000000000000000000000\n",
+    "fx2/x.json": "{\n  \"judgment_point\": \"classification\",\n  \"request\": {\n    \"artifact\": \"build/only-a.bin\",\n    \"digest\": \"eeee\",\n    \"parents\": [\n      \"src/a.py\"\n    ],\n    \"status\": \"current\"\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py",
+    "--fixtures",
+    "fx2"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture x.json request field 'digest' is not sixty-four lowercase hex characters\n"
+   }
+  },
+  {
+   "name": "fixture-order-confidence-before-choice",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb14\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nfile src/b.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact build/only-a.bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py\nartifact build/shared.bin reversible cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc derived-from src/a.py, src/b.py\nartifact build/deep.bin irreversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from build/shared.bin\n",
+    "state.txt": "file src/a.py aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nfile src/b.py bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nfile build/shared.bin cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\nfile build/deep.bin 0000000000000000000000000000000000000000000000000000000000000000\n",
+    "fx2/x.json": "{\n  \"judgment_point\": \"classification\",\n  \"request\": {\n    \"artifact\": \"build/only-a.bin\",\n    \"digest\": \"eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\n    \"parents\": [\n      \"src/a.py\"\n    ],\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"choice\": \"wobbly\",\n    \"confidence\": 2,\n    \"kind\": \"choice\",\n    \"probabilities\": {\n      \"irreversible\": 0.05,\n      \"reversible\": 0.9,\n      \"reversible-with-compensation\": 0.05\n    }\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py",
+    "--fixtures",
+    "fx2"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture x.json field 'confidence' is not a number between 0 and 1\n"
+   }
+  },
+  {
+   "name": "fixture-order-validation-before-duplicate",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb14\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nfile src/b.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact build/only-a.bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py\nartifact build/shared.bin reversible cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc derived-from src/a.py, src/b.py\nartifact build/deep.bin irreversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from build/shared.bin\n",
+    "state.txt": "file src/a.py aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nfile src/b.py bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nfile build/shared.bin cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\nfile build/deep.bin 0000000000000000000000000000000000000000000000000000000000000000\n",
+    "fx2/a.json": "{\n  \"judgment_point\": \"classification\",\n  \"request\": {\n    \"artifact\": \"build/only-a.bin\",\n    \"digest\": \"eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\n    \"parents\": [\n      \"src/a.py\"\n    ],\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"choice\": \"reversible\",\n    \"confidence\": 0.9,\n    \"kind\": \"choice\",\n    \"probabilities\": {\n      \"irreversible\": 0.05,\n      \"reversible\": 0.9,\n      \"reversible-with-compensation\": 0.05\n    }\n  },\n  \"synthetic\": true\n}\n",
+    "fx2/b.json": "{\n  \"judgment_point\": \"classification\",\n  \"request\": {\n    \"artifact\": \"build/only-a.bin\",\n    \"digest\": \"eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\n    \"parents\": [\n      \"src/a.py\"\n    ],\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"choice\": \"reversible\",\n    \"confidence\": 7,\n    \"kind\": \"choice\",\n    \"probabilities\": {\n      \"irreversible\": 0.05,\n      \"reversible\": 0.9,\n      \"reversible-with-compensation\": 0.05\n    }\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py",
+    "--fixtures",
+    "fx2"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture b.json field 'confidence' is not a number between 0 and 1\n"
+   }
+  },
+  {
+   "name": "fixture-order-request-before-response-defect",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb14\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nfile src/b.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact build/only-a.bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py\nartifact build/shared.bin reversible cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc derived-from src/a.py, src/b.py\nartifact build/deep.bin irreversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from build/shared.bin\n",
+    "state.txt": "file src/a.py aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nfile src/b.py bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nfile build/shared.bin cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\nfile build/deep.bin 0000000000000000000000000000000000000000000000000000000000000000\n",
+    "fx2/x.json": "{\n  \"judgment_point\": \"classification\",\n  \"request\": {\n    \"artifact\": \"build/only-a.bin\",\n    \"digest\": \"eeee\",\n    \"parents\": [\n      \"src/a.py\"\n    ],\n    \"status\": \"current\"\n  },\n  \"response\": [\n    1,\n    2\n  ],\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py",
+    "--fixtures",
+    "fx2"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture x.json request field 'digest' is not sixty-four lowercase hex characters\n"
+   }
+  },
+  {
+   "name": "fixture-order-earlier-file-defect-answers",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb14\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nfile src/b.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact build/only-a.bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py\nartifact build/shared.bin reversible cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc derived-from src/a.py, src/b.py\nartifact build/deep.bin irreversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from build/shared.bin\n",
+    "state.txt": "file src/a.py aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nfile src/b.py bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nfile build/shared.bin cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\nfile build/deep.bin 0000000000000000000000000000000000000000000000000000000000000000\n",
+    "fx2/a.json": "{\n  \"judgment_point\": \"classification\",\n  \"request\": {\n    \"artifact\": \"build/only-a.bin\",\n    \"digest\": \"eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\n    \"parents\": [\n      \"src/a.py\"\n    ],\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"choice\": \"reversible\",\n    \"confidence\": 0.9,\n    \"kind\": \"choice\",\n    \"probabilities\": {\n      \"irreversible\": 0.05,\n      \"reversible\": 0.9,\n      \"reversible-with-compensation\": 0.05\n    }\n  },\n  \"synthetic\": true,\n  \"zz\": 1\n}\n",
+    "fx2/b.json": "{\n  \"judgment_point\": \"classification\",\n  \"request\": {\n    \"artifact\": \"build/only-a.bin\",\n    \"digest\": \"eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\n    \"parents\": [\n      \"src/a.py\"\n    ],\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"choice\": \"reversible\",\n    \"confidence\": 0.9,\n    \"kind\": \"choice\",\n    \"probabilities\": {\n      \"irreversible\": 0.05,\n      \"reversible\": 0.9,\n      \"reversible-with-compensation\": 0.05\n    }\n  }\n}\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py",
+    "--fixtures",
+    "fx2"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture a.json carries the field 'zz', which the fixture envelope does not carry\n"
+   }
   }
  ]
 }
