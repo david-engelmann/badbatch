@@ -4471,6 +4471,120 @@
     "stdout": "",
     "stderr": "error: state.txt is malformed, the line 'file src/a.py' matches no current state line form\n"
    }
+  },
+  {
+   "name": "stamp-header-agent-extra-word",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb33\nagent writer-3 extra\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n",
+    "state.txt": "file src/a.py aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: stamp.txt is malformed, the stamp is missing its agent field\n"
+   }
+  },
+  {
+   "name": "stamp-header-prompt-hash-wrong-field",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb33\nagent writer-3\nwriter writer-3\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n",
+    "state.txt": "file src/a.py aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: stamp.txt is malformed, the stamp is missing its prompt-hash field\n"
+   }
+  },
+  {
+   "name": "stamp-header-model-at-eof",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb33\nagent writer-3\nprompt-hash b41d90\n",
+    "state.txt": "file src/a.py aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: stamp.txt is malformed, the stamp is missing its model field\n"
+   }
+  },
+  {
+   "name": "stamp-header-agent-before-model",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb33\nagent writer-3 extra\nprompt-hash b41d90\n",
+    "state.txt": "file src/a.py aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: stamp.txt is malformed, the stamp is missing its agent field\n"
+   }
+  },
+  {
+   "name": "stamp-header-comments-interleaved",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb33\n# a note between header lines\nagent writer-3\n\nprompt-hash b41d90\n# a second note\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nartifact build/out.bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py\n",
+    "state.txt": "file build/out.bin eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "recall src/a.py\nartifact build/out.bin reversible current chain src/a.py -> build/out.bin\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "stamp-header-missing-agent-behind-plan",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb33\n",
+    "state.txt": "file src/a.py aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: stamp.txt is malformed, the stamp is missing its agent field\n"
+   }
   }
  ]
 }
