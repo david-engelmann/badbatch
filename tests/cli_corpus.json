@@ -4877,6 +4877,132 @@
     "stdout": "",
     "stderr": "error: fixture a.json carries the field 'zz', which the fixture envelope does not carry\n"
    }
+  },
+  {
+   "name": "classify-threshold-exact",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb36\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/base.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nartifact out/tool.html unclassed cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc derived-from src/base.py\n",
+    "state.txt": "file out/tool.html cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\n",
+    "fx/edge.json": "{\n  \"judgment_point\": \"classification\",\n  \"request\": {\n    \"artifact\": \"out/tool.html\",\n    \"digest\": \"cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\",\n    \"parents\": [\n      \"src/base.py\"\n    ],\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"choice\": \"reversible\",\n    \"confidence\": 0.6,\n    \"kind\": \"choice\",\n    \"probabilities\": {\n      \"irreversible\": 0.15,\n      \"reversible\": 0.6,\n      \"reversible-with-compensation\": 0.25\n    }\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "recall src/base.py\nartifact out/tool.html reversible proposed current chain src/base.py -> out/tool.html\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "classify-unreached-unclassed",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb36\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/base.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nfile src/other.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact out/reached.html reversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from src/base.py\nartifact out/orphan.html unclassed eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/other.py\n",
+    "state.txt": "file out/reached.html dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "recall src/base.py\nartifact out/reached.html reversible current chain src/base.py -> out/reached.html\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "classify-missing-status-request",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb36\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/base.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nartifact out/gone.html unclassed ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff derived-from src/base.py\n",
+    "state.txt": "file src/base.py aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n",
+    "fx/missing.json": "{\n  \"judgment_point\": \"classification\",\n  \"request\": {\n    \"artifact\": \"out/gone.html\",\n    \"digest\": \"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\",\n    \"parents\": [\n      \"src/base.py\"\n    ],\n    \"status\": \"missing\"\n  },\n  \"response\": {\n    \"choice\": \"irreversible\",\n    \"confidence\": 0.9,\n    \"kind\": \"choice\",\n    \"probabilities\": {\n      \"irreversible\": 0.9,\n      \"reversible\": 0.05,\n      \"reversible-with-compensation\": 0.05\n    }\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "recall src/base.py\nartifact out/gone.html irreversible proposed missing chain src/base.py -> out/gone.html\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "classify-parents-sorted-request",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb36\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/alpha.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nfile src/zeta.py created ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\nartifact out/joined.html unclassed cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc derived-from src/zeta.py, src/alpha.py\n",
+    "state.txt": "file out/joined.html cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\n",
+    "fx/joined.json": "{\n  \"judgment_point\": \"classification\",\n  \"request\": {\n    \"artifact\": \"out/joined.html\",\n    \"digest\": \"cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\",\n    \"parents\": [\n      \"src/alpha.py\",\n      \"src/zeta.py\"\n    ],\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"choice\": \"reversible-with-compensation\",\n    \"confidence\": 0.9,\n    \"kind\": \"choice\",\n    \"probabilities\": {\n      \"irreversible\": 0.05,\n      \"reversible\": 0.05,\n      \"reversible-with-compensation\": 0.9\n    }\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/alpha.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "recall src/alpha.py\nartifact out/joined.html reversible-with-compensation proposed current chain src/alpha.py -> out/joined.html\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "classify-refusal-first-in-path-order",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb36\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/base.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nartifact zzz/second.html unclassed bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb derived-from src/base.py\nartifact aaa/first.html unclassed cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc derived-from src/base.py\n",
+    "state.txt": "file aaa/first.html cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\nfile zzz/second.html bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: stamp.txt is malformed, the artifact line for aaa/first.html names the class 'unclassed', which is not one of the three named classes\n"
+   }
+  },
+  {
+   "name": "classify-proposed-sorts-by-proposed-class",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb36\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/base.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nartifact bbb/classed.html reversible bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb derived-from src/base.py\nartifact aaa/proposed.html unclassed cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc derived-from src/base.py\nartifact ccc/classed.html irreversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from src/base.py\n",
+    "state.txt": "file bbb/classed.html bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nfile aaa/proposed.html cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\nfile ccc/classed.html dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\n",
+    "fx/prop.json": "{\n  \"judgment_point\": \"classification\",\n  \"request\": {\n    \"artifact\": \"aaa/proposed.html\",\n    \"digest\": \"cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\",\n    \"parents\": [\n      \"src/base.py\"\n    ],\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"choice\": \"reversible-with-compensation\",\n    \"confidence\": 0.9,\n    \"kind\": \"choice\",\n    \"probabilities\": {\n      \"irreversible\": 0.05,\n      \"reversible\": 0.05,\n      \"reversible-with-compensation\": 0.9\n    }\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "recall src/base.py\nartifact bbb/classed.html reversible current chain src/base.py -> bbb/classed.html\nartifact aaa/proposed.html reversible-with-compensation proposed current chain src/base.py -> aaa/proposed.html\nartifact ccc/classed.html irreversible current chain src/base.py -> ccc/classed.html\n",
+    "stderr": ""
+   }
   }
  ]
 }
