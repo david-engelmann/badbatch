@@ -1,5 +1,5 @@
 //! The setup invariants, re-expressed in crate form from
-//! tests/test_setup.py at the Round 4 closure (BB-32). The
+//! tests/test_setup.py at the Round 4 closure (ZH-35). The
 //! dash scan reads .rs where the Python form read .py, covers
 //! extensionless files as well, and asserts its named anchor
 //! files were actually scanned, so the scan cannot pass by
@@ -8,18 +8,18 @@
 use std::collections::BTreeSet;
 use std::path::{Path, PathBuf};
 
-use badbatch::pytext::{decimal_value, is_decimal};
+use odradek::pytext::{decimal_value, is_decimal};
 use sha2::{Digest, Sha256};
 
 const CANONICAL_PREFIX_SHA256: &str =
     "63d2f04005dc8eb111d3efca1be55c0911f9ad46bc7cf3c74d9f9908f4a86f11";
 
 const EXPECTED_OBLIGATIONS: [&str; 5] = [
-    "BB-S1. Every stamped artifact carries the agent, the prompt hash, and the model that made it, and a stamp missing any of those fields is rejected rather than stored incomplete.",
-    "BB-S2. A recall walk from any stamped artifact lists every downstream artifact derived from it, and an artifact reachable through the stamp graph but missing from the walk is a defect the tests must catch.",
-    "BB-S3. Every artifact in a recall result is sorted into exactly one reversibility class, reversible, reversible with compensation, or irreversible, and an unclassified artifact in the result is a defect.",
-    "BB-S4. The recall walk reports only and changes nothing, and executing a recall is a separate act that never happens as a side effect of walking the graph.",
-    "BB-S5. Every fixture and example in this repo is synthetic and built for this repo, and no real trace or session data appears anywhere in the tree.",
+    "ZH-S1. Every suspect on the hunt list carries the evidence that it serves nobody, and a suspect listed without evidence is a defect the tests must catch.",
+    "ZH-S2. No kill fires before its proof is recorded, and an action taken on a suspect whose proof is missing or failed is a defect the tests must catch.",
+    "ZH-S3. The first action on any proven zombie is a reversible quarantine, and an irreversible action as the first step on any suspect is forbidden by the contract.",
+    "ZH-S4. Every hunt works from recorded or synthetic cluster state during the first slices, and no code path in those slices connects to a live cluster.",
+    "ZH-S5. Every fixture and example in this repo is synthetic and built for this repo, and no real trace or session data appears anywhere in the tree.",
 ];
 
 fn root() -> PathBuf {
@@ -73,7 +73,7 @@ fn the_contract_stub_obligations_exist() {
         "stub obligations must be exactly S1 to S5"
     );
     for (prefix, _, line) in &found {
-        assert_eq!(prefix, "BB", "obligation is not a BB obligation");
+        assert_eq!(prefix, "ZH", "obligation is not a ZH obligation");
         let words = line.split_whitespace().count();
         assert!(words >= 20, "obligation too thin at {words} words");
     }
@@ -100,40 +100,11 @@ fn the_readme_status_reports_the_round_count() {
     assert_eq!(
         counts,
         ["37"],
-        "README status must report exactly one closed round count and it must be 37 of 100"
+        "README status must report exactly one closed round count and it must be 9 of 100"
     );
 }
 
-/// Every digit run in a "Closed rounds N of 100" phrase whose
-/// closing count is not followed by another digit. This is the
-/// findall pin of the Python form, written without a regex
-/// engine. Its digit class is the oracle's decimal class, the
-/// Unicode decimal digits, as the Python pattern's digit
-/// class was.
-fn round_counts(text: &str) -> Vec<String> {
-    let mut found = Vec::new();
-    let mut rest = text;
-    while let Some(start) = rest.find("Closed rounds ") {
-        let after = &rest[start + "Closed rounds ".len()..];
-        let digits: String = after
-            .chars()
-            .take_while(|c| is_decimal(*c as u32))
-            .collect();
-        if !digits.is_empty() {
-            let tail = &after[digits.len()..];
-            if let Some(tail) = tail.strip_prefix(" of 100") {
-                let followed_by_digit = tail.chars().next().is_some_and(|c| is_decimal(c as u32));
-                if !followed_by_digit {
-                    found.push(digits.clone());
-                }
-            }
-        }
-        rest = &rest[start + 1..];
-    }
-    found
-}
-
-const DESCRIPTION: &str = "Walks a batch of stamped artifacts and lists everything downstream of the bad one, so a poisoned prompt or a broken model version can be recalled like a product recall.";
+const DESCRIPTION: &str = "Hunter agents stalk a compute cluster for zombie workloads, idle services, forgotten namespaces, and load balancers serving nobody. Nothing is deleted on suspicion; every target is proven dead first.";
 
 #[test]
 fn the_description_stands_on_every_surface() {
@@ -161,12 +132,7 @@ fn the_description_stands_on_every_surface() {
         "the first crate doc line must be the description"
     );
     let corpus = read("tests/cli_corpus.json");
-    for case in [
-        "root-help",
-        "root-help-short",
-        "root-help-cluster",
-        "help-after-unknown-flag",
-    ] {
+    for case in ["help-top", "help-top-abbrev"] {
         let marker = format!("\"name\": \"{case}\"");
         let start = corpus
             .find(&marker)
@@ -193,6 +159,35 @@ fn the_description_stands_on_every_surface() {
     );
 }
 
+/// Every digit run in a "Closed rounds N of 100" phrase whose
+/// closing count is not followed by another digit. This is
+/// the findall pin of the Python form, written without a
+/// regex engine. Its digit class is the oracle's decimal
+/// class, the Unicode decimal digits, as the Python pattern's
+/// digit class was.
+fn round_counts(text: &str) -> Vec<String> {
+    let mut found = Vec::new();
+    let mut rest = text;
+    while let Some(start) = rest.find("Closed rounds ") {
+        let after = &rest[start + "Closed rounds ".len()..];
+        let digits: String = after
+            .chars()
+            .take_while(|c| is_decimal(*c as u32))
+            .collect();
+        if !digits.is_empty() {
+            let tail = &after[digits.len()..];
+            if let Some(tail) = tail.strip_prefix(" of 100") {
+                let followed_by_digit = tail.chars().next().is_some_and(|c| is_decimal(c as u32));
+                if !followed_by_digit {
+                    found.push(digits.clone());
+                }
+            }
+        }
+        rest = &rest[start + 1..];
+    }
+    found
+}
+
 #[test]
 fn the_setup_digit_class_is_the_unicode_decimal_class() {
     // The Python pins read digits in the decimal class of the
@@ -203,10 +198,37 @@ fn the_setup_digit_class_is_the_unicode_decimal_class() {
     // neither pin may read it as one.
     assert_eq!(round_counts("Closed rounds \u{664} of 100"), ["\u{664}"]);
     assert!(round_counts("Closed rounds 4 of 100\u{664}").is_empty());
-    let arabic = "BB-S\u{664}. Every stamped artifact carries the agent.";
+    let arabic = "ZH-S\u{664}. Every suspect on the hunt list carries.";
     assert_eq!(stub_obligation(arabic).map(|(_, n, _)| n), Some(4));
-    let roman = "BB-S\u{2163}. Every stamped artifact carries the agent.";
+    let roman = "ZH-S\u{2163}. Every suspect on the hunt list carries.";
     assert_eq!(stub_obligation(roman), None);
+}
+
+#[test]
+fn the_ci_gate_steps_run_the_full_gate() {
+    let text = read(".github/workflows/ci.yml");
+    assert!(
+        text.contains("merge_group"),
+        "the CI gate must run for the merge queue"
+    );
+    assert!(
+        text.contains("cargo fmt --check"),
+        "the CI gate must check formatting"
+    );
+    assert!(text.contains("cargo clippy"), "the CI gate must run clippy");
+    assert!(text.contains("Run CI gate"), "the CI gate step is missing");
+    assert!(
+        text.contains("cargo test"),
+        "the CI gate must run the cargo gate"
+    );
+    assert!(
+        text.contains("dtolnay/rust-toolchain"),
+        "the CI gate needs the Rust toolchain step"
+    );
+    assert!(
+        !text.contains("pytest"),
+        "the Python gate is retired in this slice"
+    );
 }
 
 const TEXT_SUFFIXES: [&str; 9] = [
