@@ -5253,6 +5253,114 @@
     "stdout": "",
     "stderr": "error: cannot read //missing.txt, No such file or directory\n"
    }
+  },
+  {
+   "name": "crlf-record-block-never-closes",
+   "source": "oracle",
+   "setup": {
+    "record.txt": "run run-bb39\r\nagent writer-3\r\nprompt-hash b41d90\r\nmodel synth-writer-2\r\nfile src/a.py created\r\ncontent\r\nalpha line\r\nbeta line\r\nend\r\n"
+   },
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: record.txt is malformed, the content block for the file entry for src/a.py reaches the end of the record with no closing end line\n"
+   }
+  },
+  {
+   "name": "crlf-record-content-line-digested",
+   "source": "oracle",
+   "setup": {
+    "record.txt": "run run-bb39\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created\ncontent\nalpha line\r\nbeta line\r\nend\n"
+   },
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "stamp run-bb39\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created 2094a680d0ecec47371bc22d702a70a93b7ed7ed7268a714bab3af47232c0680\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "crlf-record-end-word-is-content",
+   "source": "oracle",
+   "setup": {
+    "record.txt": "run run-bb39\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created\ncontent\nend\r\nbeta line\nend\n"
+   },
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "stamp run-bb39\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created 2a4d3580803020406b63ee97905571a8502ef0d5fe3c34863a99df42305d40f7\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "crlf-stamp-reads-clean",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb39\r\nagent writer-3\r\nprompt-hash b41d90\r\nmodel synth-writer-2\r\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\r\nartifact build/out.bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py\r\n",
+    "state.txt": "file build/out.bin eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "recall src/a.py\nartifact build/out.bin reversible current chain src/a.py -> build/out.bin\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "crlf-state-reads-clean",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb39\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nartifact build/out.bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py\n",
+    "state.txt": "file build/out.bin eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\r\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "recall src/a.py\nartifact build/out.bin reversible current chain src/a.py -> build/out.bin\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "crlf-fixture-loads",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb39\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nartifact build/out.bin unclassed eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py\n",
+    "state.txt": "file build/out.bin eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\n",
+    "fx/answer.json": "{\r\n  \"judgment_point\": \"classification\",\r\n  \"request\": {\r\n    \"artifact\": \"build/out.bin\",\r\n    \"digest\": \"eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\",\r\n    \"parents\": [\r\n      \"src/a.py\"\r\n    ],\r\n    \"status\": \"current\"\r\n  },\r\n  \"response\": {\r\n    \"choice\": \"reversible\",\r\n    \"confidence\": 0.9,\r\n    \"kind\": \"choice\",\r\n    \"probabilities\": {\r\n      \"irreversible\": 0.03,\r\n      \"reversible\": 0.9,\r\n      \"reversible-with-compensation\": 0.07\r\n    }\r\n  },\r\n  \"synthetic\": true\r\n}\r\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "recall src/a.py\nartifact build/out.bin reversible proposed current chain src/a.py -> build/out.bin\n",
+    "stderr": ""
+   }
   }
  ]
 }
