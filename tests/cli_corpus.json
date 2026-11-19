@@ -5361,6 +5361,140 @@
     "stdout": "recall src/a.py\nartifact build/out.bin reversible proposed current chain src/a.py -> build/out.bin\n",
     "stderr": ""
    }
+  },
+  {
+   "name": "fixture-repeated-synthetic-last-true",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/base.py created 00000000000000000000000000000000000000000000000000000000000000b0\nartifact out/x.html unclassed 00000000000000000000000000000000000000000000000000000000000000b1 derived-from src/base.py\n",
+    "state.txt": "file src/base.py 00000000000000000000000000000000000000000000000000000000000000b0\nfile out/x.html 00000000000000000000000000000000000000000000000000000000000000b1\n",
+    "fx/x.json": "{\n  \"judgment_point\": \"classification\",\n  \"request\": {\n    \"artifact\": \"out/x.html\",\n    \"digest\": \"00000000000000000000000000000000000000000000000000000000000000b1\",\n    \"parents\": [\n      \"src/base.py\"\n    ],\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"choice\": \"reversible\",\n    \"confidence\": 0.9,\n    \"kind\": \"choice\",\n    \"probabilities\": {\n      \"irreversible\": 0.03,\n      \"reversible\": 0.9,\n      \"reversible-with-compensation\": 0.07\n    }\n  },\n  \"synthetic\": false,\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "recall src/base.py\nartifact out/x.html reversible proposed current chain src/base.py -> out/x.html\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "fixture-repeated-synthetic-last-false",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/base.py created 00000000000000000000000000000000000000000000000000000000000000b0\nartifact out/x.html unclassed 00000000000000000000000000000000000000000000000000000000000000b1 derived-from src/base.py\n",
+    "state.txt": "file src/base.py 00000000000000000000000000000000000000000000000000000000000000b0\nfile out/x.html 00000000000000000000000000000000000000000000000000000000000000b1\n",
+    "fx/x.json": "{\n  \"judgment_point\": \"classification\",\n  \"request\": {\n    \"artifact\": \"out/x.html\",\n    \"digest\": \"00000000000000000000000000000000000000000000000000000000000000b1\",\n    \"parents\": [\n      \"src/base.py\"\n    ],\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"choice\": \"reversible\",\n    \"confidence\": 0.9,\n    \"kind\": \"choice\",\n    \"probabilities\": {\n      \"irreversible\": 0.03,\n      \"reversible\": 0.9,\n      \"reversible-with-compensation\": 0.07\n    }\n  },\n  \"synthetic\": true,\n  \"synthetic\": false\n}\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture x.json is not marked synthetic\n"
+   }
+  },
+  {
+   "name": "fixture-repeated-confidence-last-trusted",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/base.py created 00000000000000000000000000000000000000000000000000000000000000b0\nartifact out/x.html unclassed 00000000000000000000000000000000000000000000000000000000000000b1 derived-from src/base.py\n",
+    "state.txt": "file src/base.py 00000000000000000000000000000000000000000000000000000000000000b0\nfile out/x.html 00000000000000000000000000000000000000000000000000000000000000b1\n",
+    "fx/x.json": "{\n  \"judgment_point\": \"classification\",\n  \"request\": {\n    \"artifact\": \"out/x.html\",\n    \"digest\": \"00000000000000000000000000000000000000000000000000000000000000b1\",\n    \"parents\": [\n      \"src/base.py\"\n    ],\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"choice\": \"reversible\",\n    \"confidence\": 0.45,\n    \"confidence\": 0.9,\n    \"kind\": \"choice\",\n    \"probabilities\": {\n      \"irreversible\": 0.03,\n      \"reversible\": 0.9,\n      \"reversible-with-compensation\": 0.07\n    }\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "recall src/base.py\nartifact out/x.html reversible proposed current chain src/base.py -> out/x.html\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "fixture-repeated-confidence-last-untrusted",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/base.py created 00000000000000000000000000000000000000000000000000000000000000b0\nartifact out/x.html unclassed 00000000000000000000000000000000000000000000000000000000000000b1 derived-from src/base.py\n",
+    "state.txt": "file src/base.py 00000000000000000000000000000000000000000000000000000000000000b0\nfile out/x.html 00000000000000000000000000000000000000000000000000000000000000b1\n",
+    "fx/x.json": "{\n  \"judgment_point\": \"classification\",\n  \"request\": {\n    \"artifact\": \"out/x.html\",\n    \"digest\": \"00000000000000000000000000000000000000000000000000000000000000b1\",\n    \"parents\": [\n      \"src/base.py\"\n    ],\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"choice\": \"reversible\",\n    \"confidence\": 0.9,\n    \"confidence\": 0.45,\n    \"kind\": \"choice\",\n    \"probabilities\": {\n      \"irreversible\": 0.03,\n      \"reversible\": 0.9,\n      \"reversible-with-compensation\": 0.07\n    }\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: stamp.txt is malformed, the artifact line for out/x.html names the class 'unclassed', which is not one of the three named classes\n"
+   }
+  },
+  {
+   "name": "fixture-repeated-request-artifact-last",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/base.py created 00000000000000000000000000000000000000000000000000000000000000b0\nartifact out/x.html unclassed 00000000000000000000000000000000000000000000000000000000000000b1 derived-from src/base.py\n",
+    "state.txt": "file src/base.py 00000000000000000000000000000000000000000000000000000000000000b0\nfile out/x.html 00000000000000000000000000000000000000000000000000000000000000b1\n",
+    "fx/x.json": "{\n  \"judgment_point\": \"classification\",\n  \"request\": {\n    \"artifact\": \"out/other.html\",\n    \"artifact\": \"out/x.html\",\n    \"digest\": \"00000000000000000000000000000000000000000000000000000000000000b1\",\n    \"parents\": [\n      \"src/base.py\"\n    ],\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"choice\": \"reversible\",\n    \"confidence\": 0.9,\n    \"kind\": \"choice\",\n    \"probabilities\": {\n      \"irreversible\": 0.03,\n      \"reversible\": 0.9,\n      \"reversible-with-compensation\": 0.07\n    }\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "recall src/base.py\nartifact out/x.html reversible proposed current chain src/base.py -> out/x.html\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "fixture-repeated-score-last-ranks",
+   "source": "oracle",
+   "setup": {
+    "state.txt": "file src/base.py 00000000000000000000000000000000000000000000000000000000000000b0\nfile out/rev.html 00000000000000000000000000000000000000000000000000000000000000b1\n",
+    "stamp.txt": "stamp run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/base.py created 00000000000000000000000000000000000000000000000000000000000000b0\nartifact out/rev.html reversible-with-compensation 00000000000000000000000000000000000000000000000000000000000000b1 derived-from src/base.py\n",
+    "fx/r3.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/rev.html\",\n    \"candidate\": \"quarantine-artifact\",\n    \"chain\": \"src/base.py -> out/rev.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.9\n  },\n  \"synthetic\": true\n}\n",
+    "fx/r2.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/rev.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/rev.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.95,\n    \"score\": 0.5\n  },\n  \"synthetic\": true\n}\n",
+    "fx/r1.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/rev.html\",\n    \"candidate\": \"rebuild-from-parents\",\n    \"chain\": \"src/base.py -> out/rev.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.1\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "plan src/base.py\nartifact out/rev.html reversible-with-compensation current chain src/base.py -> out/rev.html\ncompensation quarantine-artifact score 0.9\ncompensation remove-artifact score 0.5\ncompensation rebuild-from-parents score 0.1\n",
+    "stderr": ""
+   }
   }
  ]
 }
