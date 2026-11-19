@@ -99,8 +99,8 @@ fn the_readme_status_reports_the_round_count() {
     let counts = round_counts(&text);
     assert_eq!(
         counts,
-        ["40"],
-        "README status must report exactly one closed round count and it must be 40 of 100"
+        ["41"],
+        "README status must report exactly one closed round count and it must be 41 of 100"
     );
 }
 
