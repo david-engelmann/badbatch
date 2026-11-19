@@ -5495,6 +5495,138 @@
     "stdout": "plan src/base.py\nartifact out/rev.html reversible-with-compensation current chain src/base.py -> out/rev.html\ncompensation quarantine-artifact score 0.9\ncompensation remove-artifact score 0.5\ncompensation rebuild-from-parents score 0.1\n",
     "stderr": ""
    }
+  },
+  {
+   "name": "fixture-nonfinite-confidence-overflow",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0041\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nartifact build/x.html unclassed cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc derived-from src/a.py\n",
+    "state.txt": "file build/x.html cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\n",
+    "fx/x.json": "{\n  \"judgment_point\": \"classification\",\n  \"request\": {\n    \"artifact\": \"build/x.html\",\n    \"digest\": \"cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\",\n    \"parents\": [\n      \"src/a.py\"\n    ],\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"choice\": \"reversible\",\n    \"confidence\": 1e999,\n    \"kind\": \"choice\",\n    \"probabilities\": {\n      \"irreversible\": 0.05,\n      \"reversible\": 0.9,\n      \"reversible-with-compensation\": 0.05\n    }\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture x.json field 'confidence' is not a number between 0 and 1\n"
+   }
+  },
+  {
+   "name": "fixture-nonfinite-probability-nan",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0041\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nartifact build/x.html unclassed cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc derived-from src/a.py\n",
+    "state.txt": "file build/x.html cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\n",
+    "fx/x.json": "{\n  \"judgment_point\": \"classification\",\n  \"request\": {\n    \"artifact\": \"build/x.html\",\n    \"digest\": \"cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\",\n    \"parents\": [\n      \"src/a.py\"\n    ],\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"choice\": \"reversible\",\n    \"confidence\": 0.9,\n    \"kind\": \"choice\",\n    \"probabilities\": {\n      \"irreversible\": NaN,\n      \"reversible\": 0.5,\n      \"reversible-with-compensation\": 0.0\n    }\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture x.json field 'probabilities.irreversible' is not a number between 0 and 1\n"
+   }
+  },
+  {
+   "name": "fixture-nonfinite-score-infinity",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0041\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/base.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact out/page.html reversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from src/base.py\n",
+    "state.txt": "file out/page.html dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\n",
+    "fx/r.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/page.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/page.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": Infinity\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture r.json field 'score' is not a number between 0 and 1\n"
+   }
+  },
+  {
+   "name": "fixture-nonfinite-ranking-confidence-overflow",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0041\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/base.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact out/page.html reversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from src/base.py\n",
+    "state.txt": "file out/page.html dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\n",
+    "fx/r.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/page.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/page.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": -1e999,\n    \"kind\": \"score\",\n    \"score\": 0.5\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture r.json field 'confidence' is not a number between 0 and 1\n"
+   }
+  },
+  {
+   "name": "fixture-nonfinite-confidence-integer-overflow",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0041\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nartifact build/x.html unclassed cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc derived-from src/a.py\n",
+    "state.txt": "file build/x.html cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\n",
+    "fx/x.json": "{\n  \"judgment_point\": \"classification\",\n  \"request\": {\n    \"artifact\": \"build/x.html\",\n    \"digest\": \"cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\",\n    \"parents\": [\n      \"src/a.py\"\n    ],\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"choice\": \"reversible\",\n    \"confidence\": 10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000,\n    \"kind\": \"choice\",\n    \"probabilities\": {\n      \"irreversible\": 0.05,\n      \"reversible\": 0.9,\n      \"reversible-with-compensation\": 0.05\n    }\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture x.json field 'confidence' is not a number between 0 and 1\n"
+   }
+  },
+  {
+   "name": "fixture-nonfinite-score-underflow",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0041\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/base.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact out/page.html reversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from src/base.py\n",
+    "state.txt": "file out/page.html dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\n",
+    "fx/r.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/page.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/page.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 1e-999\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "plan src/base.py\nartifact out/page.html reversible current chain src/base.py -> out/page.html\ncompensation remove-artifact score 0.0\ncompensation rebuild-from-parents\n",
+    "stderr": ""
+   }
   }
  ]
 }
