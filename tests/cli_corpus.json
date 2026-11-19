@@ -5136,6 +5136,123 @@
     "stderr": "",
     "stdout": "plan src/base.py\nartifact out/exp.html reversible current chain src/base.py -> out/exp.html\ncompensation remove-artifact score 0.1\ncompensation rebuild-from-parents\n"
    }
+  },
+  {
+   "name": "folded-stamp-cannot-read-names-folded",
+   "source": "oracle",
+   "setup": {
+    "state.txt": "file build/out.bin eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\n"
+   },
+   "argv": [
+    "recall",
+    "./sub/../missing.txt",
+    "state.txt",
+    "src/a.py"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read sub/../missing.txt, No such file or directory\n"
+   }
+  },
+  {
+   "name": "folded-stamp-refusal-names-as-written",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb38\nagent writer-3 extra\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n",
+    "state.txt": "file build/out.bin eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\n"
+   },
+   "argv": [
+    "recall",
+    "./stamp.txt",
+    "state.txt",
+    "src/a.py"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: ./stamp.txt is malformed, the stamp is missing its agent field\n"
+   }
+  },
+  {
+   "name": "folded-stamp-trailing-slash-opens",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb38\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nartifact build/out.bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py\n",
+    "state.txt": "file build/out.bin eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt/",
+    "state.txt",
+    "src/a.py"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "recall src/a.py\nartifact build/out.bin reversible current chain src/a.py -> build/out.bin\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "folded-fixture-message-names-folded-join",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb38\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nartifact build/out.bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py\n",
+    "state.txt": "file build/out.bin eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\n",
+    "fx/bad.json": "not json\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py",
+    "--fixtures",
+    "./fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture file is not valid JSON, fx/bad.json\n"
+   }
+  },
+  {
+   "name": "folded-fixtures-directory-refusal-names-as-written",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb38\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nartifact build/out.bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py\n",
+    "state.txt": "file build/out.bin eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py",
+    "--fixtures",
+    "ghost//dir/"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixtures directory cannot be read, ghost//dir/\n"
+   }
+  },
+  {
+   "name": "folded-stamp-anchor-doubled-slash",
+   "source": "oracle",
+   "setup": {
+    "state.txt": "file build/out.bin eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\n"
+   },
+   "argv": [
+    "recall",
+    "//missing.txt",
+    "state.txt",
+    "src/a.py"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read //missing.txt, No such file or directory\n"
+   }
   }
  ]
 }
