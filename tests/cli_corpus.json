@@ -6004,6 +6004,138 @@
     "stdout": "",
     "stderr": "error: fixture x.json carries the field '\\nzz', which the fixture envelope does not carry\n"
    }
+  },
+  {
+   "name": "fixture-escape-formfeed-no-answer",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0021\nagent writer-3\nprompt-hash c07ffee\nmodel synth-writer-2\nfile src/report.py created 3f9dfa038845b004cc27f7264341f66ca07118d1926542f87f719b4d5eeabd70\nartifact build/report.html unclassed 224f1d44070761b167ab1d338a429921d0c63f4c0bd177c2fed6ff800e29d3b0 derived-from src/report.py\n",
+    "state.txt": "file build/report.html 224f1d44070761b167ab1d338a429921d0c63f4c0bd177c2fed6ff800e29d3b0\n",
+    "fx/a.json": "{\n  \"judgment_point\": \"classification\",\n  \"request\": {\n    \"artifact\": \"build/re\\fport.html\",\n    \"digest\": \"224f1d44070761b167ab1d338a429921d0c63f4c0bd177c2fed6ff800e29d3b0\",\n    \"parents\": [\n      \"src/report.py\"\n    ],\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"choice\": \"reversible\",\n    \"confidence\": 0.9,\n    \"kind\": \"choice\",\n    \"probabilities\": {\n      \"irreversible\": 0.03,\n      \"reversible\": 0.9,\n      \"reversible-with-compensation\": 0.07\n    }\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/report.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: stamp.txt is malformed, the artifact line for build/report.html names the class 'unclassed', which is not one of the three named classes\n"
+   }
+  },
+  {
+   "name": "fixture-escape-carriage-no-answer",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0021\nagent writer-3\nprompt-hash c07ffee\nmodel synth-writer-2\nfile src/report.py created 3f9dfa038845b004cc27f7264341f66ca07118d1926542f87f719b4d5eeabd70\nartifact build/report.html unclassed 224f1d44070761b167ab1d338a429921d0c63f4c0bd177c2fed6ff800e29d3b0 derived-from src/report.py\n",
+    "state.txt": "file build/report.html 224f1d44070761b167ab1d338a429921d0c63f4c0bd177c2fed6ff800e29d3b0\n",
+    "fx/a.json": "{\n  \"judgment_point\": \"classification\",\n  \"request\": {\n    \"artifact\": \"build/re\\rport.html\",\n    \"digest\": \"224f1d44070761b167ab1d338a429921d0c63f4c0bd177c2fed6ff800e29d3b0\",\n    \"parents\": [\n      \"src/report.py\"\n    ],\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"choice\": \"reversible\",\n    \"confidence\": 0.9,\n    \"kind\": \"choice\",\n    \"probabilities\": {\n      \"irreversible\": 0.03,\n      \"reversible\": 0.9,\n      \"reversible-with-compensation\": 0.07\n    }\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/report.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: stamp.txt is malformed, the artifact line for build/report.html names the class 'unclassed', which is not one of the three named classes\n"
+   }
+  },
+  {
+   "name": "plan-escape-formfeed-unranked",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/report.py created 3f9dfa038845b004cc27f7264341f66ca07118d1926542f87f719b4d5eeabd70\nartifact build/report.html reversible 224f1d44070761b167ab1d338a429921d0c63f4c0bd177c2fed6ff800e29d3b0 derived-from src/report.py\n",
+    "state.txt": "file build/report.html 224f1d44070761b167ab1d338a429921d0c63f4c0bd177c2fed6ff800e29d3b0\n",
+    "fx/r.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"build/re\\fport.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/report.py -> build/re\\fport.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.8\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/report.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "plan src/report.py\nartifact build/report.html reversible current chain src/report.py -> build/report.html\ncompensation rebuild-from-parents\ncompensation remove-artifact\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "plan-escape-carriage-unranked",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/report.py created 3f9dfa038845b004cc27f7264341f66ca07118d1926542f87f719b4d5eeabd70\nartifact build/report.html reversible 224f1d44070761b167ab1d338a429921d0c63f4c0bd177c2fed6ff800e29d3b0 derived-from src/report.py\n",
+    "state.txt": "file build/report.html 224f1d44070761b167ab1d338a429921d0c63f4c0bd177c2fed6ff800e29d3b0\n",
+    "fx/r.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"build/re\\rport.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/report.py -> build/re\\rport.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.8\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/report.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "plan src/report.py\nartifact build/report.html reversible current chain src/report.py -> build/report.html\ncompensation rebuild-from-parents\ncompensation remove-artifact\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "fixture-escape-formfeed-field-name",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/report.py created 3f9dfa038845b004cc27f7264341f66ca07118d1926542f87f719b4d5eeabd70\nartifact build/report.html reversible 224f1d44070761b167ab1d338a429921d0c63f4c0bd177c2fed6ff800e29d3b0 derived-from src/report.py\n",
+    "state.txt": "file build/report.html 224f1d44070761b167ab1d338a429921d0c63f4c0bd177c2fed6ff800e29d3b0\n",
+    "fx/x.json": "{\n  \"judgment_point\": \"classification\",\n  \"request\": {\n    \"artifact\": \"build/report.html\",\n    \"digest\": \"224f1d44070761b167ab1d338a429921d0c63f4c0bd177c2fed6ff800e29d3b0\",\n    \"parents\": [\n      \"src/report.py\"\n    ],\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"kind\": \"abstention\"\n  },\n  \"synthetic\": true,\n  \"\\fzz\": 0\n}\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/report.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture x.json carries the field '\\x0czz', which the fixture envelope does not carry\n"
+   }
+  },
+  {
+   "name": "fixture-escape-carriage-field-name",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/report.py created 3f9dfa038845b004cc27f7264341f66ca07118d1926542f87f719b4d5eeabd70\nartifact build/report.html reversible 224f1d44070761b167ab1d338a429921d0c63f4c0bd177c2fed6ff800e29d3b0 derived-from src/report.py\n",
+    "state.txt": "file build/report.html 224f1d44070761b167ab1d338a429921d0c63f4c0bd177c2fed6ff800e29d3b0\n",
+    "fx/x.json": "{\n  \"judgment_point\": \"classification\",\n  \"request\": {\n    \"artifact\": \"build/report.html\",\n    \"digest\": \"224f1d44070761b167ab1d338a429921d0c63f4c0bd177c2fed6ff800e29d3b0\",\n    \"parents\": [\n      \"src/report.py\"\n    ],\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"kind\": \"abstention\"\n  },\n  \"synthetic\": true,\n  \"\\rzz\": 0\n}\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/report.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture x.json carries the field '\\rzz', which the fixture envelope does not carry\n"
+   }
   }
  ]
 }
