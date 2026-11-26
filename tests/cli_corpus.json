@@ -6460,6 +6460,546 @@
     "stdout": "stamp run-2000\nagent writer-9\nprompt-hash d19\nmodel synth-9\n",
     "stderr": ""
    }
+  },
+  {
+   "name": "ws-state-en-quad-field-separators",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb38\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nartifact build/out.bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py\n",
+    "state.txt": "file build/out.bin eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "recall src/a.py\nartifact build/out.bin reversible current chain src/a.py -> build/out.bin\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "ws-stamp-en-quad-inside-path",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb38\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nartifact build/out .bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py\n",
+    "state.txt": "file build/out.bin eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: stamp.txt is malformed, the line 'artifact build/out\\u2000.bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py' matches no stamp line form\n"
+   }
+  },
+  {
+   "name": "ws-record-en-quad-header-separators",
+   "source": "oracle",
+   "setup": {
+    "record.txt": "run run-2000\nagent writer-9\nprompt-hash d19\nmodel synth-9\n"
+   },
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "stamp run-2000\nagent writer-9\nprompt-hash d19\nmodel synth-9\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "ws-state-em-quad-field-separators",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb38\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nartifact build/out.bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py\n",
+    "state.txt": "file build/out.bin eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "recall src/a.py\nartifact build/out.bin reversible current chain src/a.py -> build/out.bin\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "ws-stamp-em-quad-inside-path",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb38\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nartifact build/out .bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py\n",
+    "state.txt": "file build/out.bin eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: stamp.txt is malformed, the line 'artifact build/out\\u2001.bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py' matches no stamp line form\n"
+   }
+  },
+  {
+   "name": "ws-record-em-quad-header-separators",
+   "source": "oracle",
+   "setup": {
+    "record.txt": "run run-2000\nagent writer-9\nprompt-hash d19\nmodel synth-9\n"
+   },
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "stamp run-2000\nagent writer-9\nprompt-hash d19\nmodel synth-9\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "ws-state-en-space-field-separators",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb38\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nartifact build/out.bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py\n",
+    "state.txt": "file build/out.bin eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "recall src/a.py\nartifact build/out.bin reversible current chain src/a.py -> build/out.bin\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "ws-stamp-en-space-inside-path",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb38\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nartifact build/out .bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py\n",
+    "state.txt": "file build/out.bin eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: stamp.txt is malformed, the line 'artifact build/out\\u2002.bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py' matches no stamp line form\n"
+   }
+  },
+  {
+   "name": "ws-record-en-space-header-separators",
+   "source": "oracle",
+   "setup": {
+    "record.txt": "run run-2000\nagent writer-9\nprompt-hash d19\nmodel synth-9\n"
+   },
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "stamp run-2000\nagent writer-9\nprompt-hash d19\nmodel synth-9\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "ws-state-three-per-em-space-field-separators",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb38\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nartifact build/out.bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py\n",
+    "state.txt": "file build/out.bin eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "recall src/a.py\nartifact build/out.bin reversible current chain src/a.py -> build/out.bin\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "ws-stamp-three-per-em-space-inside-path",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb38\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nartifact build/out .bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py\n",
+    "state.txt": "file build/out.bin eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: stamp.txt is malformed, the line 'artifact build/out\\u2004.bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py' matches no stamp line form\n"
+   }
+  },
+  {
+   "name": "ws-record-three-per-em-space-header-separators",
+   "source": "oracle",
+   "setup": {
+    "record.txt": "run run-2000\nagent writer-9\nprompt-hash d19\nmodel synth-9\n"
+   },
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "stamp run-2000\nagent writer-9\nprompt-hash d19\nmodel synth-9\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "ws-state-four-per-em-space-field-separators",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb38\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nartifact build/out.bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py\n",
+    "state.txt": "file build/out.bin eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "recall src/a.py\nartifact build/out.bin reversible current chain src/a.py -> build/out.bin\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "ws-stamp-four-per-em-space-inside-path",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb38\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nartifact build/out .bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py\n",
+    "state.txt": "file build/out.bin eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: stamp.txt is malformed, the line 'artifact build/out\\u2005.bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py' matches no stamp line form\n"
+   }
+  },
+  {
+   "name": "ws-record-four-per-em-space-header-separators",
+   "source": "oracle",
+   "setup": {
+    "record.txt": "run run-2000\nagent writer-9\nprompt-hash d19\nmodel synth-9\n"
+   },
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "stamp run-2000\nagent writer-9\nprompt-hash d19\nmodel synth-9\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "ws-state-six-per-em-space-field-separators",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb38\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nartifact build/out.bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py\n",
+    "state.txt": "file build/out.bin eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "recall src/a.py\nartifact build/out.bin reversible current chain src/a.py -> build/out.bin\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "ws-stamp-six-per-em-space-inside-path",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb38\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nartifact build/out .bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py\n",
+    "state.txt": "file build/out.bin eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: stamp.txt is malformed, the line 'artifact build/out\\u2006.bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py' matches no stamp line form\n"
+   }
+  },
+  {
+   "name": "ws-record-six-per-em-space-header-separators",
+   "source": "oracle",
+   "setup": {
+    "record.txt": "run run-2000\nagent writer-9\nprompt-hash d19\nmodel synth-9\n"
+   },
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "stamp run-2000\nagent writer-9\nprompt-hash d19\nmodel synth-9\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "ws-state-figure-space-field-separators",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb38\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nartifact build/out.bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py\n",
+    "state.txt": "file build/out.bin eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "recall src/a.py\nartifact build/out.bin reversible current chain src/a.py -> build/out.bin\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "ws-stamp-figure-space-inside-path",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb38\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nartifact build/out .bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py\n",
+    "state.txt": "file build/out.bin eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: stamp.txt is malformed, the line 'artifact build/out\\u2007.bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py' matches no stamp line form\n"
+   }
+  },
+  {
+   "name": "ws-record-figure-space-header-separators",
+   "source": "oracle",
+   "setup": {
+    "record.txt": "run run-2000\nagent writer-9\nprompt-hash d19\nmodel synth-9\n"
+   },
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "stamp run-2000\nagent writer-9\nprompt-hash d19\nmodel synth-9\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "ws-state-punctuation-space-field-separators",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb38\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nartifact build/out.bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py\n",
+    "state.txt": "file build/out.bin eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "recall src/a.py\nartifact build/out.bin reversible current chain src/a.py -> build/out.bin\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "ws-stamp-punctuation-space-inside-path",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb38\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nartifact build/out .bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py\n",
+    "state.txt": "file build/out.bin eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: stamp.txt is malformed, the line 'artifact build/out\\u2008.bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py' matches no stamp line form\n"
+   }
+  },
+  {
+   "name": "ws-record-punctuation-space-header-separators",
+   "source": "oracle",
+   "setup": {
+    "record.txt": "run run-2000\nagent writer-9\nprompt-hash d19\nmodel synth-9\n"
+   },
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "stamp run-2000\nagent writer-9\nprompt-hash d19\nmodel synth-9\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "ws-state-thin-space-field-separators",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb38\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nartifact build/out.bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py\n",
+    "state.txt": "file build/out.bin eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "recall src/a.py\nartifact build/out.bin reversible current chain src/a.py -> build/out.bin\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "ws-stamp-thin-space-inside-path",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb38\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nartifact build/out .bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py\n",
+    "state.txt": "file build/out.bin eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: stamp.txt is malformed, the line 'artifact build/out\\u2009.bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py' matches no stamp line form\n"
+   }
+  },
+  {
+   "name": "ws-record-thin-space-header-separators",
+   "source": "oracle",
+   "setup": {
+    "record.txt": "run run-2000\nagent writer-9\nprompt-hash d19\nmodel synth-9\n"
+   },
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "stamp run-2000\nagent writer-9\nprompt-hash d19\nmodel synth-9\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "ws-state-hair-space-field-separators",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb38\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nartifact build/out.bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py\n",
+    "state.txt": "file build/out.bin eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "recall src/a.py\nartifact build/out.bin reversible current chain src/a.py -> build/out.bin\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "ws-stamp-hair-space-inside-path",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb38\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nartifact build/out .bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py\n",
+    "state.txt": "file build/out.bin eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: stamp.txt is malformed, the line 'artifact build/out\\u200a.bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py' matches no stamp line form\n"
+   }
+  },
+  {
+   "name": "ws-record-hair-space-header-separators",
+   "source": "oracle",
+   "setup": {
+    "record.txt": "run run-2000\nagent writer-9\nprompt-hash d19\nmodel synth-9\n"
+   },
+   "argv": [
+    "stamp",
+    "record.txt"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "stamp run-2000\nagent writer-9\nprompt-hash d19\nmodel synth-9\n",
+    "stderr": ""
+   }
   }
  ]
 }
