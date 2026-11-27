@@ -8622,6 +8622,1099 @@
     "stdout": "",
     "stderr": "error: fixture file is not valid JSON, fx/r.json\n"
    }
+  },
+  {
+   "name": "fixture-number-form-0e0",
+   "source": "oracle",
+   "setup": {
+    "state.txt": "file src/base.py 00000000000000000000000000000000000000000000000000000000000000b0\nfile out/zero.html 00000000000000000000000000000000000000000000000000000000000000b1\n",
+    "stamp.txt": "stamp run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/base.py created 00000000000000000000000000000000000000000000000000000000000000b0\nartifact out/zero.html reversible 00000000000000000000000000000000000000000000000000000000000000b1 derived-from src/base.py\n",
+    "fx/r2.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/zero.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/zero.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.4\n  },\n  \"synthetic\": true\n}\n",
+    "fx/r1.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/zero.html\",\n    \"candidate\": \"rebuild-from-parents\",\n    \"chain\": \"src/base.py -> out/zero.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0e0\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "plan src/base.py\nartifact out/zero.html reversible current chain src/base.py -> out/zero.html\ncompensation remove-artifact score 0.4\ncompensation rebuild-from-parents score 0.0\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "fixture-number-form-0eplus0",
+   "source": "oracle",
+   "setup": {
+    "state.txt": "file src/base.py 00000000000000000000000000000000000000000000000000000000000000b0\nfile out/zero.html 00000000000000000000000000000000000000000000000000000000000000b1\n",
+    "stamp.txt": "stamp run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/base.py created 00000000000000000000000000000000000000000000000000000000000000b0\nartifact out/zero.html reversible 00000000000000000000000000000000000000000000000000000000000000b1 derived-from src/base.py\n",
+    "fx/r2.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/zero.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/zero.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.4\n  },\n  \"synthetic\": true\n}\n",
+    "fx/r1.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/zero.html\",\n    \"candidate\": \"rebuild-from-parents\",\n    \"chain\": \"src/base.py -> out/zero.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0e+0\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "plan src/base.py\nartifact out/zero.html reversible current chain src/base.py -> out/zero.html\ncompensation remove-artifact score 0.4\ncompensation rebuild-from-parents score 0.0\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "fixture-number-form-0eminus0",
+   "source": "oracle",
+   "setup": {
+    "state.txt": "file src/base.py 00000000000000000000000000000000000000000000000000000000000000b0\nfile out/zero.html 00000000000000000000000000000000000000000000000000000000000000b1\n",
+    "stamp.txt": "stamp run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/base.py created 00000000000000000000000000000000000000000000000000000000000000b0\nartifact out/zero.html reversible 00000000000000000000000000000000000000000000000000000000000000b1 derived-from src/base.py\n",
+    "fx/r2.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/zero.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/zero.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.4\n  },\n  \"synthetic\": true\n}\n",
+    "fx/r1.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/zero.html\",\n    \"candidate\": \"rebuild-from-parents\",\n    \"chain\": \"src/base.py -> out/zero.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0e-0\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "plan src/base.py\nartifact out/zero.html reversible current chain src/base.py -> out/zero.html\ncompensation remove-artifact score 0.4\ncompensation rebuild-from-parents score 0.0\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "fixture-number-form-0cap0",
+   "source": "oracle",
+   "setup": {
+    "state.txt": "file src/base.py 00000000000000000000000000000000000000000000000000000000000000b0\nfile out/zero.html 00000000000000000000000000000000000000000000000000000000000000b1\n",
+    "stamp.txt": "stamp run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/base.py created 00000000000000000000000000000000000000000000000000000000000000b0\nartifact out/zero.html reversible 00000000000000000000000000000000000000000000000000000000000000b1 derived-from src/base.py\n",
+    "fx/r2.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/zero.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/zero.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.4\n  },\n  \"synthetic\": true\n}\n",
+    "fx/r1.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/zero.html\",\n    \"candidate\": \"rebuild-from-parents\",\n    \"chain\": \"src/base.py -> out/zero.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0E0\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "plan src/base.py\nartifact out/zero.html reversible current chain src/base.py -> out/zero.html\ncompensation remove-artifact score 0.4\ncompensation rebuild-from-parents score 0.0\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "fixture-number-form-0capplus0",
+   "source": "oracle",
+   "setup": {
+    "state.txt": "file src/base.py 00000000000000000000000000000000000000000000000000000000000000b0\nfile out/zero.html 00000000000000000000000000000000000000000000000000000000000000b1\n",
+    "stamp.txt": "stamp run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/base.py created 00000000000000000000000000000000000000000000000000000000000000b0\nartifact out/zero.html reversible 00000000000000000000000000000000000000000000000000000000000000b1 derived-from src/base.py\n",
+    "fx/r2.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/zero.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/zero.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.4\n  },\n  \"synthetic\": true\n}\n",
+    "fx/r1.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/zero.html\",\n    \"candidate\": \"rebuild-from-parents\",\n    \"chain\": \"src/base.py -> out/zero.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0E+0\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "plan src/base.py\nartifact out/zero.html reversible current chain src/base.py -> out/zero.html\ncompensation remove-artifact score 0.4\ncompensation rebuild-from-parents score 0.0\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "fixture-number-form-0capminus0",
+   "source": "oracle",
+   "setup": {
+    "state.txt": "file src/base.py 00000000000000000000000000000000000000000000000000000000000000b0\nfile out/zero.html 00000000000000000000000000000000000000000000000000000000000000b1\n",
+    "stamp.txt": "stamp run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/base.py created 00000000000000000000000000000000000000000000000000000000000000b0\nartifact out/zero.html reversible 00000000000000000000000000000000000000000000000000000000000000b1 derived-from src/base.py\n",
+    "fx/r2.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/zero.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/zero.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.4\n  },\n  \"synthetic\": true\n}\n",
+    "fx/r1.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/zero.html\",\n    \"candidate\": \"rebuild-from-parents\",\n    \"chain\": \"src/base.py -> out/zero.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0E-0\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "plan src/base.py\nartifact out/zero.html reversible current chain src/base.py -> out/zero.html\ncompensation remove-artifact score 0.4\ncompensation rebuild-from-parents score 0.0\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "fixture-number-form-minus0",
+   "source": "oracle",
+   "setup": {
+    "state.txt": "file src/base.py 00000000000000000000000000000000000000000000000000000000000000b0\nfile out/zero.html 00000000000000000000000000000000000000000000000000000000000000b1\n",
+    "stamp.txt": "stamp run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/base.py created 00000000000000000000000000000000000000000000000000000000000000b0\nartifact out/zero.html reversible 00000000000000000000000000000000000000000000000000000000000000b1 derived-from src/base.py\n",
+    "fx/r2.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/zero.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/zero.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.4\n  },\n  \"synthetic\": true\n}\n",
+    "fx/r1.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/zero.html\",\n    \"candidate\": \"rebuild-from-parents\",\n    \"chain\": \"src/base.py -> out/zero.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": -0\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "plan src/base.py\nartifact out/zero.html reversible current chain src/base.py -> out/zero.html\ncompensation remove-artifact score 0.4\ncompensation rebuild-from-parents score 0.0\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "fixture-number-form-0point5e0",
+   "source": "oracle",
+   "setup": {
+    "state.txt": "file src/base.py 00000000000000000000000000000000000000000000000000000000000000b0\nfile out/rev.html 00000000000000000000000000000000000000000000000000000000000000b1\n",
+    "stamp.txt": "stamp run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/base.py created 00000000000000000000000000000000000000000000000000000000000000b0\nartifact out/rev.html reversible-with-compensation 00000000000000000000000000000000000000000000000000000000000000b1 derived-from src/base.py\n",
+    "fx/r3.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/rev.html\",\n    \"candidate\": \"quarantine-artifact\",\n    \"chain\": \"src/base.py -> out/rev.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.9\n  },\n  \"synthetic\": true\n}\n",
+    "fx/r2.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/rev.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/rev.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.5e0\n  },\n  \"synthetic\": true\n}\n",
+    "fx/r1.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/rev.html\",\n    \"candidate\": \"rebuild-from-parents\",\n    \"chain\": \"src/base.py -> out/rev.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.1\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "plan src/base.py\nartifact out/rev.html reversible-with-compensation current chain src/base.py -> out/rev.html\ncompensation quarantine-artifact score 0.9\ncompensation remove-artifact score 0.5\ncompensation rebuild-from-parents score 0.1\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "fixture-number-form-0point5eplus0",
+   "source": "oracle",
+   "setup": {
+    "state.txt": "file src/base.py 00000000000000000000000000000000000000000000000000000000000000b0\nfile out/rev.html 00000000000000000000000000000000000000000000000000000000000000b1\n",
+    "stamp.txt": "stamp run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/base.py created 00000000000000000000000000000000000000000000000000000000000000b0\nartifact out/rev.html reversible-with-compensation 00000000000000000000000000000000000000000000000000000000000000b1 derived-from src/base.py\n",
+    "fx/r3.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/rev.html\",\n    \"candidate\": \"quarantine-artifact\",\n    \"chain\": \"src/base.py -> out/rev.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.9\n  },\n  \"synthetic\": true\n}\n",
+    "fx/r2.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/rev.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/rev.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.5e+0\n  },\n  \"synthetic\": true\n}\n",
+    "fx/r1.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/rev.html\",\n    \"candidate\": \"rebuild-from-parents\",\n    \"chain\": \"src/base.py -> out/rev.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.1\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "plan src/base.py\nartifact out/rev.html reversible-with-compensation current chain src/base.py -> out/rev.html\ncompensation quarantine-artifact score 0.9\ncompensation remove-artifact score 0.5\ncompensation rebuild-from-parents score 0.1\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "fixture-number-form-0point5eminus0",
+   "source": "oracle",
+   "setup": {
+    "state.txt": "file src/base.py 00000000000000000000000000000000000000000000000000000000000000b0\nfile out/rev.html 00000000000000000000000000000000000000000000000000000000000000b1\n",
+    "stamp.txt": "stamp run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/base.py created 00000000000000000000000000000000000000000000000000000000000000b0\nartifact out/rev.html reversible-with-compensation 00000000000000000000000000000000000000000000000000000000000000b1 derived-from src/base.py\n",
+    "fx/r3.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/rev.html\",\n    \"candidate\": \"quarantine-artifact\",\n    \"chain\": \"src/base.py -> out/rev.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.9\n  },\n  \"synthetic\": true\n}\n",
+    "fx/r2.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/rev.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/rev.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.5e-0\n  },\n  \"synthetic\": true\n}\n",
+    "fx/r1.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/rev.html\",\n    \"candidate\": \"rebuild-from-parents\",\n    \"chain\": \"src/base.py -> out/rev.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.1\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "plan src/base.py\nartifact out/rev.html reversible-with-compensation current chain src/base.py -> out/rev.html\ncompensation quarantine-artifact score 0.9\ncompensation remove-artifact score 0.5\ncompensation rebuild-from-parents score 0.1\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "fixture-number-form-0point5cap0",
+   "source": "oracle",
+   "setup": {
+    "state.txt": "file src/base.py 00000000000000000000000000000000000000000000000000000000000000b0\nfile out/rev.html 00000000000000000000000000000000000000000000000000000000000000b1\n",
+    "stamp.txt": "stamp run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/base.py created 00000000000000000000000000000000000000000000000000000000000000b0\nartifact out/rev.html reversible-with-compensation 00000000000000000000000000000000000000000000000000000000000000b1 derived-from src/base.py\n",
+    "fx/r3.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/rev.html\",\n    \"candidate\": \"quarantine-artifact\",\n    \"chain\": \"src/base.py -> out/rev.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.9\n  },\n  \"synthetic\": true\n}\n",
+    "fx/r2.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/rev.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/rev.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.5E0\n  },\n  \"synthetic\": true\n}\n",
+    "fx/r1.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/rev.html\",\n    \"candidate\": \"rebuild-from-parents\",\n    \"chain\": \"src/base.py -> out/rev.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.1\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "plan src/base.py\nartifact out/rev.html reversible-with-compensation current chain src/base.py -> out/rev.html\ncompensation quarantine-artifact score 0.9\ncompensation remove-artifact score 0.5\ncompensation rebuild-from-parents score 0.1\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "fixture-number-form-0point5capplus0",
+   "source": "oracle",
+   "setup": {
+    "state.txt": "file src/base.py 00000000000000000000000000000000000000000000000000000000000000b0\nfile out/rev.html 00000000000000000000000000000000000000000000000000000000000000b1\n",
+    "stamp.txt": "stamp run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/base.py created 00000000000000000000000000000000000000000000000000000000000000b0\nartifact out/rev.html reversible-with-compensation 00000000000000000000000000000000000000000000000000000000000000b1 derived-from src/base.py\n",
+    "fx/r3.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/rev.html\",\n    \"candidate\": \"quarantine-artifact\",\n    \"chain\": \"src/base.py -> out/rev.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.9\n  },\n  \"synthetic\": true\n}\n",
+    "fx/r2.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/rev.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/rev.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.5E+0\n  },\n  \"synthetic\": true\n}\n",
+    "fx/r1.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/rev.html\",\n    \"candidate\": \"rebuild-from-parents\",\n    \"chain\": \"src/base.py -> out/rev.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.1\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "plan src/base.py\nartifact out/rev.html reversible-with-compensation current chain src/base.py -> out/rev.html\ncompensation quarantine-artifact score 0.9\ncompensation remove-artifact score 0.5\ncompensation rebuild-from-parents score 0.1\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "fixture-number-form-0point5capminus0",
+   "source": "oracle",
+   "setup": {
+    "state.txt": "file src/base.py 00000000000000000000000000000000000000000000000000000000000000b0\nfile out/rev.html 00000000000000000000000000000000000000000000000000000000000000b1\n",
+    "stamp.txt": "stamp run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/base.py created 00000000000000000000000000000000000000000000000000000000000000b0\nartifact out/rev.html reversible-with-compensation 00000000000000000000000000000000000000000000000000000000000000b1 derived-from src/base.py\n",
+    "fx/r3.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/rev.html\",\n    \"candidate\": \"quarantine-artifact\",\n    \"chain\": \"src/base.py -> out/rev.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.9\n  },\n  \"synthetic\": true\n}\n",
+    "fx/r2.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/rev.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/rev.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.5E-0\n  },\n  \"synthetic\": true\n}\n",
+    "fx/r1.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/rev.html\",\n    \"candidate\": \"rebuild-from-parents\",\n    \"chain\": \"src/base.py -> out/rev.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.1\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "plan src/base.py\nartifact out/rev.html reversible-with-compensation current chain src/base.py -> out/rev.html\ncompensation quarantine-artifact score 0.9\ncompensation remove-artifact score 0.5\ncompensation rebuild-from-parents score 0.1\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "fixture-number-form-5capminus1",
+   "source": "oracle",
+   "setup": {
+    "state.txt": "file src/base.py 00000000000000000000000000000000000000000000000000000000000000b0\nfile out/rev.html 00000000000000000000000000000000000000000000000000000000000000b1\n",
+    "stamp.txt": "stamp run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/base.py created 00000000000000000000000000000000000000000000000000000000000000b0\nartifact out/rev.html reversible-with-compensation 00000000000000000000000000000000000000000000000000000000000000b1 derived-from src/base.py\n",
+    "fx/r3.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/rev.html\",\n    \"candidate\": \"quarantine-artifact\",\n    \"chain\": \"src/base.py -> out/rev.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.9\n  },\n  \"synthetic\": true\n}\n",
+    "fx/r2.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/rev.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/rev.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 5E-1\n  },\n  \"synthetic\": true\n}\n",
+    "fx/r1.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/rev.html\",\n    \"candidate\": \"rebuild-from-parents\",\n    \"chain\": \"src/base.py -> out/rev.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.1\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "plan src/base.py\nartifact out/rev.html reversible-with-compensation current chain src/base.py -> out/rev.html\ncompensation quarantine-artifact score 0.9\ncompensation remove-artifact score 0.5\ncompensation rebuild-from-parents score 0.1\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "fixture-number-form-5point0eminus1",
+   "source": "oracle",
+   "setup": {
+    "state.txt": "file src/base.py 00000000000000000000000000000000000000000000000000000000000000b0\nfile out/rev.html 00000000000000000000000000000000000000000000000000000000000000b1\n",
+    "stamp.txt": "stamp run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/base.py created 00000000000000000000000000000000000000000000000000000000000000b0\nartifact out/rev.html reversible-with-compensation 00000000000000000000000000000000000000000000000000000000000000b1 derived-from src/base.py\n",
+    "fx/r3.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/rev.html\",\n    \"candidate\": \"quarantine-artifact\",\n    \"chain\": \"src/base.py -> out/rev.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.9\n  },\n  \"synthetic\": true\n}\n",
+    "fx/r2.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/rev.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/rev.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 5.0e-1\n  },\n  \"synthetic\": true\n}\n",
+    "fx/r1.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/rev.html\",\n    \"candidate\": \"rebuild-from-parents\",\n    \"chain\": \"src/base.py -> out/rev.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.1\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "plan src/base.py\nartifact out/rev.html reversible-with-compensation current chain src/base.py -> out/rev.html\ncompensation quarantine-artifact score 0.9\ncompensation remove-artifact score 0.5\ncompensation rebuild-from-parents score 0.1\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "fixture-number-form-5point0capminus1",
+   "source": "oracle",
+   "setup": {
+    "state.txt": "file src/base.py 00000000000000000000000000000000000000000000000000000000000000b0\nfile out/rev.html 00000000000000000000000000000000000000000000000000000000000000b1\n",
+    "stamp.txt": "stamp run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/base.py created 00000000000000000000000000000000000000000000000000000000000000b0\nartifact out/rev.html reversible-with-compensation 00000000000000000000000000000000000000000000000000000000000000b1 derived-from src/base.py\n",
+    "fx/r3.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/rev.html\",\n    \"candidate\": \"quarantine-artifact\",\n    \"chain\": \"src/base.py -> out/rev.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.9\n  },\n  \"synthetic\": true\n}\n",
+    "fx/r2.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/rev.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/rev.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 5.0E-1\n  },\n  \"synthetic\": true\n}\n",
+    "fx/r1.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/rev.html\",\n    \"candidate\": \"rebuild-from-parents\",\n    \"chain\": \"src/base.py -> out/rev.html\",\n    \"class\": \"reversible-with-compensation\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.1\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 0,
+    "stdout": "plan src/base.py\nartifact out/rev.html reversible-with-compensation current chain src/base.py -> out/rev.html\ncompensation quarantine-artifact score 0.9\ncompensation remove-artifact score 0.5\ncompensation rebuild-from-parents score 0.1\n",
+    "stderr": ""
+   }
+  },
+  {
+   "name": "fixture-number-form-minus0e0",
+   "source": "oracle",
+   "setup": {
+    "state.txt": "file src/base.py 00000000000000000000000000000000000000000000000000000000000000b0\nfile out/negzero.html 00000000000000000000000000000000000000000000000000000000000000b1\n",
+    "stamp.txt": "stamp run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/base.py created 00000000000000000000000000000000000000000000000000000000000000b0\nartifact out/negzero.html reversible 00000000000000000000000000000000000000000000000000000000000000b1 derived-from src/base.py\n",
+    "fx/rank-rebuild.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/negzero.html\",\n    \"candidate\": \"rebuild-from-parents\",\n    \"chain\": \"src/base.py -> out/negzero.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": -0e0\n  },\n  \"synthetic\": true\n}\n",
+    "fx/rank-remove.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/negzero.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/negzero.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.4\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 0,
+    "stderr": "",
+    "stdout": "plan src/base.py\nartifact out/negzero.html reversible current chain src/base.py -> out/negzero.html\ncompensation remove-artifact score 0.4\ncompensation rebuild-from-parents score 0.0\n"
+   }
+  },
+  {
+   "name": "fixture-number-form-minus0eplus0",
+   "source": "oracle",
+   "setup": {
+    "state.txt": "file src/base.py 00000000000000000000000000000000000000000000000000000000000000b0\nfile out/negzero.html 00000000000000000000000000000000000000000000000000000000000000b1\n",
+    "stamp.txt": "stamp run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/base.py created 00000000000000000000000000000000000000000000000000000000000000b0\nartifact out/negzero.html reversible 00000000000000000000000000000000000000000000000000000000000000b1 derived-from src/base.py\n",
+    "fx/rank-rebuild.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/negzero.html\",\n    \"candidate\": \"rebuild-from-parents\",\n    \"chain\": \"src/base.py -> out/negzero.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": -0e+0\n  },\n  \"synthetic\": true\n}\n",
+    "fx/rank-remove.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/negzero.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/negzero.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.4\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 0,
+    "stderr": "",
+    "stdout": "plan src/base.py\nartifact out/negzero.html reversible current chain src/base.py -> out/negzero.html\ncompensation remove-artifact score 0.4\ncompensation rebuild-from-parents score 0.0\n"
+   }
+  },
+  {
+   "name": "fixture-number-form-minus0eminus0",
+   "source": "oracle",
+   "setup": {
+    "state.txt": "file src/base.py 00000000000000000000000000000000000000000000000000000000000000b0\nfile out/negzero.html 00000000000000000000000000000000000000000000000000000000000000b1\n",
+    "stamp.txt": "stamp run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/base.py created 00000000000000000000000000000000000000000000000000000000000000b0\nartifact out/negzero.html reversible 00000000000000000000000000000000000000000000000000000000000000b1 derived-from src/base.py\n",
+    "fx/rank-rebuild.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/negzero.html\",\n    \"candidate\": \"rebuild-from-parents\",\n    \"chain\": \"src/base.py -> out/negzero.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": -0e-0\n  },\n  \"synthetic\": true\n}\n",
+    "fx/rank-remove.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/negzero.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/negzero.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.4\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 0,
+    "stderr": "",
+    "stdout": "plan src/base.py\nartifact out/negzero.html reversible current chain src/base.py -> out/negzero.html\ncompensation remove-artifact score 0.4\ncompensation rebuild-from-parents score 0.0\n"
+   }
+  },
+  {
+   "name": "fixture-number-form-minus0cap0",
+   "source": "oracle",
+   "setup": {
+    "state.txt": "file src/base.py 00000000000000000000000000000000000000000000000000000000000000b0\nfile out/negzero.html 00000000000000000000000000000000000000000000000000000000000000b1\n",
+    "stamp.txt": "stamp run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/base.py created 00000000000000000000000000000000000000000000000000000000000000b0\nartifact out/negzero.html reversible 00000000000000000000000000000000000000000000000000000000000000b1 derived-from src/base.py\n",
+    "fx/rank-rebuild.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/negzero.html\",\n    \"candidate\": \"rebuild-from-parents\",\n    \"chain\": \"src/base.py -> out/negzero.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": -0E0\n  },\n  \"synthetic\": true\n}\n",
+    "fx/rank-remove.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/negzero.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/negzero.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.4\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 0,
+    "stderr": "",
+    "stdout": "plan src/base.py\nartifact out/negzero.html reversible current chain src/base.py -> out/negzero.html\ncompensation remove-artifact score 0.4\ncompensation rebuild-from-parents score 0.0\n"
+   }
+  },
+  {
+   "name": "fixture-number-form-minus0capplus0",
+   "source": "oracle",
+   "setup": {
+    "state.txt": "file src/base.py 00000000000000000000000000000000000000000000000000000000000000b0\nfile out/negzero.html 00000000000000000000000000000000000000000000000000000000000000b1\n",
+    "stamp.txt": "stamp run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/base.py created 00000000000000000000000000000000000000000000000000000000000000b0\nartifact out/negzero.html reversible 00000000000000000000000000000000000000000000000000000000000000b1 derived-from src/base.py\n",
+    "fx/rank-rebuild.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/negzero.html\",\n    \"candidate\": \"rebuild-from-parents\",\n    \"chain\": \"src/base.py -> out/negzero.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": -0E+0\n  },\n  \"synthetic\": true\n}\n",
+    "fx/rank-remove.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/negzero.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/negzero.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.4\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 0,
+    "stderr": "",
+    "stdout": "plan src/base.py\nartifact out/negzero.html reversible current chain src/base.py -> out/negzero.html\ncompensation remove-artifact score 0.4\ncompensation rebuild-from-parents score 0.0\n"
+   }
+  },
+  {
+   "name": "fixture-number-form-minus0capminus0",
+   "source": "oracle",
+   "setup": {
+    "state.txt": "file src/base.py 00000000000000000000000000000000000000000000000000000000000000b0\nfile out/negzero.html 00000000000000000000000000000000000000000000000000000000000000b1\n",
+    "stamp.txt": "stamp run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/base.py created 00000000000000000000000000000000000000000000000000000000000000b0\nartifact out/negzero.html reversible 00000000000000000000000000000000000000000000000000000000000000b1 derived-from src/base.py\n",
+    "fx/rank-rebuild.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/negzero.html\",\n    \"candidate\": \"rebuild-from-parents\",\n    \"chain\": \"src/base.py -> out/negzero.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": -0E-0\n  },\n  \"synthetic\": true\n}\n",
+    "fx/rank-remove.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/negzero.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/negzero.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.4\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 0,
+    "stderr": "",
+    "stdout": "plan src/base.py\nartifact out/negzero.html reversible current chain src/base.py -> out/negzero.html\ncompensation remove-artifact score 0.4\ncompensation rebuild-from-parents score 0.0\n"
+   }
+  },
+  {
+   "name": "fixture-number-form-minus0point0e0",
+   "source": "oracle",
+   "setup": {
+    "state.txt": "file src/base.py 00000000000000000000000000000000000000000000000000000000000000b0\nfile out/negzero.html 00000000000000000000000000000000000000000000000000000000000000b1\n",
+    "stamp.txt": "stamp run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/base.py created 00000000000000000000000000000000000000000000000000000000000000b0\nartifact out/negzero.html reversible 00000000000000000000000000000000000000000000000000000000000000b1 derived-from src/base.py\n",
+    "fx/rank-rebuild.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/negzero.html\",\n    \"candidate\": \"rebuild-from-parents\",\n    \"chain\": \"src/base.py -> out/negzero.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": -0.0e0\n  },\n  \"synthetic\": true\n}\n",
+    "fx/rank-remove.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/negzero.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/negzero.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.4\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 0,
+    "stderr": "",
+    "stdout": "plan src/base.py\nartifact out/negzero.html reversible current chain src/base.py -> out/negzero.html\ncompensation remove-artifact score 0.4\ncompensation rebuild-from-parents score 0.0\n"
+   }
+  },
+  {
+   "name": "fixture-number-form-minus0point0eplus0",
+   "source": "oracle",
+   "setup": {
+    "state.txt": "file src/base.py 00000000000000000000000000000000000000000000000000000000000000b0\nfile out/negzero.html 00000000000000000000000000000000000000000000000000000000000000b1\n",
+    "stamp.txt": "stamp run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/base.py created 00000000000000000000000000000000000000000000000000000000000000b0\nartifact out/negzero.html reversible 00000000000000000000000000000000000000000000000000000000000000b1 derived-from src/base.py\n",
+    "fx/rank-rebuild.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/negzero.html\",\n    \"candidate\": \"rebuild-from-parents\",\n    \"chain\": \"src/base.py -> out/negzero.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": -0.0e+0\n  },\n  \"synthetic\": true\n}\n",
+    "fx/rank-remove.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/negzero.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/negzero.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.4\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 0,
+    "stderr": "",
+    "stdout": "plan src/base.py\nartifact out/negzero.html reversible current chain src/base.py -> out/negzero.html\ncompensation remove-artifact score 0.4\ncompensation rebuild-from-parents score 0.0\n"
+   }
+  },
+  {
+   "name": "fixture-number-form-minus0point0eminus0",
+   "source": "oracle",
+   "setup": {
+    "state.txt": "file src/base.py 00000000000000000000000000000000000000000000000000000000000000b0\nfile out/negzero.html 00000000000000000000000000000000000000000000000000000000000000b1\n",
+    "stamp.txt": "stamp run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/base.py created 00000000000000000000000000000000000000000000000000000000000000b0\nartifact out/negzero.html reversible 00000000000000000000000000000000000000000000000000000000000000b1 derived-from src/base.py\n",
+    "fx/rank-rebuild.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/negzero.html\",\n    \"candidate\": \"rebuild-from-parents\",\n    \"chain\": \"src/base.py -> out/negzero.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": -0.0e-0\n  },\n  \"synthetic\": true\n}\n",
+    "fx/rank-remove.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/negzero.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/negzero.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.4\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 0,
+    "stderr": "",
+    "stdout": "plan src/base.py\nartifact out/negzero.html reversible current chain src/base.py -> out/negzero.html\ncompensation remove-artifact score 0.4\ncompensation rebuild-from-parents score 0.0\n"
+   }
+  },
+  {
+   "name": "fixture-number-form-minus0point0cap0",
+   "source": "oracle",
+   "setup": {
+    "state.txt": "file src/base.py 00000000000000000000000000000000000000000000000000000000000000b0\nfile out/negzero.html 00000000000000000000000000000000000000000000000000000000000000b1\n",
+    "stamp.txt": "stamp run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/base.py created 00000000000000000000000000000000000000000000000000000000000000b0\nartifact out/negzero.html reversible 00000000000000000000000000000000000000000000000000000000000000b1 derived-from src/base.py\n",
+    "fx/rank-rebuild.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/negzero.html\",\n    \"candidate\": \"rebuild-from-parents\",\n    \"chain\": \"src/base.py -> out/negzero.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": -0.0E0\n  },\n  \"synthetic\": true\n}\n",
+    "fx/rank-remove.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/negzero.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/negzero.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.4\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 0,
+    "stderr": "",
+    "stdout": "plan src/base.py\nartifact out/negzero.html reversible current chain src/base.py -> out/negzero.html\ncompensation remove-artifact score 0.4\ncompensation rebuild-from-parents score 0.0\n"
+   }
+  },
+  {
+   "name": "fixture-number-form-minus0point0capplus0",
+   "source": "oracle",
+   "setup": {
+    "state.txt": "file src/base.py 00000000000000000000000000000000000000000000000000000000000000b0\nfile out/negzero.html 00000000000000000000000000000000000000000000000000000000000000b1\n",
+    "stamp.txt": "stamp run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/base.py created 00000000000000000000000000000000000000000000000000000000000000b0\nartifact out/negzero.html reversible 00000000000000000000000000000000000000000000000000000000000000b1 derived-from src/base.py\n",
+    "fx/rank-rebuild.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/negzero.html\",\n    \"candidate\": \"rebuild-from-parents\",\n    \"chain\": \"src/base.py -> out/negzero.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": -0.0E+0\n  },\n  \"synthetic\": true\n}\n",
+    "fx/rank-remove.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/negzero.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/negzero.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.4\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 0,
+    "stderr": "",
+    "stdout": "plan src/base.py\nartifact out/negzero.html reversible current chain src/base.py -> out/negzero.html\ncompensation remove-artifact score 0.4\ncompensation rebuild-from-parents score 0.0\n"
+   }
+  },
+  {
+   "name": "fixture-number-form-minus0point0capminus0",
+   "source": "oracle",
+   "setup": {
+    "state.txt": "file src/base.py 00000000000000000000000000000000000000000000000000000000000000b0\nfile out/negzero.html 00000000000000000000000000000000000000000000000000000000000000b1\n",
+    "stamp.txt": "stamp run-1000\nagent writer-9\nprompt-hash cafe01\nmodel synth-9\nfile src/base.py created 00000000000000000000000000000000000000000000000000000000000000b0\nartifact out/negzero.html reversible 00000000000000000000000000000000000000000000000000000000000000b1 derived-from src/base.py\n",
+    "fx/rank-rebuild.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/negzero.html\",\n    \"candidate\": \"rebuild-from-parents\",\n    \"chain\": \"src/base.py -> out/negzero.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": -0.0E-0\n  },\n  \"synthetic\": true\n}\n",
+    "fx/rank-remove.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/negzero.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/negzero.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 0.4\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 0,
+    "stderr": "",
+    "stdout": "plan src/base.py\nartifact out/negzero.html reversible current chain src/base.py -> out/negzero.html\ncompensation remove-artifact score 0.4\ncompensation rebuild-from-parents score 0.0\n"
+   }
+  },
+  {
+   "name": "fixture-number-form-5eplus0",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0041\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/base.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact out/page.html reversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from src/base.py\n",
+    "state.txt": "file out/page.html dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\n",
+    "fx/r.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/page.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/page.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 5e+0\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture r.json field 'score' is not a number between 0 and 1\n"
+   }
+  },
+  {
+   "name": "fixture-number-form-5cap0",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0041\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/base.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact out/page.html reversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from src/base.py\n",
+    "state.txt": "file out/page.html dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\n",
+    "fx/r.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/page.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/page.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 5E0\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture r.json field 'score' is not a number between 0 and 1\n"
+   }
+  },
+  {
+   "name": "fixture-number-form-5capplus0",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0041\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/base.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact out/page.html reversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from src/base.py\n",
+    "state.txt": "file out/page.html dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\n",
+    "fx/r.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/page.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/page.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 5E+0\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture r.json field 'score' is not a number between 0 and 1\n"
+   }
+  },
+  {
+   "name": "fixture-number-form-5point0e0",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0041\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/base.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact out/page.html reversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from src/base.py\n",
+    "state.txt": "file out/page.html dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\n",
+    "fx/r.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/page.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/page.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 5.0e0\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture r.json field 'score' is not a number between 0 and 1\n"
+   }
+  },
+  {
+   "name": "fixture-number-form-5point0eplus0",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0041\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/base.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact out/page.html reversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from src/base.py\n",
+    "state.txt": "file out/page.html dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\n",
+    "fx/r.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/page.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/page.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 5.0e+0\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture r.json field 'score' is not a number between 0 and 1\n"
+   }
+  },
+  {
+   "name": "fixture-number-form-5point0cap0",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0041\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/base.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact out/page.html reversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from src/base.py\n",
+    "state.txt": "file out/page.html dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\n",
+    "fx/r.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/page.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/page.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 5.0E0\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture r.json field 'score' is not a number between 0 and 1\n"
+   }
+  },
+  {
+   "name": "fixture-number-form-5point0capplus0",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0041\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/base.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact out/page.html reversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from src/base.py\n",
+    "state.txt": "file out/page.html dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\n",
+    "fx/r.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/page.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/page.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 5.0E+0\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture r.json field 'score' is not a number between 0 and 1\n"
+   }
+  },
+  {
+   "name": "fixture-number-form-minus5",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0041\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/base.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact out/page.html reversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from src/base.py\n",
+    "state.txt": "file out/page.html dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\n",
+    "fx/r.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/page.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/page.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": -5\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture r.json field 'score' is not a number between 0 and 1\n"
+   }
+  },
+  {
+   "name": "fixture-number-form-minus5eplus0",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0041\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/base.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact out/page.html reversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from src/base.py\n",
+    "state.txt": "file out/page.html dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\n",
+    "fx/r.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/page.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/page.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": -5e+0\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture r.json field 'score' is not a number between 0 and 1\n"
+   }
+  },
+  {
+   "name": "fixture-number-form-minus5eminus1",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0041\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/base.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact out/page.html reversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from src/base.py\n",
+    "state.txt": "file out/page.html dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\n",
+    "fx/r.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/page.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/page.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": -5e-1\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture r.json field 'score' is not a number between 0 and 1\n"
+   }
+  },
+  {
+   "name": "fixture-number-form-minus5cap0",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0041\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/base.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact out/page.html reversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from src/base.py\n",
+    "state.txt": "file out/page.html dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\n",
+    "fx/r.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/page.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/page.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": -5E0\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture r.json field 'score' is not a number between 0 and 1\n"
+   }
+  },
+  {
+   "name": "fixture-number-form-minus5capplus0",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0041\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/base.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact out/page.html reversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from src/base.py\n",
+    "state.txt": "file out/page.html dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\n",
+    "fx/r.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/page.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/page.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": -5E+0\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture r.json field 'score' is not a number between 0 and 1\n"
+   }
+  },
+  {
+   "name": "fixture-number-form-minus5capminus1",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0041\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/base.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact out/page.html reversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from src/base.py\n",
+    "state.txt": "file out/page.html dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\n",
+    "fx/r.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/page.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/page.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": -5E-1\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture r.json field 'score' is not a number between 0 and 1\n"
+   }
+  },
+  {
+   "name": "fixture-number-form-minus5point0",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0041\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/base.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact out/page.html reversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from src/base.py\n",
+    "state.txt": "file out/page.html dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\n",
+    "fx/r.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/page.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/page.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": -5.0\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture r.json field 'score' is not a number between 0 and 1\n"
+   }
+  },
+  {
+   "name": "fixture-number-form-minus5point0e0",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0041\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/base.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact out/page.html reversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from src/base.py\n",
+    "state.txt": "file out/page.html dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\n",
+    "fx/r.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/page.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/page.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": -5.0e0\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture r.json field 'score' is not a number between 0 and 1\n"
+   }
+  },
+  {
+   "name": "fixture-number-form-minus5point0eplus0",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0041\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/base.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact out/page.html reversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from src/base.py\n",
+    "state.txt": "file out/page.html dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\n",
+    "fx/r.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/page.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/page.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": -5.0e+0\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture r.json field 'score' is not a number between 0 and 1\n"
+   }
+  },
+  {
+   "name": "fixture-number-form-minus5point0eminus1",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0041\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/base.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact out/page.html reversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from src/base.py\n",
+    "state.txt": "file out/page.html dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\n",
+    "fx/r.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/page.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/page.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": -5.0e-1\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture r.json field 'score' is not a number between 0 and 1\n"
+   }
+  },
+  {
+   "name": "fixture-number-form-minus5point0cap0",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0041\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/base.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact out/page.html reversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from src/base.py\n",
+    "state.txt": "file out/page.html dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\n",
+    "fx/r.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/page.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/page.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": -5.0E0\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture r.json field 'score' is not a number between 0 and 1\n"
+   }
+  },
+  {
+   "name": "fixture-number-form-minus5point0capplus0",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0041\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/base.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact out/page.html reversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from src/base.py\n",
+    "state.txt": "file out/page.html dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\n",
+    "fx/r.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/page.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/page.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": -5.0E+0\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture r.json field 'score' is not a number between 0 and 1\n"
+   }
+  },
+  {
+   "name": "fixture-number-form-minus5point0capminus1",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0041\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/base.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact out/page.html reversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from src/base.py\n",
+    "state.txt": "file out/page.html dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\n",
+    "fx/r.json": "{\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/page.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/page.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": -5.0E-1\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture r.json field 'score' is not a number between 0 and 1\n"
+   }
   }
  ]
 }
