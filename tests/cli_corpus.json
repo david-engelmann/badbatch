@@ -10221,6 +10221,94 @@
     "stdout": "",
     "stderr": "error: fixture file is not valid JSON, fx/r.json\n"
    }
+  },
+  {
+   "name": "fixture-escape-lone-high-string-end",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0021\nagent writer-3\nprompt-hash c07ffee\nmodel synth-writer-2\nfile src/report.py created 3f9dfa038845b004cc27f7264341f66ca07118d1926542f87f719b4d5eeabd70\nartifact build/face😀.png unclassed a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e5f60718293a4b5c6d7e8f90 derived-from src/report.py\n",
+    "state.txt": "file build/face😀.png a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e5f60718293a4b5c6d7e8f90\n",
+    "fx/a.json": "{\n  \"judgment_point\": \"classification\",\n  \"request\": {\n    \"artifact\": \"build/face\\ud83d\",\n    \"digest\": \"a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e5f60718293a4b5c6d7e8f90\",\n    \"parents\": [\n      \"src/report.py\"\n    ],\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"choice\": \"reversible\",\n    \"confidence\": 0.9,\n    \"kind\": \"choice\",\n    \"probabilities\": {\n      \"irreversible\": 0.03,\n      \"reversible\": 0.9,\n      \"reversible-with-compensation\": 0.07\n    }\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/report.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: stamp.txt is malformed, the artifact line for build/face😀.png names the class 'unclassed', which is not one of the three named classes\n"
+   }
+  },
+  {
+   "name": "fixture-escape-lone-high-letter-escape",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0021\nagent writer-3\nprompt-hash c07ffee\nmodel synth-writer-2\nfile src/report.py created 3f9dfa038845b004cc27f7264341f66ca07118d1926542f87f719b4d5eeabd70\nartifact build/face😀.png unclassed a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e5f60718293a4b5c6d7e8f90 derived-from src/report.py\n",
+    "state.txt": "file build/face😀.png a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e5f60718293a4b5c6d7e8f90\n",
+    "fx/a.json": "{\n  \"judgment_point\": \"classification\",\n  \"request\": {\n    \"artifact\": \"build/face\\ud83d\\n.png\",\n    \"digest\": \"a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e5f60718293a4b5c6d7e8f90\",\n    \"parents\": [\n      \"src/report.py\"\n    ],\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"choice\": \"reversible\",\n    \"confidence\": 0.9,\n    \"kind\": \"choice\",\n    \"probabilities\": {\n      \"irreversible\": 0.03,\n      \"reversible\": 0.9,\n      \"reversible-with-compensation\": 0.07\n    }\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/report.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: stamp.txt is malformed, the artifact line for build/face😀.png names the class 'unclassed', which is not one of the three named classes\n"
+   }
+  },
+  {
+   "name": "fixture-escape-lone-high-non-low-escape",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0021\nagent writer-3\nprompt-hash c07ffee\nmodel synth-writer-2\nfile src/report.py created 3f9dfa038845b004cc27f7264341f66ca07118d1926542f87f719b4d5eeabd70\nartifact build/face😀.png unclassed a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e5f60718293a4b5c6d7e8f90 derived-from src/report.py\n",
+    "state.txt": "file build/face😀.png a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e5f60718293a4b5c6d7e8f90\n",
+    "fx/a.json": "{\n  \"judgment_point\": \"classification\",\n  \"request\": {\n    \"artifact\": \"build/face\\ud83d\\u0041.png\",\n    \"digest\": \"a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e5f60718293a4b5c6d7e8f90\",\n    \"parents\": [\n      \"src/report.py\"\n    ],\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"choice\": \"reversible\",\n    \"confidence\": 0.9,\n    \"kind\": \"choice\",\n    \"probabilities\": {\n      \"irreversible\": 0.03,\n      \"reversible\": 0.9,\n      \"reversible-with-compensation\": 0.07\n    }\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/report.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: stamp.txt is malformed, the artifact line for build/face😀.png names the class 'unclassed', which is not one of the three named classes\n"
+   }
+  },
+  {
+   "name": "fixture-escape-lone-high-bad-escape-refused",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0021\nagent writer-3\nprompt-hash c07ffee\nmodel synth-writer-2\nfile src/report.py created 3f9dfa038845b004cc27f7264341f66ca07118d1926542f87f719b4d5eeabd70\nartifact build/face😀.png unclassed a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e5f60718293a4b5c6d7e8f90 derived-from src/report.py\n",
+    "state.txt": "file build/face😀.png a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e5f60718293a4b5c6d7e8f90\n",
+    "fx/a.json": "{\n  \"judgment_point\": \"classification\",\n  \"request\": {\n    \"artifact\": \"build/face\\ud83d\\uDC0G.png\",\n    \"digest\": \"a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e5f60718293a4b5c6d7e8f90\",\n    \"parents\": [\n      \"src/report.py\"\n    ],\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"choice\": \"reversible\",\n    \"confidence\": 0.9,\n    \"kind\": \"choice\",\n    \"probabilities\": {\n      \"irreversible\": 0.03,\n      \"reversible\": 0.9,\n      \"reversible-with-compensation\": 0.07\n    }\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/report.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture file is not valid JSON, fx/a.json\n"
+   }
   }
  ]
 }
