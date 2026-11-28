@@ -12868,6 +12868,958 @@
      "fx2/x.json": "null\n"
     }
    }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-0030-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-1.1"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -1.1, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-0660-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-١.١"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -١.١, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-06f0-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-۱.۱"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -۱.۱, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-07c0-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-߁.߁"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -߁.߁, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-0966-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-१.१"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -१.१, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-09e6-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-১.১"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -১.১, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-0a66-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-੧.੧"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -੧.੧, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-0ae6-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-૧.૧"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -૧.૧, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-0b66-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-୧.୧"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -୧.୧, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-0be6-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-௧.௧"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -௧.௧, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-0c66-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-౧.౧"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -౧.౧, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-0ce6-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-೧.೧"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -೧.೧, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-0d66-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-൧.൧"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -൧.൧, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-0de6-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-෧.෧"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -෧.෧, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-0e50-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-๑.๑"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -๑.๑, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-0ed0-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-໑.໑"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -໑.໑, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-0f20-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-༡.༡"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -༡.༡, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-1040-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-၁.၁"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -၁.၁, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-1090-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-႑.႑"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -႑.႑, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-17e0-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-១.១"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -១.១, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-1810-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-᠑.᠑"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -᠑.᠑, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-1946-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-᥇.᥇"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -᥇.᥇, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-19d0-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-᧑.᧑"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -᧑.᧑, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-1a80-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-᪁.᪁"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -᪁.᪁, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-1a90-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-᪑.᪑"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -᪑.᪑, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-1b50-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-᭑.᭑"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -᭑.᭑, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-1bb0-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-᮱.᮱"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -᮱.᮱, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-1c40-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-᱁.᱁"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -᱁.᱁, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-1c50-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-᱑.᱑"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -᱑.᱑, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-a620-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-꘡.꘡"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -꘡.꘡, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-a8d0-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-꣑.꣑"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -꣑.꣑, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-a900-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-꤁.꤁"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -꤁.꤁, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-a9d0-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-꧑.꧑"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -꧑.꧑, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-a9f0-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-꧱.꧱"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -꧱.꧱, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-aa50-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-꩑.꩑"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -꩑.꩑, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-abf0-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-꯱.꯱"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -꯱.꯱, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-ff10-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-１.１"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -１.１, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-104a0-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𐒡.𐒡"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𐒡.𐒡, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-10d30-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𐴱.𐴱"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𐴱.𐴱, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-11066-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𑁧.𑁧"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𑁧.𑁧, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-110f0-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𑃱.𑃱"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𑃱.𑃱, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-11136-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𑄷.𑄷"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𑄷.𑄷, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-111d0-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𑇑.𑇑"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𑇑.𑇑, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-112f0-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𑋱.𑋱"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𑋱.𑋱, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-11450-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𑑑.𑑑"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𑑑.𑑑, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-114d0-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𑓑.𑓑"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𑓑.𑓑, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-11650-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𑙑.𑙑"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𑙑.𑙑, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-116c0-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𑛁.𑛁"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𑛁.𑛁, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-11730-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𑜱.𑜱"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𑜱.𑜱, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-118e0-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𑣡.𑣡"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𑣡.𑣡, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-11950-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𑥑.𑥑"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𑥑.𑥑, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-11c50-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𑱑.𑱑"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𑱑.𑱑, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-11d50-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𑵑.𑵑"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𑵑.𑵑, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-11da0-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𑶡.𑶡"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𑶡.𑶡, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-11f50-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𑽑.𑽑"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𑽑.𑽑, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-16a60-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𖩡.𖩡"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𖩡.𖩡, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-16ac0-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𖫁.𖫁"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𖫁.𖫁, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-16b50-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𖭑.𖭑"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𖭑.𖭑, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-1d7ce-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𝟏.𝟏"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𝟏.𝟏, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-1d7d8-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𝟙.𝟙"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𝟙.𝟙, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-1d7e2-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𝟣.𝟣"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𝟣.𝟣, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-1d7ec-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𝟭.𝟭"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𝟭.𝟭, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-1d7f6-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𝟷.𝟷"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𝟷.𝟷, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-1e140-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𞅁.𞅁"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𞅁.𞅁, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-1e2f0-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𞋱.𞋱"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𞋱.𞋱, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-1e4f0-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𞓱.𞓱"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𞓱.𞓱, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-1e950-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𞥑.𞥑"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𞥑.𞥑, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-dotted-decimal-block-1fbf0-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-🯱.🯱"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -🯱.🯱, No such file or directory\n"
+   }
   }
  ]
 }
