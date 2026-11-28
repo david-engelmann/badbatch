@@ -12760,6 +12760,114 @@
     "stdout": "",
     "stderr": "error: fixture edge.json is not marked synthetic\n"
    }
+  },
+  {
+   "name": "fixture-envelope-string-not-object",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb14\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nfile src/b.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact build/only-a.bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py\nartifact build/shared.bin reversible cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc derived-from src/a.py, src/b.py\nartifact build/deep.bin irreversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from build/shared.bin\n",
+    "state.txt": "file src/a.py aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nfile src/b.py bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nfile build/shared.bin cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\nfile build/deep.bin 0000000000000000000000000000000000000000000000000000000000000000\n",
+    "fx2/x.json": "\"x\"\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py",
+    "--fixtures",
+    "fx2"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture x.json is not an object\n",
+    "files": {
+     "stamp.txt": "stamp run-bb14\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nfile src/b.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact build/only-a.bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py\nartifact build/shared.bin reversible cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc derived-from src/a.py, src/b.py\nartifact build/deep.bin irreversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from build/shared.bin\n",
+     "state.txt": "file src/a.py aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nfile src/b.py bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nfile build/shared.bin cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\nfile build/deep.bin 0000000000000000000000000000000000000000000000000000000000000000\n",
+     "fx2/x.json": "\"x\"\n"
+    }
+   }
+  },
+  {
+   "name": "fixture-envelope-float-not-object",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb14\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nfile src/b.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact build/only-a.bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py\nartifact build/shared.bin reversible cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc derived-from src/a.py, src/b.py\nartifact build/deep.bin irreversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from build/shared.bin\n",
+    "state.txt": "file src/a.py aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nfile src/b.py bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nfile build/shared.bin cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\nfile build/deep.bin 0000000000000000000000000000000000000000000000000000000000000000\n",
+    "fx2/x.json": "1.5\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py",
+    "--fixtures",
+    "fx2"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture x.json is not an object\n",
+    "files": {
+     "stamp.txt": "stamp run-bb14\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nfile src/b.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact build/only-a.bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py\nartifact build/shared.bin reversible cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc derived-from src/a.py, src/b.py\nartifact build/deep.bin irreversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from build/shared.bin\n",
+     "state.txt": "file src/a.py aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nfile src/b.py bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nfile build/shared.bin cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\nfile build/deep.bin 0000000000000000000000000000000000000000000000000000000000000000\n",
+     "fx2/x.json": "1.5\n"
+    }
+   }
+  },
+  {
+   "name": "fixture-envelope-bool-not-object",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb14\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nfile src/b.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact build/only-a.bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py\nartifact build/shared.bin reversible cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc derived-from src/a.py, src/b.py\nartifact build/deep.bin irreversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from build/shared.bin\n",
+    "state.txt": "file src/a.py aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nfile src/b.py bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nfile build/shared.bin cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\nfile build/deep.bin 0000000000000000000000000000000000000000000000000000000000000000\n",
+    "fx2/x.json": "true\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py",
+    "--fixtures",
+    "fx2"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture x.json is not an object\n",
+    "files": {
+     "stamp.txt": "stamp run-bb14\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nfile src/b.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact build/only-a.bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py\nartifact build/shared.bin reversible cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc derived-from src/a.py, src/b.py\nartifact build/deep.bin irreversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from build/shared.bin\n",
+     "state.txt": "file src/a.py aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nfile src/b.py bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nfile build/shared.bin cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\nfile build/deep.bin 0000000000000000000000000000000000000000000000000000000000000000\n",
+     "fx2/x.json": "true\n"
+    }
+   }
+  },
+  {
+   "name": "fixture-envelope-null-not-object",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-bb14\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nfile src/b.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact build/only-a.bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py\nartifact build/shared.bin reversible cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc derived-from src/a.py, src/b.py\nartifact build/deep.bin irreversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from build/shared.bin\n",
+    "state.txt": "file src/a.py aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nfile src/b.py bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nfile build/shared.bin cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\nfile build/deep.bin 0000000000000000000000000000000000000000000000000000000000000000\n",
+    "fx2/x.json": "null\n"
+   },
+   "argv": [
+    "recall",
+    "stamp.txt",
+    "state.txt",
+    "src/a.py",
+    "--fixtures",
+    "fx2"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture x.json is not an object\n",
+    "files": {
+     "stamp.txt": "stamp run-bb14\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/a.py created aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nfile src/b.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact build/only-a.bin reversible eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee derived-from src/a.py\nartifact build/shared.bin reversible cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc derived-from src/a.py, src/b.py\nartifact build/deep.bin irreversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from build/shared.bin\n",
+     "state.txt": "file src/a.py aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\nfile src/b.py bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nfile build/shared.bin cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc\nfile build/deep.bin 0000000000000000000000000000000000000000000000000000000000000000\n",
+     "fx2/x.json": "null\n"
+    }
+   }
   }
  ]
 }
