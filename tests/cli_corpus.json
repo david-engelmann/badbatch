@@ -14772,6 +14772,512 @@
     "stdout": "",
     "stderr": "error: cannot read -🯱\n, No such file or directory\n"
    }
+  },
+  {
+   "name": "fixture-control-outside-null-refused",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0041\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/base.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact out/page.html reversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from src/base.py\n",
+    "state.txt": "file out/page.html dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\n",
+    "fx/r.json": "{\u0000\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/page.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/page.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 1e-999\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture file is not valid JSON, fx/r.json\n"
+   }
+  },
+  {
+   "name": "fixture-control-outside-start-of-heading-refused",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0041\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/base.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact out/page.html reversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from src/base.py\n",
+    "state.txt": "file out/page.html dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\n",
+    "fx/r.json": "{\u0001\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/page.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/page.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 1e-999\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture file is not valid JSON, fx/r.json\n"
+   }
+  },
+  {
+   "name": "fixture-control-outside-start-of-text-refused",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0041\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/base.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact out/page.html reversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from src/base.py\n",
+    "state.txt": "file out/page.html dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\n",
+    "fx/r.json": "{\u0002\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/page.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/page.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 1e-999\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture file is not valid JSON, fx/r.json\n"
+   }
+  },
+  {
+   "name": "fixture-control-outside-end-of-text-refused",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0041\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/base.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact out/page.html reversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from src/base.py\n",
+    "state.txt": "file out/page.html dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\n",
+    "fx/r.json": "{\u0003\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/page.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/page.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 1e-999\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture file is not valid JSON, fx/r.json\n"
+   }
+  },
+  {
+   "name": "fixture-control-outside-end-of-transmission-refused",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0041\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/base.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact out/page.html reversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from src/base.py\n",
+    "state.txt": "file out/page.html dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\n",
+    "fx/r.json": "{\u0004\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/page.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/page.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 1e-999\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture file is not valid JSON, fx/r.json\n"
+   }
+  },
+  {
+   "name": "fixture-control-outside-enquiry-refused",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0041\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/base.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact out/page.html reversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from src/base.py\n",
+    "state.txt": "file out/page.html dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\n",
+    "fx/r.json": "{\u0005\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/page.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/page.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 1e-999\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture file is not valid JSON, fx/r.json\n"
+   }
+  },
+  {
+   "name": "fixture-control-outside-acknowledge-refused",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0041\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/base.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact out/page.html reversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from src/base.py\n",
+    "state.txt": "file out/page.html dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\n",
+    "fx/r.json": "{\u0006\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/page.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/page.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 1e-999\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture file is not valid JSON, fx/r.json\n"
+   }
+  },
+  {
+   "name": "fixture-control-outside-bell-refused",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0041\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/base.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact out/page.html reversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from src/base.py\n",
+    "state.txt": "file out/page.html dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\n",
+    "fx/r.json": "{\u0007\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/page.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/page.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 1e-999\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture file is not valid JSON, fx/r.json\n"
+   }
+  },
+  {
+   "name": "fixture-control-outside-backspace-refused",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0041\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/base.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact out/page.html reversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from src/base.py\n",
+    "state.txt": "file out/page.html dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\n",
+    "fx/r.json": "{\b\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/page.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/page.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 1e-999\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture file is not valid JSON, fx/r.json\n"
+   }
+  },
+  {
+   "name": "fixture-control-outside-shift-out-refused",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0041\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/base.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact out/page.html reversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from src/base.py\n",
+    "state.txt": "file out/page.html dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\n",
+    "fx/r.json": "{\u000e\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/page.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/page.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 1e-999\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture file is not valid JSON, fx/r.json\n"
+   }
+  },
+  {
+   "name": "fixture-control-outside-shift-in-refused",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0041\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/base.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact out/page.html reversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from src/base.py\n",
+    "state.txt": "file out/page.html dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\n",
+    "fx/r.json": "{\u000f\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/page.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/page.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 1e-999\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture file is not valid JSON, fx/r.json\n"
+   }
+  },
+  {
+   "name": "fixture-control-outside-data-link-escape-refused",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0041\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/base.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact out/page.html reversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from src/base.py\n",
+    "state.txt": "file out/page.html dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\n",
+    "fx/r.json": "{\u0010\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/page.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/page.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 1e-999\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture file is not valid JSON, fx/r.json\n"
+   }
+  },
+  {
+   "name": "fixture-control-outside-device-control-one-refused",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0041\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/base.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact out/page.html reversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from src/base.py\n",
+    "state.txt": "file out/page.html dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\n",
+    "fx/r.json": "{\u0011\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/page.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/page.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 1e-999\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture file is not valid JSON, fx/r.json\n"
+   }
+  },
+  {
+   "name": "fixture-control-outside-device-control-two-refused",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0041\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/base.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact out/page.html reversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from src/base.py\n",
+    "state.txt": "file out/page.html dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\n",
+    "fx/r.json": "{\u0012\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/page.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/page.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 1e-999\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture file is not valid JSON, fx/r.json\n"
+   }
+  },
+  {
+   "name": "fixture-control-outside-device-control-three-refused",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0041\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/base.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact out/page.html reversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from src/base.py\n",
+    "state.txt": "file out/page.html dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\n",
+    "fx/r.json": "{\u0013\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/page.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/page.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 1e-999\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture file is not valid JSON, fx/r.json\n"
+   }
+  },
+  {
+   "name": "fixture-control-outside-device-control-four-refused",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0041\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/base.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact out/page.html reversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from src/base.py\n",
+    "state.txt": "file out/page.html dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\n",
+    "fx/r.json": "{\u0014\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/page.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/page.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 1e-999\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture file is not valid JSON, fx/r.json\n"
+   }
+  },
+  {
+   "name": "fixture-control-outside-negative-acknowledge-refused",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0041\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/base.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact out/page.html reversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from src/base.py\n",
+    "state.txt": "file out/page.html dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\n",
+    "fx/r.json": "{\u0015\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/page.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/page.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 1e-999\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture file is not valid JSON, fx/r.json\n"
+   }
+  },
+  {
+   "name": "fixture-control-outside-synchronous-idle-refused",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0041\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/base.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact out/page.html reversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from src/base.py\n",
+    "state.txt": "file out/page.html dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\n",
+    "fx/r.json": "{\u0016\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/page.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/page.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 1e-999\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture file is not valid JSON, fx/r.json\n"
+   }
+  },
+  {
+   "name": "fixture-control-outside-end-of-transmission-block-refused",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0041\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/base.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact out/page.html reversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from src/base.py\n",
+    "state.txt": "file out/page.html dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\n",
+    "fx/r.json": "{\u0017\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/page.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/page.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 1e-999\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture file is not valid JSON, fx/r.json\n"
+   }
+  },
+  {
+   "name": "fixture-control-outside-cancel-refused",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0041\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/base.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact out/page.html reversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from src/base.py\n",
+    "state.txt": "file out/page.html dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\n",
+    "fx/r.json": "{\u0018\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/page.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/page.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 1e-999\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture file is not valid JSON, fx/r.json\n"
+   }
+  },
+  {
+   "name": "fixture-control-outside-end-of-medium-refused",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0041\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/base.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact out/page.html reversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from src/base.py\n",
+    "state.txt": "file out/page.html dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\n",
+    "fx/r.json": "{\u0019\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/page.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/page.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 1e-999\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture file is not valid JSON, fx/r.json\n"
+   }
+  },
+  {
+   "name": "fixture-control-outside-substitute-refused",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0041\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/base.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact out/page.html reversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from src/base.py\n",
+    "state.txt": "file out/page.html dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\n",
+    "fx/r.json": "{\u001a\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/page.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/page.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 1e-999\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture file is not valid JSON, fx/r.json\n"
+   }
+  },
+  {
+   "name": "fixture-control-outside-escape-refused",
+   "source": "oracle",
+   "setup": {
+    "stamp.txt": "stamp run-0041\nagent writer-3\nprompt-hash b41d90\nmodel synth-writer-2\nfile src/base.py created bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\nartifact out/page.html reversible dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd derived-from src/base.py\n",
+    "state.txt": "file out/page.html dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd\n",
+    "fx/r.json": "{\u001b\n  \"judgment_point\": \"compensation-ranking\",\n  \"request\": {\n    \"artifact\": \"out/page.html\",\n    \"candidate\": \"remove-artifact\",\n    \"chain\": \"src/base.py -> out/page.html\",\n    \"class\": \"reversible\",\n    \"status\": \"current\"\n  },\n  \"response\": {\n    \"confidence\": 0.9,\n    \"kind\": \"score\",\n    \"score\": 1e-999\n  },\n  \"synthetic\": true\n}\n"
+   },
+   "argv": [
+    "plan",
+    "stamp.txt",
+    "state.txt",
+    "src/base.py",
+    "--fixtures",
+    "fx"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: fixture file is not valid JSON, fx/r.json\n"
+   }
   }
  ]
 }
