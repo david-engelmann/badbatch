@@ -13820,6 +13820,958 @@
     "stdout": "",
     "stderr": "error: cannot read -🯱.🯱, No such file or directory\n"
    }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-0030-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-1\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -1\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-0660-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-١\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -١\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-06f0-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-۱\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -۱\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-07c0-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-߁\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -߁\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-0966-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-१\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -१\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-09e6-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-১\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -১\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-0a66-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-੧\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -੧\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-0ae6-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-૧\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -૧\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-0b66-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-୧\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -୧\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-0be6-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-௧\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -௧\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-0c66-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-౧\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -౧\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-0ce6-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-೧\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -೧\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-0d66-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-൧\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -൧\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-0de6-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-෧\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -෧\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-0e50-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-๑\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -๑\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-0ed0-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-໑\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -໑\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-0f20-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-༡\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -༡\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-1040-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-၁\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -၁\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-1090-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-႑\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -႑\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-17e0-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-១\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -១\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-1810-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-᠑\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -᠑\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-1946-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-᥇\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -᥇\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-19d0-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-᧑\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -᧑\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-1a80-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-᪁\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -᪁\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-1a90-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-᪑\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -᪑\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-1b50-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-᭑\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -᭑\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-1bb0-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-᮱\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -᮱\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-1c40-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-᱁\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -᱁\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-1c50-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-᱑\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -᱑\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-a620-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-꘡\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -꘡\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-a8d0-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-꣑\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -꣑\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-a900-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-꤁\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -꤁\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-a9d0-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-꧑\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -꧑\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-a9f0-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-꧱\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -꧱\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-aa50-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-꩑\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -꩑\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-abf0-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-꯱\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -꯱\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-ff10-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-１\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -１\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-104a0-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𐒡\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𐒡\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-10d30-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𐴱\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𐴱\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-11066-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𑁧\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𑁧\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-110f0-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𑃱\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𑃱\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-11136-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𑄷\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𑄷\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-111d0-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𑇑\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𑇑\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-112f0-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𑋱\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𑋱\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-11450-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𑑑\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𑑑\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-114d0-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𑓑\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𑓑\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-11650-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𑙑\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𑙑\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-116c0-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𑛁\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𑛁\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-11730-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𑜱\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𑜱\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-118e0-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𑣡\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𑣡\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-11950-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𑥑\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𑥑\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-11c50-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𑱑\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𑱑\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-11d50-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𑵑\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𑵑\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-11da0-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𑶡\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𑶡\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-11f50-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𑽑\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𑽑\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-16a60-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𖩡\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𖩡\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-16ac0-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𖫁\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𖫁\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-16b50-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𖭑\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𖭑\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-1d7ce-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𝟏\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𝟏\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-1d7d8-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𝟙\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𝟙\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-1d7e2-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𝟣\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𝟣\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-1d7ec-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𝟭\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𝟭\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-1d7f6-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𝟷\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𝟷\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-1e140-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𞅁\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𞅁\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-1e2f0-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𞋱\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𞋱\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-1e4f0-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𞓱\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𞓱\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-1e950-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-𞥑\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -𞥑\n, No such file or directory\n"
+   }
+  },
+  {
+   "name": "negative-value-newline-decimal-block-1fbf0-is-a-path",
+   "source": "oracle",
+   "setup": {},
+   "argv": [
+    "stamp",
+    "-🯱\n"
+   ],
+   "expect": {
+    "code": 2,
+    "stdout": "",
+    "stderr": "error: cannot read -🯱\n, No such file or directory\n"
+   }
   }
  ]
 }
